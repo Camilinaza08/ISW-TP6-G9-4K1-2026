@@ -5,6 +5,7 @@ function comprarEntradas(usuario, datosCompra) {
 
     const compra = {
       ...datosCompra,
+      cliente: usuario,
     };
 
     return compra;
