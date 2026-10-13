@@ -20,4 +20,8 @@ describe('validarUsuario', () => {
       expect(() => validarUsuario(usuario)).not.toThrow();
       expect(validarUsuario(usuario)).toBe(true);
     });
+
+    test('Test 03: Probar validar usuario sin proporcionar un usuario', () => {
+      expect(() => validarUsuario()).toThrow('ERROR: Usuario no registrado');
+    });
 });
