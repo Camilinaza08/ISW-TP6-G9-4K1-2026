@@ -12,3 +12,7 @@ const USUARIOS_MOCK = [
         nombre: 'Camila'
     }
 ]
+
+module.exports = {
+  USUARIOS_MOCK,
+};
