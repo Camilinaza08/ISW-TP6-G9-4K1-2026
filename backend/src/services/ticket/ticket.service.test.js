@@ -11,4 +11,13 @@ describe('validarUsuario', () => {
       'ERROR: Usuario no registrado',
     );
   });
+
+    test('Test 02 - Probar validar usuario con un usuario registrado', () => {
+      const usuario = {
+        id: 2,
+        nombre: 'Brisa',
+      };
+      expect(() => validarUsuario(usuario)).not.toThrow();
+      expect(validarUsuario(usuario)).toBe(true);
+    });
 });
