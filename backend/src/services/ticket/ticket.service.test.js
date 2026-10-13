@@ -53,7 +53,12 @@ describe('validarCompra', () => {
       formaPago: 'Mercado Pago',
     };
 
-    expect(comprarEntradas(usuario, datosCompra)).not.toBeNull();
-    expect(comprarEntradas(usuario, datosCompra)).toEqual(datosCompra);
+    const compra = comprarEntradas(usuario, datosCompra);
+    expect(compra).not.toBeNull();
+    expect(compra.fechaVisita).toBe(datosCompra.fechaVisita);
+    expect(compra.cantidadEntradas).toBe(datosCompra.cantidadEntradas);
+    expect(compra.edadesVisitantes).toEqual(datosCompra.edadesVisitantes);
+    expect(compra.tipoPase).toEqual(datosCompra.tipoPase);
+    expect(compra.formaPago).toBe(datosCompra.formaPago);
   });
 });
