@@ -42,4 +42,18 @@ describe('validarCompra', () => {
       'ERROR: Usuario no registrado',
     );
   });
+
+  test('Test 05 - Comprar entradas con usuario registrado', () => {
+    usuario = { id: 2, nombre: 'Brisa' };
+    datosCompra = {
+      fechaVisita: '2026-10-24',
+      cantidadEntradas: 2,
+      edadesVisitantes: [25, 23],
+      tipoPase: ['General', 'General'],
+      formaPago: 'Mercado Pago',
+    };
+
+    expect(comprarEntradas(usuario, datosCompra)).not.toBeNull();
+    expect(comprarEntradas(usuario, datosCompra)).toEqual(datosCompra);
+  });
 });
