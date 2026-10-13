@@ -61,4 +61,19 @@ describe('validarCompra', () => {
     expect(compra.tipoPase).toEqual(datosCompra.tipoPase);
     expect(compra.formaPago).toBe(datosCompra.formaPago);
   });
+
+  test('Test 06 - Conservar datos del usuario en la compra', () => {
+    datosCompra = {
+      fechaVisita: '2026-10-24',
+      cantidadEntradas: 2,
+      edadesVisitantes: [25, 23],
+      tipoPase: ['General', 'General'],
+      formaPago: 'Mercado Pago',
+    };
+
+    expect(comprarEntradas(usuario, datosCompra)).toEqual({
+      ...datosCompra,
+      cliente: usuario,
+    });
+  });
 });
