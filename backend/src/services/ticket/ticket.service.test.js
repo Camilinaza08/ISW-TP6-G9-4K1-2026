@@ -1,5 +1,9 @@
+const request = require('supertest');
+const app = require('../../server');
 const { validarUsuario } = require('./ticket.validator');
 const { comprarEntradas } = require('./ticket.service');
+const { FORMAS_PAGO } = require('./formasPago.mock');
+const { TIPOS_PASE } = require('./tiposPase.mock');
 
 describe('validarUsuario', () => {
   test('Test 01 - Probar validar usuario con un usuario no registrado', () => {
@@ -80,10 +84,6 @@ describe('validarCompra', () => {
 
 describe('obtenerFormasPago', () => {
   test('Test 07 - Obtener formas de pago', async () => {
-    const request = require('supertest');
-    const app = require('../../server');
-    const { FORMAS_PAGO } = require('./formasPago.mock');
-
     const res = await request(app).get('/api/formas-pago');
 
     expect(res.status).toBe(200);
@@ -93,15 +93,12 @@ describe('obtenerFormasPago', () => {
 
 describe('obtenerTiposPase', () => {
   test('Test 08 - Obtener tipos de pase', async () => {
-    const request = require('supertest');
-    const app = require('../../server');
-    const { TIPOS_PASE } = require('./tiposPase.mock');
-
     const res = await request(app).get('/api/tipos-pase');
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual(TIPOS_PASE);
   });
 });
+
 
 
