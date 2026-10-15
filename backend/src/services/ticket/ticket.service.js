@@ -11,6 +11,13 @@ function comprarEntradas(usuario, datosCompra) {
     return compra;
 }
 
+const { FORMAS_PAGO } = require('./formasPago.mock');
+
+function obtenerFormasPago() {
+  return FORMAS_PAGO;
+}
+
 module.exports = {
   comprarEntradas,
+  obtenerFormasPago,
 };
