@@ -77,3 +77,17 @@ describe('validarCompra', () => {
     });
   });
 });
+
+describe('obtenerFormasPago', () => {
+  test('Test 07 - Obtener formas de pago', async () => {
+    const request = require('supertest');
+    const app = require('../../server');
+    const { FORMAS_PAGO } = require('./formasPago.mock');
+
+    const res = await request(app).get('/api/formas-pago');
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(FORMAS_PAGO);
+  });
+});
+
