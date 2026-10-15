@@ -91,3 +91,17 @@ describe('obtenerFormasPago', () => {
   });
 });
 
+describe('obtenerTiposPase', () => {
+  test('Test 08 - Obtener tipos de pase', async () => {
+    const request = require('supertest');
+    const app = require('../../server');
+    const { TIPOS_PASE } = require('./tiposPase.mock');
+
+    const res = await request(app).get('/api/tipos-pase');
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(TIPOS_PASE);
+  });
+});
+
+
