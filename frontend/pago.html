@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Método de pago · Eco Harmony Park</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pago.css">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo" aria-label="Eco Harmony Park - Inicio">
+        <img src="assets/img/logo.png" alt="" class="logo__img">
+        <span class="logo__text">
+          <span class="logo__name">Eco Harmony</span>
+          <span class="logo__sub">Park</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li><a href="index.html#sectores">Descubre el parque</a></li>
+          <li><a href="index.html#horarios">Horarios de alimentación</a></li>
+          <li><a href="index.html#visita">Tu visita</a></li>
+        </ul>
+        <a href="compra.html" class="btn btn--primary btn--sm">Tus Entradas <span class="btn__arrow">↗</span></a>
+        <select class="lang" aria-label="Idioma">
+          <option value="es" selected>ES</option>
+          <option value="en">EN</option>
+        </select>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pago">
+    <div class="container">
+      <h1 class="visually-hidden">Elegí el método de pago</h1>
+
+      <div class="pago__grid">
+        <button type="button" class="metodo" data-forma="Mercado Pago">
+          <span class="metodo__title">Tarjeta crédito/débito</span>
+          <span class="metodo__text">Se abona online a través de la aplicación de Mercado Pago</span>
+          <img class="metodo__img metodo__img--mp" src="assets/img/mercadopago.png" alt="Mercado Pago">
+        </button>
+
+        <button type="button" class="metodo" data-forma="Efectivo">
+          <span class="metodo__title">Efectivo</span>
+          <span class="metodo__text">Se abona en boletería al llegar al parque.</span>
+          <img class="metodo__img metodo__img--efectivo" src="assets/img/efectivo.png" alt="Mano entregando un billete">
+        </button>
+      </div>
+
+      <p class="form-msg" id="mensaje" role="alert" hidden></p>
+      <a href="compra.html" class="pago__volver">← Volver a la compra</a>
+    </div>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="logo logo--footer">
+            <img src="assets/img/logo.png" alt="" class="logo__img">
+            <span class="logo__text">
+              <span class="logo__name">Eco Harmony</span>
+              <span class="logo__sub">Park</span>
+            </span>
+          </a>
+          <p class="footer__desc">Un lugar para descubrir, aprender y cuidar la vida que compartimos.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explora</p>
+          <p class="footer__links"><a href="index.html#sectores">Animales y hábitats</a> · <a href="index.html#nosotros">Conservación</a></p>
+          <p class="footer__links"><a href="index.html#plan">Experiencias</a> · <a href="compra.html">Entradas</a></p>
+        </div>
+        <div>
+          <p class="footer__heading">Estamos cerca</p>
+          <p class="footer__links"><a href="index.html#visita">Tu visita</a> · <a href="index.html#horarios">Accesibilidad</a> · <a href="#">Contacto</a></p>
+          <p class="footer__links"><a href="#" target="_blank" rel="noopener">Instagram ↗</a> &nbsp; <a href="#" target="_blank" rel="noopener">Facebook ↗</a></p>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 Eco Harmony Park · Diseño conceptual.</p>
+        <p><a href="#">Privacidad</a> · <a href="#">Cookies</a> · <a href="#">Condiciones</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/pago.js"></script>
+</body>
+</html>

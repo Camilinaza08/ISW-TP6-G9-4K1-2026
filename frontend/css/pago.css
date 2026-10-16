@@ -1,0 +1,53 @@
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ===== Fondo con huellas ===== */
+.pago {
+  padding-block: 60px;
+  background-color: #f1e7d0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110' viewBox='0 0 110 110'%3E%3Cg fill='%23d6cab0'%3E%3Cg transform='translate(30 30) rotate(-20)'%3E%3Cellipse cx='0' cy='8' rx='10' ry='8'/%3E%3Cellipse cx='-11' cy='-6' rx='4' ry='5.5'/%3E%3Cellipse cx='-4' cy='-12' rx='4' ry='5.5'/%3E%3Cellipse cx='5' cy='-12' rx='4' ry='5.5'/%3E%3Cellipse cx='12' cy='-5' rx='4' ry='5.5'/%3E%3C/g%3E%3Cg transform='translate(82 82) rotate(25)'%3E%3Cellipse cx='0' cy='8' rx='10' ry='8'/%3E%3Cellipse cx='-11' cy='-6' rx='4' ry='5.5'/%3E%3Cellipse cx='-4' cy='-12' rx='4' ry='5.5'/%3E%3Cellipse cx='5' cy='-12' rx='4' ry='5.5'/%3E%3Cellipse cx='12' cy='-5' rx='4' ry='5.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.pago__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 360px));
+  justify-content: center;
+  gap: 36px;
+}
+
+/* ===== Tarjetas de método ===== */
+.metodo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 190px;
+  padding: 18px 18px 14px;
+  background: var(--color-green-light);
+  border: 1px solid #93b548;
+  border-radius: 14px;
+  font: inherit;
+  color: #1d1d1b;
+  text-align: left;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .2s;
+}
+.metodo:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(63,107,58,.2); }
+.metodo:focus-visible { outline: 3px solid var(--color-green-dark); outline-offset: 3px; }
+.metodo:disabled { opacity: .6; cursor: wait; transform: none; }
+.metodo__title { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+.metodo__text { font-size: 12px; margin-bottom: 14px; }
+.metodo__img { width: 110px; height: auto; margin-top: auto; margin-left: 12px; }
+.metodo__img--mp { width: 100px; }
+/* El fondo blanco de la imagen se funde con el verde de la tarjeta */
+.metodo__img--efectivo { width: 115px; mix-blend-mode: multiply; }
+
+.pago .form-msg { text-align: center; margin-top: 24px; font-size: 13px; color: #b84a45; }
+.pago__volver { display: block; width: fit-content; margin: 28px auto 0; font-size: 13px; color: var(--color-green-dark); }
+.pago__volver:hover { text-decoration: underline; }
+
+@media (max-width: 760px) {
+  .pago { padding-block: 36px; }
+  .pago__grid { grid-template-columns: 1fr; gap: 20px; }
+}

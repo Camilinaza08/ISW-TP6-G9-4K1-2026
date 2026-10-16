@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entradas · Eco Harmony Park</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/compra.css?v=2">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo" aria-label="Eco Harmony Park - Inicio">
+        <img src="assets/img/logo.png" alt="" class="logo__img">
+        <span class="logo__text">
+          <span class="logo__name">Eco Harmony</span>
+          <span class="logo__sub">Park</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li><a href="index.html#sectores">Descubre el parque</a></li>
+          <li><a href="index.html#horarios">Horarios de alimentación</a></li>
+          <li><a href="index.html#visita">Tu visita</a></li>
+        </ul>
+        <a href="compra.html" class="btn btn--primary btn--sm">Tus Entradas <span class="btn__arrow">↗</span></a>
+        <select class="lang" aria-label="Idioma">
+          <option value="es" selected>ES</option>
+          <option value="en">EN</option>
+        </select>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== Selección de fecha ===== -->
+    <section class="fecha">
+      <div class="container fecha__inner">
+        <h1 class="fecha__title">Elija la fecha en la que desea visitarnos</h1>
+
+        <div class="calendar" id="calendar">
+          <p class="calendar__label">Seleccione la fecha</p>
+          <p class="calendar__selected" id="cal-selected">Sin fecha</p>
+
+          <div class="calendar__nav">
+            <span class="calendar__month" id="cal-month"></span>
+            <div>
+              <button type="button" class="calendar__arrow" id="cal-prev" aria-label="Mes anterior">‹</button>
+              <button type="button" class="calendar__arrow" id="cal-next" aria-label="Mes siguiente">›</button>
+            </div>
+          </div>
+
+          <div class="calendar__grid calendar__weekdays">
+            <span>D</span><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span>
+          </div>
+          <div class="calendar__grid" id="cal-days"></div>
+
+          <div class="calendar__actions">
+            <button type="button" class="calendar__btn" id="cal-clear">Limpiar</button>
+            <div>
+              <button type="button" class="calendar__btn" id="cal-cancel">Cancelar</button>
+              <button type="button" class="calendar__btn" id="cal-ok">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Entradas ===== -->
+    <section class="entradas">
+      <div class="container">
+        <div class="entradas__toolbar">
+          <label class="cantidad">
+            <span class="cantidad__label">Cantidad de entradas</span>
+            <input type="number" id="cantidad" class="cantidad__input" min="1" max="10" placeholder="0" inputmode="numeric">
+          </label>
+          <p class="cantidad__hint">Máximo 10 entradas por compra.</p>
+        </div>
+
+        <ul class="entradas__list" id="lista-entradas"></ul>
+
+        <p class="entradas__total" id="total" hidden></p>
+        <p class="form-msg" id="mensaje" role="alert" hidden></p>
+
+        <div class="entradas__actions">
+          <a href="index.html" class="link-volver">Volver</a>
+          <button type="button" class="btn btn--dark" id="btn-comprar">Comprar</button>
+        </div>
+      </div>
+    </section>
+    <!-- ===== Modal resumen ===== -->
+    <dialog class="resumen" id="modal-resumen" aria-labelledby="resumen-titulo">
+      <h2 class="resumen__title" id="resumen-titulo">Resumen de Compra</h2>
+      <div class="resumen__info">
+        <p>Fecha: <span id="resumen-fecha"></span></p>
+        <p>Cantidad de entradas: <span id="resumen-cantidad"></span></p>
+        <p>Detalle de las entradas:</p>
+      </div>
+      <ul class="resumen__list" id="resumen-lista"></ul>
+      <p class="resumen__total">Total a pagar: <span id="resumen-total"></span></p>
+      <div class="resumen__actions">
+        <button type="button" class="resumen__btn resumen__btn--volver" id="resumen-volver">Volver</button>
+        <button type="button" class="resumen__btn" id="resumen-continuar">Continuar</button>
+      </div>
+    </dialog>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="logo logo--footer">
+            <img src="assets/img/logo.png" alt="" class="logo__img">
+            <span class="logo__text">
+              <span class="logo__name">Eco Harmony</span>
+              <span class="logo__sub">Park</span>
+            </span>
+          </a>
+          <p class="footer__desc">Un lugar para descubrir, aprender y cuidar la vida que compartimos.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explora</p>
+          <p class="footer__links"><a href="index.html#sectores">Animales y hábitats</a> · <a href="index.html#nosotros">Conservación</a></p>
+          <p class="footer__links"><a href="index.html#plan">Experiencias</a> · <a href="compra.html">Entradas</a></p>
+        </div>
+        <div>
+          <p class="footer__heading">Estamos cerca</p>
+          <p class="footer__links"><a href="index.html#visita">Tu visita</a> · <a href="index.html#horarios">Accesibilidad</a> · <a href="#">Contacto</a></p>
+          <p class="footer__links"><a href="#" target="_blank" rel="noopener">Instagram ↗</a> &nbsp; <a href="#" target="_blank" rel="noopener">Facebook ↗</a></p>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 Eco Harmony Park · Diseño conceptual.</p>
+        <p><a href="#">Privacidad</a> · <a href="#">Cookies</a> · <a href="#">Condiciones</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/compra.js?v=4"></script>
+</body>
+</html>
