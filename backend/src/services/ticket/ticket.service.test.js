@@ -100,5 +100,17 @@ describe('obtenerTiposPase', () => {
   });
 });
 
+describe('obtenerReglasCalendario', () => {
+  test('Test 09 - Obtener fechas no disponibles del calendario', async () => {
+    const { REGLAS_CALENDARIO } = require('./calendario.mock');
+
+    const res = await request(app).get('/api/calendario/reglas');
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(REGLAS_CALENDARIO);
+  });
+});
+
+
 
 
