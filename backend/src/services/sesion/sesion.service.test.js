@@ -35,4 +35,15 @@ describe("validarSesion", () => {
     expect(() => validarSesion(sesion))
       .toThrow("No hay una sesión activa");
   });
+
+  test("Test 13 - Sesión finalizada", () => {
+    const sesion = {
+      usuario: { id: 1, nombre: "Usuario de prueba" },
+      fechaHoraInicio: new Date("2026-10-10T10:00:00"),
+      fechaHoraFin: new Date("2026-10-10T12:00:00")
+    };
+
+    expect(() => validarSesion(sesion))
+      .toThrow("No hay una sesión activa");
+  });
 });
