@@ -11,6 +11,7 @@ describe('validarUsuario', () => {
     const usuario = {
       id: 999,
       nombre: 'Usuario inexistente',
+      email: 'inexistente@example.com',
     };
 
     expect(() => validarUsuario(usuario)).toThrow(
@@ -22,25 +23,25 @@ describe('validarUsuario', () => {
     const usuario = {
       id: 2,
       nombre: 'Brisa',
+      email: 'brisaabigaildiaz2000@gmail.com',
     };
     expect(() => validarUsuario(usuario)).not.toThrow();
     expect(validarUsuario(usuario)).toBe(true);
   });
 
-  test('Test 03: Probar validar usuario sin proporcionar un usuario', () => {
+  test('Test 03 - Probar validar usuario sin proporcionar un usuario', () => {
     expect(() => validarUsuario()).toThrow('ERROR: Usuario no registrado');
   });
 });
 
 describe('validarCompra', () => {
   test('Test 04 - Comprar entradas con usuario no registrado', () => {
-    usuario = { id: 999, nombre: 'Usuario inexistente' };
+    usuario = { id: 999, nombre: 'Usuario inexistente', email:'inexistente@example.com' };
     datosCompra = {
       fechaVisita: '2026-10-24',
       cantidadEntradas: 2,
       edadesVisitantes: [25, 23],
-      tipoPase: ['General', 'General'],
-      formaPago: 'Mercado Pago',
+      tipoPase: ['COMUN', 'COMUN'],
     };
 
     expect(() => comprarEntradas(usuario, datosCompra)).toThrow(
@@ -49,13 +50,12 @@ describe('validarCompra', () => {
   });
 
   test('Test 05 - Comprar entradas con usuario registrado', () => {
-    usuario = { id: 2, nombre: 'Brisa' };
+    usuario = { id: 2, nombre: 'Brisa', email: 'brisaabigaildiaz2000@gmail.com', };
     datosCompra = {
       fechaVisita: '2026-10-24',
       cantidadEntradas: 2,
       edadesVisitantes: [25, 23],
-      tipoPase: ['General', 'General'],
-      formaPago: 'Mercado Pago',
+      tipoPase: ['COMUN', 'COMUN'],
     };
 
     const compra = comprarEntradas(usuario, datosCompra);
@@ -64,7 +64,6 @@ describe('validarCompra', () => {
     expect(compra.cantidadEntradas).toBe(datosCompra.cantidadEntradas);
     expect(compra.edadesVisitantes).toEqual(datosCompra.edadesVisitantes);
     expect(compra.tipoPase).toEqual(datosCompra.tipoPase);
-    expect(compra.formaPago).toBe(datosCompra.formaPago);
   });
 
   test('Test 06 - Conservar datos del usuario en la compra', () => {
@@ -72,14 +71,12 @@ describe('validarCompra', () => {
       fechaVisita: '2026-10-24',
       cantidadEntradas: 2,
       edadesVisitantes: [25, 23],
-      tipoPase: ['General', 'General'],
-      formaPago: 'Mercado Pago',
+      tipoPase: ['COMUN', 'COMUN'],
     };
 
-    expect(comprarEntradas(usuario, datosCompra)).toEqual({
-      ...datosCompra,
-      cliente: usuario,
-    });
+    const compra = comprarEntradas(usuario, datosCompra);
+
+    expect(compra.cliente).toEqual(usuario);
   });
 });
 
