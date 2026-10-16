@@ -13,4 +13,19 @@ describe("validarSesion", () => {
     expect(() => validarSesion(sesion))
       .toThrow("No hay una sesión activa");
   });
+
+  test("Test 11 - Sesion activa con usuario asociado", () => {
+    // ARRANGE
+    const sesion = {
+      usuario: { id: 1, nombre: "Usuario de prueba" },
+      fechaHoraInicio: new Date("2026-10-10T10:00:00"),
+      fechaHoraFin: null
+    };
+
+    // ACT
+    const resultado = validarSesion(sesion);
+
+    // ASSERT
+    expect(resultado).toBe(true);
+  });
 });
