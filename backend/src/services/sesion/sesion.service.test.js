@@ -28,4 +28,11 @@ describe("validarSesion", () => {
     // ASSERT
     expect(resultado).toBe(true);
   });
+
+  test("Test 12 - Sesión inexistente", () => {
+    const sesion = null;
+
+    expect(() => validarSesion(sesion))
+      .toThrow("No hay una sesión activa");
+  });
 });
