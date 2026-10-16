@@ -6,8 +6,8 @@
   --color-green-light: #a8c95a;
   --color-text: #3a3a32;
   --color-accent: #c0392b;
-  --font-title: 'Playfair Display', Georgia, serif;
-  --font-body: 'Poppins', system-ui, sans-serif;
+  --font-title: 'Lato', system-ui, sans-serif;
+  --font-body: 'Lato', system-ui, sans-serif;
   --radius: 14px;
   --container: 1180px;
 }
