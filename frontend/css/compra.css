@@ -1,69 +1,4 @@
-/* ===== Selección de fecha ===== */
-.fecha { background: var(--color-green-dark); padding-block: 24px; }
-.fecha__inner {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 40px;
-  align-items: center;
-}
-.fecha__title {
-  color: #f1e7d0;
-  font-size: clamp(1.8rem, 3.2vw, 2.4rem);
-  line-height: 1.2;
-  max-width: 420px;
-}
-
-/* ===== Calendario ===== */
-.calendar {
-  width: 100%;
-  max-width: 360px;
-  background: #f1e7d0;
-  border-radius: 20px;
-  padding: 16px 16px 12px;
-  color: #1d1d1b;
-}
-.calendar__label { font-size: 11px; font-weight: 500; margin-bottom: 14px; }
-.calendar__selected {
-  font-size: 1.6rem;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(0,0,0,.12);
-  margin-bottom: 10px;
-  text-transform: capitalize;
-}
-.calendar__nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.calendar__month { font-size: 12px; font-weight: 500; text-transform: capitalize; }
-.calendar__arrow {
-  background: none; border: none; font-size: 20px; line-height: 1;
-  width: 32px; height: 32px; border-radius: 50%; cursor: pointer; color: inherit;
-}
-.calendar__arrow:hover:not(:disabled) { background: rgba(0,0,0,.06); }
-.calendar__arrow:disabled { opacity: .3; cursor: default; }
-
-.calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; }
-.calendar__weekdays span { font-size: 12px; padding-block: 6px; }
-
-.day {
-  width: 38px; height: 38px;
-  margin: 0 auto;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  background: none;
-  font: inherit;
-  font-size: 13px;
-  color: inherit;
-  cursor: pointer;
-}
-.day:hover:not(:disabled):not(.day--selected) { background: rgba(63,107,58,.12); }
-.day--today { border-color: var(--color-green-dark); }
-.day--selected { background: var(--color-green-dark); color: #fff; }
-.day:disabled { color: #a8a395; cursor: not-allowed; }
-
-.calendar__actions { display: flex; justify-content: space-between; margin-top: 10px; }
-.calendar__btn {
-  background: none; border: none; font: inherit; font-size: 12px; font-weight: 500;
-  padding: 8px 10px; border-radius: 8px; cursor: pointer; color: inherit;
-}
-.calendar__btn:hover { background: rgba(0,0,0,.06); }
+/* Estilos del encabezado con calendario en calendario.css */
 
 /* ===== Entradas ===== */
 .entradas { background: #f9f8f4; padding-block: 20px 28px; }
@@ -175,15 +110,11 @@
 
 /* ===== Responsive ===== */
 @media (max-width: 860px) {
-  .fecha__inner { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 24px; }
   .entrada { grid-template-columns: 1fr 1fr; row-gap: 6px; padding-block: 12px; border-bottom: 1px solid #ebe7d8; }
   .entrada__tipo { max-width: none; }
 }
 
 @media (max-width: 560px) {
-  .fecha { padding-block: 28px; }
-  .calendar { padding-inline: 10px; }
-  .day { width: 36px; height: 36px; }
   .entradas__toolbar { gap: 12px; }
   .cantidad { width: 100%; justify-content: space-between; }
   .entradas__actions { justify-content: space-between; }

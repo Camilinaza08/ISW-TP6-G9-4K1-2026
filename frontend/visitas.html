@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu visita · Eco Harmony Park</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/visitas.css">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo" aria-label="Eco Harmony Park - Inicio">
+        <img src="assets/img/logo.png" alt="" class="logo__img">
+        <span class="logo__text">
+          <span class="logo__name">Eco Harmony</span>
+          <span class="logo__sub">Park</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li><a href="index.html#sectores">Descubre el parque</a></li>
+          <li><a href="alimentacion.html">Horarios de alimentación</a></li>
+          <li><a href="visitas.html" aria-current="page">Tu visita</a></li>
+        </ul>
+        <a href="compra.html" class="btn btn--primary btn--sm">Comprar entradas <span class="btn__arrow">↗</span></a>
+        <select class="lang" aria-label="Idioma">
+          <option value="es" selected>ES</option>
+          <option value="en">EN</option>
+        </select>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="visitas-hero">
+      <div class="container">
+        <p class="eyebrow eyebrow--lime">Tu cuenta</p>
+        <h1 class="visitas-hero__title">Tus visitas a Eco Harmony Park.</h1>
+        <p class="visitas-hero__text">Consultá las entradas que tenés para los próximos días y repasá las visitas que ya disfrutaste.</p>
+      </div>
+    </section>
+
+    <section class="visitas">
+      <div class="container">
+        <div class="tabs" role="tablist" aria-label="Tipo de visitas">
+          <button type="button" class="tab is-active" role="tab" aria-selected="true" aria-controls="panel-proximas" id="tab-proximas">
+            Próximas visitas <span class="tab__count" id="count-proximas">0</span>
+          </button>
+          <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="panel-anteriores" id="tab-anteriores">
+            Visitas anteriores <span class="tab__count" id="count-anteriores">0</span>
+          </button>
+        </div>
+
+        <div class="visit-list" id="panel-proximas" role="tabpanel" aria-labelledby="tab-proximas"></div>
+        <div class="visit-list" id="panel-anteriores" role="tabpanel" aria-labelledby="tab-anteriores" hidden></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="logo logo--footer">
+            <img src="assets/img/logo.png" alt="" class="logo__img">
+            <span class="logo__text">
+              <span class="logo__name">Eco Harmony</span>
+              <span class="logo__sub">Park</span>
+            </span>
+          </a>
+          <p class="footer__desc">Un lugar para descubrir, aprender y cuidar la vida que compartimos.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explora</p>
+          <p class="footer__links"><a href="index.html#sectores">Animales y hábitats</a> · <a href="index.html#nosotros">Conservación</a></p>
+          <p class="footer__links"><a href="index.html#plan">Experiencias</a> · <a href="compra.html">Entradas</a></p>
+        </div>
+        <div>
+          <p class="footer__heading">Estamos cerca</p>
+          <p class="footer__links"><a href="visitas.html">Tu visita</a> · <a href="index.html#horarios">Accesibilidad</a> · <a href="#">Contacto</a></p>
+          <p class="footer__links"><a href="#" target="_blank" rel="noopener">Instagram ↗</a> &nbsp; <a href="#" target="_blank" rel="noopener">Facebook ↗</a></p>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 Eco Harmony Park · Diseño conceptual.</p>
+        <p><a href="#">Privacidad</a> · <a href="#">Cookies</a> · <a href="#">Condiciones</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/visitas.js"></script>
+</body>
+</html>

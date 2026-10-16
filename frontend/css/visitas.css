@@ -1,0 +1,76 @@
+.nav__list a[aria-current="page"] { color: var(--color-green); font-weight: 700; }
+
+/* ===== Encabezado ===== */
+.visitas-hero { background: var(--color-green-dark); padding-block: 48px; }
+.visitas-hero__title { color: #f1e7d0; font-size: clamp(1.8rem, 3.2vw, 2.4rem); line-height: 1.2; margin-bottom: 12px; }
+.visitas-hero__text { color: #fff; opacity: .9; max-width: 520px; font-size: 14px; }
+
+/* ===== Pestañas ===== */
+.visitas { background: #f1e7d0; padding-block: 36px 64px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+.tab {
+  display: inline-flex; align-items: center; gap: 10px;
+  font: inherit; font-size: 13px; font-weight: 700;
+  padding: 10px 20px; border-radius: 999px; cursor: pointer;
+  background: transparent; color: var(--color-green-dark);
+  border: 1px solid var(--color-green-dark);
+  transition: background-color .2s, color .2s;
+}
+.tab.is-active { background: var(--color-green-dark); color: #fff; }
+.tab__count {
+  min-width: 22px; height: 22px; padding-inline: 6px; border-radius: 999px;
+  display: inline-grid; place-items: center; font-size: 11px;
+  background: var(--color-green-light); color: var(--color-green-dark);
+}
+
+/* ===== Tarjetas de visita ===== */
+.visit-list { display: grid; gap: 16px; }
+.visit {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  gap: 22px;
+  align-items: center;
+  background: #fffdf6;
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  border-left: 6px solid var(--color-green-light);
+}
+.visit--pasada { border-left-color: #c9bc9c; }
+
+.visit__date {
+  display: grid; place-items: center; text-align: center;
+  background: var(--color-green-dark); color: #fff;
+  border-radius: 12px; padding: 10px 6px; line-height: 1.1;
+}
+.visit--pasada .visit__date { background: #8a8676; }
+.visit__day { font-size: 1.9rem; font-weight: 900; }
+.visit__month { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+.visit__weekday { font-size: 10px; opacity: .8; text-transform: capitalize; }
+
+.visit__title { font-family: var(--font-body); font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+.visit__meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; margin-bottom: 8px; }
+.visit__tickets { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0; }
+.visit__tickets li {
+  font-size: 11px; padding: 3px 10px; border-radius: 999px;
+  background: #f1e7d0; color: var(--color-green-dark);
+}
+
+.visit__side { display: grid; justify-items: end; gap: 8px; text-align: right; }
+.visit__amount { font-size: 1.15rem; font-weight: 700; color: var(--color-green-dark); }
+
+.estado { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 999px; }
+.estado--confirmada { background: var(--color-green-light); color: var(--color-green-dark); }
+.estado--pendiente { background: #f6e1b8; color: #8a5a00; }
+.estado--usada { background: #e3ded0; color: #6f6b5e; }
+
+.visit-empty {
+  text-align: center; padding: 40px 20px;
+  background: #fffdf6; border-radius: var(--radius);
+}
+.visit-empty p { margin-bottom: 16px; }
+
+@media (max-width: 680px) {
+  .visit { grid-template-columns: 72px 1fr; gap: 16px; padding: 16px; }
+  .visit__day { font-size: 1.5rem; }
+  .visit__side { grid-column: 1 / -1; grid-auto-flow: column; justify-content: space-between; align-items: center; }
+}
