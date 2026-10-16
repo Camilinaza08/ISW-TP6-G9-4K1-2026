@@ -4,6 +4,7 @@ const { validarUsuario } = require('./ticket.validator');
 const { comprarEntradas } = require('./ticket.service');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
+const { REGLAS_CALENDARIO } = require('./calendario.mock');
 
 describe('validarUsuario', () => {
   test('Test 01 - Probar validar usuario con un usuario no registrado', () => {
@@ -102,14 +103,13 @@ describe('obtenerTiposPase', () => {
 
 describe('obtenerReglasCalendario', () => {
   test('Test 09 - Obtener fechas no disponibles del calendario', async () => {
-    const { REGLAS_CALENDARIO } = require('./calendario.mock');
-
     const res = await request(app).get('/api/calendario/reglas');
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual(REGLAS_CALENDARIO);
   });
 });
+
 
 
 
