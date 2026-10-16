@@ -7,7 +7,7 @@
   align-items: center;
 }
 .fecha__title {
-  color: #f1e7d0;
+  color: #f2e8cf;
   font-size: clamp(1.8rem, 3.2vw, 2.4rem);
   line-height: 1.2;
   max-width: 420px;
@@ -17,7 +17,7 @@
 .calendar {
   width: 100%;
   max-width: 360px;
-  background: #f1e7d0;
+  background: #f2e8cf;
   border-radius: 20px;
   padding: 16px 16px 12px;
   color: #1d1d1b;
@@ -53,7 +53,7 @@
   color: inherit;
   cursor: pointer;
 }
-.day:hover:not(:disabled):not(.day--selected) { background: rgba(63,107,58,.12); }
+.day:hover:not(:disabled):not(.day--selected) { background: rgba(56,102,65,.12); }
 .day--today { border-color: var(--color-green-dark); }
 .day--selected { background: var(--color-green-dark); color: #fff; }
 .day:disabled { color: #a8a395; cursor: not-allowed; }

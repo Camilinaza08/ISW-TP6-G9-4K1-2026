@@ -22,7 +22,7 @@ if (!compra) window.location.replace('compra.html');
 
 botones.forEach((boton) => {
   boton.addEventListener('click', async () => {
-    const sesion = leer(localStorage, 'sesion');
+    const sesion = obtenerSesion();
     if (!sesion) return mostrarMensaje('Tenés que iniciar sesión para confirmar la compra.');
 
     const datosCompra = { ...compra, formaDePago: boton.dataset.forma };

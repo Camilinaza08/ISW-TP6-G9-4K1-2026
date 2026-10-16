@@ -8,13 +8,13 @@
   display: inline-flex;
   align-items: center;
   gap: 16px;
-  background: #f1e7d0;
+  background: #f2e8cf;
   border: 1px solid #e0d3b5;
   border-radius: 999px;
   padding: 6px 6px 6px 22px;
   transition: border-color .2s, box-shadow .2s;
 }
-.cantidad:focus-within { border-color: var(--color-green-dark); box-shadow: 0 0 0 3px rgba(63,107,58,.15); }
+.cantidad:focus-within { border-color: var(--color-green-dark); box-shadow: 0 0 0 3px rgba(56,102,65,.15); }
 .cantidad__label { color: var(--color-green-dark); font-size: 13px; font-weight: 500; }
 .cantidad__input {
   width: 64px;
@@ -63,14 +63,14 @@
 .entrada__tipo { width: 100%; max-width: 180px; cursor: pointer; }
 .entrada__edad:focus, .entrada__tipo:focus { outline: none; border-bottom: 2px solid var(--color-green-dark); }
 .entrada__precio { font-size: 12px; color: var(--color-green); text-align: right; }
-.is-invalid { border-bottom-color: #b84a45 !important; }
+.is-invalid { border-bottom-color: #bc4749 !important; }
 
 .entradas__total { text-align: right; font-weight: 600; color: var(--color-green-dark); margin-top: 12px; }
-.form-msg { margin-top: 12px; font-size: 13px; color: #b84a45; }
+.form-msg { margin-top: 12px; font-size: 13px; color: #bc4749; }
 .form-msg--ok { color: var(--color-green-dark); }
 
 .entradas__actions { display: flex; justify-content: flex-end; align-items: center; gap: 36px; margin-top: 20px; }
-.link-volver { color: #b84a45; font-size: 13px; }
+.link-volver { color: #bc4749; font-size: 13px; }
 .btn--dark { background: var(--color-green-dark); color: #fff; border-radius: 4px; padding: 9px 26px; }
 .btn--dark:disabled { opacity: .6; cursor: wait; }
 
@@ -106,7 +106,7 @@
   color: var(--color-green-dark); padding: 8px 12px; border-radius: 8px; cursor: pointer;
 }
 .resumen__btn:hover { background: rgba(255,255,255,.35); }
-.resumen__btn--volver { color: #b84a45; }
+.resumen__btn--volver { color: #bc4749; }
 
 /* ===== Responsive ===== */
 @media (max-width: 860px) {

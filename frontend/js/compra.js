@@ -8,6 +8,8 @@ let tiposPase = [
 ];
 
 /* ================= Calendario ================= */
+// Las entradas para el mismo día se venden hasta 1 h 30 antes del cierre (19 hs)
+horaLimiteHoy = { horas: 17, minutos: 30 };
 let fechaConfirmada = null; // fecha que se usa para la compra
 
 const calendario = iniciarCalendario({
@@ -114,6 +116,12 @@ function ocultarMensaje() { elMensaje.hidden = true; }
 
 function validarFormulario() {
   if (!fechaConfirmada) return 'Seleccioná una fecha de visita en el calendario.';
+  // Por si la página quedó abierta y se pasó el horario límite
+  if (!fechaHabilitada(fechaConfirmada)) {
+    fechaConfirmada = null;
+    calendario.render();
+    return 'Las entradas para hoy se venden hasta las 17:30. Elegí otra fecha.';
+  }
   if (entradas.length === 0) return 'Agregá al menos una entrada.';
 
   let valido = true;
@@ -129,14 +137,6 @@ function validarFormulario() {
     }
   });
   return valido ? null : 'Completá la edad y el tipo de cada entrada.';
-}
-
-function obtenerSesion() {
-  try {
-    return JSON.parse(localStorage.getItem('sesion'));
-  } catch {
-    return null;
-  }
 }
 
 // Envía la compra al backend para validarla y calcular el monto.

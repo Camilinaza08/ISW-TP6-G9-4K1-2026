@@ -2,11 +2,11 @@
 
 /* ===== Encabezado ===== */
 .visitas-hero { background: var(--color-green-dark); padding-block: 48px; }
-.visitas-hero__title { color: #f1e7d0; font-size: clamp(1.8rem, 3.2vw, 2.4rem); line-height: 1.2; margin-bottom: 12px; }
+.visitas-hero__title { color: #f2e8cf; font-size: clamp(1.8rem, 3.2vw, 2.4rem); line-height: 1.2; margin-bottom: 12px; }
 .visitas-hero__text { color: #fff; opacity: .9; max-width: 520px; font-size: 14px; }
 
 /* ===== Pestañas ===== */
-.visitas { background: #f1e7d0; padding-block: 36px 64px; }
+.visitas { background: #f2e8cf; padding-block: 36px 64px; }
 .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
 .tab {
   display: inline-flex; align-items: center; gap: 10px;
@@ -52,7 +52,7 @@
 .visit__tickets { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0; }
 .visit__tickets li {
   font-size: 11px; padding: 3px 10px; border-radius: 999px;
-  background: #f1e7d0; color: var(--color-green-dark);
+  background: #f2e8cf; color: var(--color-green-dark);
 }
 
 .visit__side { display: grid; justify-items: end; gap: 8px; text-align: right; }

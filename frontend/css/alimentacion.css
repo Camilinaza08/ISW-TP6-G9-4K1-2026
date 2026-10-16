@@ -1,4 +1,4 @@
-.alimentacion { background: #f1e7d0; padding-block: 32px 56px; }
+.alimentacion { background: #f2e8cf; padding-block: 32px 56px; }
 .alimentacion__inner { max-width: 860px; }
 
 .alimentacion__mapa { margin: 0 auto 36px; max-width: 620px; }
@@ -42,14 +42,14 @@
 .feeding__data li { display: flex; align-items: center; gap: 10px; }
 .feeding__data svg {
   width: 15px; height: 15px; flex-shrink: 0;
-  fill: none; stroke: #b84a45; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  fill: none; stroke: #bc4749; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
 }
 
 .badge {
   align-self: center;
   display: inline-flex; align-items: center; gap: 8px;
   background: #f6f4ea;
-  color: #b84a45;
+  color: #bc4749;
   font-size: 12px;
   padding: 8px 14px;
   border-radius: 4px;
@@ -59,7 +59,7 @@
   content: '!';
   width: 14px; height: 14px; border-radius: 50%;
   display: inline-grid; place-items: center;
-  background: #b84a45; color: #fff; font-size: 10px; font-weight: 700;
+  background: #bc4749; color: #fff; font-size: 10px; font-weight: 700;
 }
 .badge--fin { color: #6f6b5e; }
 .badge--fin::before { content: '✓'; background: #8a8676; }

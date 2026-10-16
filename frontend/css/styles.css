@@ -1,11 +1,11 @@
 /* ===== Variables ===== */
 :root {
   --color-bg: #f6f4ea;
-  --color-green-dark: #3f6b3a;
-  --color-green: #6a9a4b;
-  --color-green-light: #a8c95a;
+  --color-green-dark: #386641;
+  --color-green: #6a994e;
+  --color-green-light: #a7c957;
   --color-text: #3a3a32;
-  --color-accent: #c0392b;
+  --color-accent: #bc4749;
   --font-title: 'Lato', system-ui, sans-serif;
   --font-body: 'Lato', system-ui, sans-serif;
   --radius: 14px;
@@ -200,7 +200,7 @@ p { margin: 0; }
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
 }
-.activity { background: #f1e7d0; border-radius: var(--radius); overflow: hidden; }
+.activity { background: #f2e8cf; border-radius: var(--radius); overflow: hidden; }
 .activity img { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; }
 .activity__body { padding: 14px 14px 18px; }
 .activity__title { font-size: 1.25rem; margin-bottom: 10px; }
@@ -213,12 +213,12 @@ p { margin: 0; }
 .section-title--sm { font-size: clamp(1.6rem, 2.8vw, 2rem); margin-bottom: 20px; }
 .small-text { font-size: 11.5px; }
 .btn--soft { background: #f6f4ea; color: var(--color-green-dark); }
-.btn--accent { background: #b84a45; color: #fff; }
+.btn--accent { background: #bc4749; color: #fff; }
 .btn--accent:hover { background: #9c3a36; }
-.link-arrow--accent { color: #b84a45; }
+.link-arrow--accent { color: #bc4749; }
 
 /* ===== Plan ===== */
-.plan { background: #f1e7d0; padding-block: 56px; }
+.plan { background: #f2e8cf; padding-block: 56px; }
 .plan__inner { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: center; }
 .plan .section-title { margin-bottom: 24px; }
 .steps { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 18px; }
@@ -236,7 +236,7 @@ p { margin: 0; }
 .schedule {
   display: flex; justify-content: space-between; align-items: baseline;
   color: var(--color-green-dark); padding-bottom: 14px; margin-bottom: 14px;
-  border-bottom: 1px solid rgba(63,107,58,.2);
+  border-bottom: 1px solid rgba(56,102,65,.2);
 }
 .schedule__hours { font-size: 1.3rem; }
 .icon-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; font-size: 12px; }
@@ -255,7 +255,7 @@ p { margin: 0; }
 .precios { background: var(--color-green-dark); padding-block: 40px 56px; }
 .precios .section-title { margin-bottom: 20px; }
 .price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.price { background: #f1e7d0; border-radius: var(--radius); padding: 20px; }
+.price { background: #f2e8cf; border-radius: var(--radius); padding: 20px; }
 .price__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; color: var(--color-green-dark); }
 .price__name { font-weight: 600; font-size: 13px; }
 .price__value { font-weight: 600; font-size: 1.3rem; }

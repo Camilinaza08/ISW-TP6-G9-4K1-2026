@@ -17,8 +17,18 @@ const fechaMaxima = new Date(hoy.getFullYear(), hoy.getMonth() + 1, hoy.getDate(
 const mismaFecha = (a, b) => Boolean(a && b) && a.getTime() === b.getTime();
 const aISO = (f) => `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, '0')}-${String(f.getDate()).padStart(2, '0')}`;
 
+// Hora límite para elegir el día actual (ej. { horas: 17, minutos: 30 }); null = sin límite
+let horaLimiteHoy = null;
+
+function pasoHoraLimiteHoy() {
+  if (!horaLimiteHoy) return false;
+  const ahora = new Date();
+  return ahora.getHours() * 60 + ahora.getMinutes() >= horaLimiteHoy.horas * 60 + horaLimiteHoy.minutos;
+}
+
 function fechaHabilitada(fecha) {
   if (fecha < hoy || fecha > fechaMaxima) return false;
+  if (mismaFecha(fecha, hoy) && pasoHoraLimiteHoy()) return false;
   if (reglasCalendario.diasCerradosSemana.includes(fecha.getDay())) return false;
   return !reglasCalendario.fechasCerradasFijas.some(
     (f) => f.dia === fecha.getDate() && f.mes === fecha.getMonth() + 1
