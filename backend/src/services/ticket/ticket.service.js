@@ -9,6 +9,7 @@ function comprarEntradas(usuario, datosCompra) {
   const compra = {
     ...datosCompra,
     cliente: usuario,
+    montoTotal: null
   };
 
   return compra;
@@ -26,11 +27,19 @@ function obtenerReglasCalendario() {
   return REGLAS_CALENDARIO;
 }
 
+function confirmarCompra(datosCompra) {
+  // TODO: validar la forma de pago
+  // TODO: persistir mediante el Repository
+
+  return datosCompra;
+}
+
 module.exports = {
   comprarEntradas,
   obtenerFormasPago,
   obtenerTiposPase,
   obtenerReglasCalendario,
+  confirmarCompra
 };
 
 
