@@ -201,6 +201,26 @@ test("Test 23 - Probar validar fechas con exactamente 30 días de anticipación"
     }
 });
 
+test("Test 24 - Probar validar fechas sin proporcionar una fecha de visita", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        const fechaActual = new Date(2026, 9, 16, 12);
+        jest.setSystemTime(fechaActual);
+
+        const fechaVisita = null;
+
+        // ACT Y ASSERT
+        expect(() => validarFecha(fechaVisita)).toThrow(
+            "Debe seleccionar una fecha de visita"
+        );
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 });
 
 
