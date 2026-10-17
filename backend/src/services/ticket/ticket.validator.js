@@ -10,20 +10,19 @@ function validarUsuario(usuario) {
   return true;
 }
 
+function normalizarFecha(fecha) {
+    return new Date(
+        fecha.getFullYear(),
+        fecha.getMonth(),
+        fecha.getDate()
+    );
+}
+
 function validarFecha(fechaVisita) {
     const fechaActual = new Date();
 
-    const fechaVisitaNormalizada = new Date(
-        fechaVisita.getFullYear(),
-        fechaVisita.getMonth(),
-        fechaVisita.getDate()
-    );
-
-    const fechaActualNormalizada = new Date(
-        fechaActual.getFullYear(),
-        fechaActual.getMonth(),
-        fechaActual.getDate()
-    );
+    const fechaVisitaNormalizada = normalizarFecha(fechaVisita);
+    const fechaActualNormalizada = normalizarFecha(fechaActual);
 
     const fechaMaximaPermitida = new Date(fechaActualNormalizada);
 
