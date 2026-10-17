@@ -78,6 +78,7 @@ function validarFecha(fechaVisita) {
 }
 
 function validarAperturaParque(fechaVisita) {
+  return true;
 }
 
 module.exports = {
