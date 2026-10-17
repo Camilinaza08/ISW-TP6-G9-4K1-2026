@@ -19,6 +19,9 @@ function normalizarFecha(fecha) {
 }
 
 function validarFecha(fechaVisita) {
+   if (fechaVisita === null || fechaVisita === undefined) {
+        throw new Error("Debe seleccionar una fecha de visita");
+    }
     const fechaActual = new Date();
 
     const fechaVisitaNormalizada = normalizarFecha(fechaVisita);
