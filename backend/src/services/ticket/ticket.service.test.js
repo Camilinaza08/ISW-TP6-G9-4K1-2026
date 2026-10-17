@@ -263,13 +263,24 @@ test("Test 26 - Probar validar fechas con una fecha calendario inexistente", () 
 
 describe("validarAperturaParque", () => {
 
-    test("Test 27 - Probar validar apertura del parque con una fecha en la que está abierto", () => {
-        // ARRANGE
-        const fechaVisita = "2026-10-16";
+  test("Test 27 - Probar validar apertura del parque con una fecha en la que está abierto", () => {
+    // ARRANGE
+    const fechaVisita = "2026-10-16";
 
-        // ACT Y ASSERT
-        expect(validarAperturaParque(fechaVisita)).toBe(true);
-    });
+    // ACT Y ASSERT
+    expect(validarAperturaParque(fechaVisita)).toBe(true);
+    
+  });
+  
+  test("Test 28 - Probar validar apertura del parque un día lunes", () => {
+    // ARRANGE
+    const fechaVisita = "2026-10-19";
+
+    // ACT Y ASSERT
+    expect(() => validarAperturaParque(fechaVisita)).toThrow(
+        "Parque Cerrado"
+    );
+  });
 
 });
 
