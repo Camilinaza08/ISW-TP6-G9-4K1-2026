@@ -610,6 +610,14 @@ describe("validarCantidadEntradas", () => {
     expect(() => validarCantidadEntradas(cantidadEntradas))
         .toThrow("Cantidad inválida");
   });
+
+  test("Test 47 - Probar validar cantidad de entradas con un valor no numérico", () => {
+    // ARRANGE
+    const cantidadEntradas = "cinco";
+    // ACT Y ASSERT
+    expect(() => validarCantidadEntradas(cantidadEntradas))
+        .toThrow("Cantidad inválida");
+  });
   
 });
 
