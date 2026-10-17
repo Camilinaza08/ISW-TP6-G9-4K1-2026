@@ -308,6 +308,31 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
 });
 
+  test("Test 48 - Probar comprar entradas con una cantidad superior a 10", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 11,
+            edadesVisitantes: Array(11).fill(25),
+            tipoPase: Array(11).fill("REGULAR")
+        };
+
+        // ACT Y ASSERT
+        expect(() => comprarEntradas(usuario, datosCompra))
+            .toThrow("No se pueden comprar más de 10 entradas");
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 
 });
 
