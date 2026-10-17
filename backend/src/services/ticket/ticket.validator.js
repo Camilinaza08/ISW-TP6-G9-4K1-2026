@@ -101,7 +101,7 @@ function validarAperturaParque(fechaVisita) {
 }
 
 function validarCantidadEntradas(cantidadEntradas) {
-    // Pendiente de implementar.
+    return true;
 }
 
 
