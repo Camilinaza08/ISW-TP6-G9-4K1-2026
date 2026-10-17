@@ -584,7 +584,15 @@ describe("validarCantidadEntradas", () => {
     expect(() => validarCantidadEntradas(cantidadEntradas))
         .toThrow("Cantidad inválida");
   
-});
+  });
+
+  test("Test 44 - Probar validar cantidad de entradas sin proporcionar una cantidad", () => {
+    // ARRANGE
+    const cantidadEntradas = null;
+    // ACT Y ASSERT
+    expect(() => validarCantidadEntradas(cantidadEntradas))
+        .toThrow("Cantidad de entradas faltante");
+  });
 
 
 });
