@@ -18,6 +18,16 @@ function normalizarFecha(fecha) {
     );
 }
 
+function existeFecha(anio, mes, dia) {
+    const fecha = new Date(anio, mes - 1, dia);
+
+    return (
+        fecha.getFullYear() === anio &&
+        fecha.getMonth() === mes - 1 &&
+        fecha.getDate() === dia
+    );
+}
+
 function convertirFechaVisita(fechaVisita) {
     if (fechaVisita instanceof Date) {
         return normalizarFecha(fechaVisita);
@@ -32,18 +42,13 @@ function convertirFechaVisita(fechaVisita) {
 
     const [anio, mes, dia] = fechaVisita.split("-").map(Number);
 
-    const fechaConvertida = new Date(anio, mes - 1, dia);
-
-    if (
-        fechaConvertida.getFullYear() !== anio ||
-        fechaConvertida.getMonth() !== mes - 1 ||
-        fechaConvertida.getDate() !== dia
-    ) {
+    if (!existeFecha(anio, mes, dia)) {
         throw new Error("Fecha inválida");
     }
 
-    return fechaConvertida;
+    return new Date(anio, mes - 1, dia);
 }
+
 
 function validarFecha(fechaVisita) {
     if (fechaVisita === null || fechaVisita === undefined) {
