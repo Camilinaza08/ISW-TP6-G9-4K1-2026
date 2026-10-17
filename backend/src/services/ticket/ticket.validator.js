@@ -109,6 +109,10 @@ function validarCantidadEntradas(cantidadEntradas) {
         );
     }
 
+  if (cantidadEntradas <= 0) {
+        throw new Error("Cantidad inválida");
+    }
+  
     return true;
 }
 
