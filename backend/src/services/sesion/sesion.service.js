@@ -1,3 +1,8 @@
+function esFechaHoraValida(fecha) {
+    return fecha instanceof Date &&
+        !Number.isNaN(fecha.getTime());
+}
+
 function validarSesion(sesion) {
   if (sesion?.usuario == null) {
     throw new Error("No hay una sesión activa");
@@ -6,11 +11,10 @@ function validarSesion(sesion) {
    if (sesion.fechaHoraInicio == null) {
     throw new Error("No hay una sesión activa");
   }
-
-  if (!(sesion.fechaHoraInicio instanceof Date) ||
-    Number.isNaN(sesion.fechaHoraInicio.getTime())) {
+  
+  if (!esFechaHoraValida(sesion.fechaHoraInicio)) {
     throw new Error("No hay una sesión activa");
-}
+  }
 
   if (sesion.fechaHoraFin !== null) {
     throw new Error("No hay una sesión activa");
