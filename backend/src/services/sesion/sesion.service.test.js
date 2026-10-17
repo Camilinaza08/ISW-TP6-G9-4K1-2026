@@ -91,4 +91,25 @@ describe("validarSesion", () => {
     }
 });
 
+  test("Test 17 - Sesión con fecha de inicio anterior a la actual", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date("2026-10-16T10:00:00"));
+
+        const sesion = {
+            usuario: { id: 2 },
+            fechaHoraInicio: new Date("2026-10-16T09:00:00"),
+            fechaHoraFin: null
+        };
+
+        // ACT Y ASSERT
+        expect(validarSesion(sesion)).toBe(true);
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 });
