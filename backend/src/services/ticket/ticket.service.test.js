@@ -592,8 +592,16 @@ describe("validarCantidadEntradas", () => {
     // ACT Y ASSERT
     expect(() => validarCantidadEntradas(cantidadEntradas))
         .toThrow("Cantidad de entradas faltante");
+  
   });
 
+  test("Test 45 - Probar validar cantidad de entradas con una cantidad negativa", () => {
+    // ARRANGE
+    const cantidadEntradas = -1;
+    // ACT Y ASSERT
+    expect(() => validarCantidadEntradas(cantidadEntradas))
+        .toThrow("Cantidad inválida");
+  });
 
 });
 
