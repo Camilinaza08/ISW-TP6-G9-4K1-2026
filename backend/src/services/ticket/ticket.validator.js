@@ -32,7 +32,17 @@ function convertirFechaVisita(fechaVisita) {
 
     const [anio, mes, dia] = fechaVisita.split("-").map(Number);
 
-    return new Date(anio, mes - 1, dia);
+    const fechaConvertida = new Date(anio, mes - 1, dia);
+
+    if (
+        fechaConvertida.getFullYear() !== anio ||
+        fechaConvertida.getMonth() !== mes - 1 ||
+        fechaConvertida.getDate() !== dia
+    ) {
+        throw new Error("Fecha inválida");
+    }
+
+    return fechaConvertida;
 }
 
 function validarFecha(fechaVisita) {
