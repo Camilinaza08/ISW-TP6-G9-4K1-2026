@@ -59,4 +59,16 @@ describe("validarSesion", () => {
     expect(() => validarSesion(sesion))
         .toThrow("No hay una sesión activa");
 });
+
+  test("Test 15 - Sesión con fecha de inicio inválida", () => {
+    const sesion = {
+        usuario: { id: 1, nombre: "Usuario de prueba" },
+        fechaHoraInicio: new Date("fecha-invalida"),
+        fechaHoraFin: null
+    };
+
+    expect(() => validarSesion(sesion))
+        .toThrow("No hay una sesión activa");
+});
+
 });
