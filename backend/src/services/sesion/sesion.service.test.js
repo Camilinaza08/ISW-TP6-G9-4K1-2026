@@ -112,4 +112,26 @@ describe("validarSesion", () => {
     }
 });
 
+  test("Test 18 - Sesión con fecha de inicio igual a la actual", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        const fechaActual = new Date("2026-10-16T10:00:00");
+        jest.setSystemTime(fechaActual);
+
+        const sesion = {
+            usuario: { id: 2 },
+            fechaHoraInicio: new Date("2026-10-16T10:00:00"),
+            fechaHoraFin: null
+        };
+
+        // ACT Y ASSERT
+        expect(validarSesion(sesion)).toBe(true);
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 });
