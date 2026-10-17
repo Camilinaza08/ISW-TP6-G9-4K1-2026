@@ -563,7 +563,19 @@ describe("validarCantidadEntradas", () => {
     // ACT Y ASSERT
     expect(() => validarCantidadEntradas(cantidadEntradas))
         .toThrow("No se pueden comprar más de 10 entradas");
+  });
+
+  test("Test 42 - Probar validar cantidad de entradas con exactamente 10 entradas", () => {
+    // ARRANGE
+    const cantidadEntradas = 10;
+
+    // ACT
+    const resultado = validarCantidadEntradas(cantidadEntradas);
+
+    // ASSERT
+    expect(resultado).toBe(true);
 });
+
 
 });
 
