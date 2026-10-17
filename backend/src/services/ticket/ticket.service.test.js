@@ -5,6 +5,7 @@ const { comprarEntradas } = require('./ticket.service');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
 const { REGLAS_CALENDARIO } = require('./calendario.mock');
+const { USUARIOS_MOCK } = require('./usuarios.mock');
 
 describe('validarUsuario', () => {
   test('Test 01 - Probar validar usuario con un usuario no registrado', () => {
@@ -78,6 +79,33 @@ describe('validarCompra', () => {
 
     expect(compra.cliente).toEqual(usuario);
   });
+
+  test("Test 32 - Probar comprar entradas con una fecha previa a la actual", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: new Date(2026, 9, 15, 12),
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"]
+        };
+
+        // ACT Y ASSERT
+        expect(() => comprarEntradas(usuario, datosCompra))
+            .toThrow("Fecha previa a la actual");
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
+
 });
 
 describe('obtenerFormasPago', () => {
