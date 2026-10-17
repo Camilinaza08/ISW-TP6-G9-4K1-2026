@@ -333,6 +333,35 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
 });
 
+  test("Test 49 - Probar comprar exactamente 10 entradas", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 10,
+            edadesVisitantes: Array(10).fill(25),
+            tipoPase: Array(10).fill("REGULAR")
+        };
+
+        // ACT
+        const resultado = comprarEntradas(usuario, datosCompra);
+
+        // ASSERT
+        expect(resultado).toBeDefined();
+        expect(resultado).not.toBeNull();
+        expect(resultado.cantidadEntradas).toBe(10);
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 
 });
 
