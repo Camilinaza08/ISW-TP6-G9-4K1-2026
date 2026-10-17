@@ -16,6 +16,10 @@ function validarSesion(sesion) {
     throw new Error("No hay una sesión activa");
   }
 
+  if (sesion.fechaHoraInicio > new Date()) {
+    throw new Error("No hay una sesión activa");
+}
+
   if (sesion.fechaHoraFin !== null) {
     throw new Error("No hay una sesión activa");
   }
