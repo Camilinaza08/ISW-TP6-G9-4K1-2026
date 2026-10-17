@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../server');
-const { validarUsuario, validarFecha, validarAperturaParque } = require('./ticket.validator');
+const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas } = require('./ticket.validator');
 const { comprarEntradas } = require('./ticket.service');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
@@ -540,6 +540,21 @@ describe("validarAperturaParque", () => {
     // ACT Y ASSERT
     expect(validarAperturaParque(fechaVisita)).toBe(true);
   });
+
+});
+
+describe("validarCantidadEntradas", () => {
+
+    test("Test 40 - Probar validar cantidad de entradas con una entrada", () => {
+        // ARRANGE
+        const cantidadEntradas = 1;
+
+        // ACT
+        const resultado = validarCantidadEntradas(cantidadEntradas);
+
+        // ASSERT
+        expect(resultado).toBe(true);
+    });
 
 });
 

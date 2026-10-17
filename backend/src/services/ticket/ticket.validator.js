@@ -100,9 +100,14 @@ function validarAperturaParque(fechaVisita) {
     return true;
 }
 
+function validarCantidadEntradas(cantidadEntradas) {
+    // Pendiente de implementar.
+}
+
 
 module.exports = {
   validarUsuario,
   validarFecha,
   validarAperturaParque,
+  validarCantidadEntradas
 };
