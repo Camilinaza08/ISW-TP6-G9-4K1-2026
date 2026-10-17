@@ -4,28 +4,16 @@ function esFechaHoraValida(fecha) {
 }
 
 function validarSesion(sesion) {
-  if (sesion?.usuario == null) {
-    throw new Error("No hay una sesión activa");
-  }
+    if (
+        sesion?.usuario == null ||
+        !esFechaHoraValida(sesion.fechaHoraInicio) ||
+        sesion.fechaHoraInicio > new Date() ||
+        sesion.fechaHoraFin !== null
+    ) {
+        throw new Error("No hay una sesión activa");
+    }
 
-   if (sesion.fechaHoraInicio == null) {
-    throw new Error("No hay una sesión activa");
-  }
-  
-  if (!esFechaHoraValida(sesion.fechaHoraInicio)) {
-    throw new Error("No hay una sesión activa");
-  }
-
-  if (sesion.fechaHoraInicio > new Date()) {
-    throw new Error("No hay una sesión activa");
-}
-
-  if (sesion.fechaHoraFin !== null) {
-    throw new Error("No hay una sesión activa");
-  }
-  
   return true;
-  
 }
 
 module.exports = {
