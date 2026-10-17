@@ -556,6 +556,15 @@ describe("validarCantidadEntradas", () => {
         expect(resultado).toBe(true);
     });
 
+    test("Test 41 - Probar validar cantidad de entradas con más de 10 entradas", () => {
+    // ARRANGE
+    const cantidadEntradas = 11;
+
+    // ACT Y ASSERT
+    expect(() => validarCantidadEntradas(cantidadEntradas))
+        .toThrow("No se pueden comprar más de 10 entradas");
+});
+
 });
 
 
