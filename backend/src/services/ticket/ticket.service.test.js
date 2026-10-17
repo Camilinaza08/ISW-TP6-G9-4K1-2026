@@ -192,6 +192,33 @@ describe('validarCompra', () => {
     }
   });
 
+  test("Test 36 - Probar comprar entradas con más de 30 días de anticipación", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: new Date(2026, 10, 17, 12),
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"]
+        };
+
+        // ACT Y ASSERT
+        expect(() => comprarEntradas(usuario, datosCompra))
+            .toThrow(
+                "No se pueden comprar entradas con más de 30 días de anticipación"
+            );
+
+    } finally {
+        jest.useRealTimers();
+    }
+  });
+
 });
 
 describe('obtenerFormasPago', () => {
