@@ -128,6 +128,24 @@ describe("validarFecha", () => {
         }
     });
 
+    test("Test 20 - Probar validar fechas con una fecha actual", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        const fechaActual = new Date("2026-10-16T12:00:00");
+        jest.setSystemTime(fechaActual);
+
+        const fechaVisita = new Date("2026-10-16T12:00:00");
+
+        // ACT Y ASSERT
+        expect(validarFecha(fechaVisita)).toBe(true);
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 });
 
 
