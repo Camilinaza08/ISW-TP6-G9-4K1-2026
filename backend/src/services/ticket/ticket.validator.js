@@ -11,24 +11,37 @@ function validarUsuario(usuario) {
 }
 
 function validarFecha(fechaVisita) {
-  const fechaActual = new Date();
+    const fechaActual = new Date();
 
-  const fechaVisitaNormalizada = new Date(
-      fechaVisita.getFullYear(),
-      fechaVisita.getMonth(),
-      fechaVisita.getDate()
+    const fechaVisitaNormalizada = new Date(
+        fechaVisita.getFullYear(),
+        fechaVisita.getMonth(),
+        fechaVisita.getDate()
     );
 
     const fechaActualNormalizada = new Date(
-      fechaActual.getFullYear(),
-      fechaActual.getMonth(),
-      fechaActual.getDate()
+        fechaActual.getFullYear(),
+        fechaActual.getMonth(),
+        fechaActual.getDate()
     );
 
-    if (fechaVisitaNormalizada >= fechaActualNormalizada) {
-      return true;
+    const fechaMaximaPermitida = new Date(fechaActualNormalizada);
+
+    fechaMaximaPermitida.setDate(
+        fechaMaximaPermitida.getDate() + 30
+    );
+
+    if (fechaVisitaNormalizada < fechaActualNormalizada) {
+        throw new Error("Fecha previa a la actual");
     }
-  throw new Error("Fecha previa a la actual");
+
+    if (fechaVisitaNormalizada > fechaMaximaPermitida) {
+        throw new Error(
+            "No se pueden comprar entradas con más de 30 días de anticipación"
+        );
+    }
+
+    return true;
 }
 
 module.exports = {
