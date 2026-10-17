@@ -385,6 +385,31 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     } finally {
         jest.useRealTimers();
     }
+  });
+
+  test("Test 51 - Probar comprar entradas sin proporcionar una cantidad", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: null,
+            edadesVisitantes: [],
+            tipoPase: []
+        };
+
+        // ACT Y ASSERT
+        expect(() => comprarEntradas(usuario, datosCompra))
+            .toThrow("Cantidad de entradas faltante");
+
+    } finally {
+        jest.useRealTimers();
+    }
 });
 
 });
