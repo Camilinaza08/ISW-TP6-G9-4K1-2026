@@ -165,8 +165,32 @@ describe('validarCompra', () => {
     } finally {
         jest.useRealTimers();
     }
-});
+  });
 
+  test("Test 35 - Probar comprar entradas sin fecha de visita", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: null,
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"]
+        };
+
+        // ACT Y ASSERT
+        expect(() => comprarEntradas(usuario, datosCompra))
+            .toThrow("Debe seleccionar una fecha de visita");
+
+    } finally {
+        jest.useRealTimers();
+    }
+  });
 
 });
 
