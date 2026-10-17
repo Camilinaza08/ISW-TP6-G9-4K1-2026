@@ -7,6 +7,11 @@ function validarSesion(sesion) {
     throw new Error("No hay una sesión activa");
   }
 
+  if (!(sesion.fechaHoraInicio instanceof Date) ||
+    Number.isNaN(sesion.fechaHoraInicio.getTime())) {
+    throw new Error("No hay una sesión activa");
+}
+
   if (sesion.fechaHoraFin !== null) {
     throw new Error("No hay una sesión activa");
   }
