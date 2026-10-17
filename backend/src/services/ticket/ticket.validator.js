@@ -83,8 +83,9 @@ function validarAperturaParque(fechaVisita) {
 
     const esLunes = fecha.getDay() === 1;
     const esNavidad = fecha.getMonth() === 11 && fecha.getDate() === 25;
+    const esAnioNuevo = fecha.getMonth() === 0 && fecha.getDate() === 1;
 
-    if (esLunes || esNavidad) {
+    if (esLunes || esNavidad || esAnioNuevo) {
         throw new Error("Parque Cerrado");
     }
 
