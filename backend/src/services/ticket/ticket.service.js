@@ -1,10 +1,11 @@
-const { validarUsuario } = require('./ticket.validator');
+const { validarUsuario, validarFecha } = require('./ticket.validator');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
 const { REGLAS_CALENDARIO } = require('./calendario.mock');
 
 function comprarEntradas(usuario, datosCompra) {
   validarUsuario(usuario);
+  validarFecha(datosCompra.fechaVisita);
 
   const compra = {
     ...datosCompra,
