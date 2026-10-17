@@ -78,8 +78,19 @@ function validarFecha(fechaVisita) {
 }
 
 function validarAperturaParque(fechaVisita) {
-  return true;
+  const [anio, mes, dia] = fechaVisita
+      .split("-")
+      .map(Number);
+
+    const fecha = new Date(anio, mes - 1, dia);
+
+    if (fecha.getDay() === 1) {
+        throw new Error("Parque Cerrado");
+    }
+
+    return true;
 }
+
 
 module.exports = {
   validarUsuario,
