@@ -183,6 +183,24 @@ test("Test 22 - Probar validar fechas con más de 30 días de anticipación", ()
     }
 });
 
+test("Test 23 - Probar validar fechas con exactamente 30 días de anticipación", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        const fechaActual = new Date(2026, 9, 16, 12);
+        jest.setSystemTime(fechaActual);
+
+        const fechaVisita = new Date(2026, 10, 15);
+
+        // ACT Y ASSERT
+        expect(validarFecha(fechaVisita)).toBe(true);
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 });
 
 
