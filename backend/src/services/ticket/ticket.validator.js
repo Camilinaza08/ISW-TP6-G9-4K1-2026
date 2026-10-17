@@ -11,6 +11,7 @@ function validarUsuario(usuario) {
 }
 
 function validarFecha(fechaVisita) {
+  throw new Error("Fecha previa a la actual");
 }
 
 module.exports = {
