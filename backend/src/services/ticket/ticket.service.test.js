@@ -105,6 +105,37 @@ describe('validarCompra', () => {
     }
 });
 
+  test("Test 33 - Probar comprar entradas con una fecha actual", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        const fechaActual = new Date(2026, 9, 16, 12);
+        jest.setSystemTime(fechaActual);
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const fechaVisita = new Date(2026, 9, 16, 12);
+
+        const datosCompra = {
+            fechaVisita,
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"]
+        };
+
+        // ACT
+        const resultado = comprarEntradas(usuario, datosCompra);
+
+        // ASSERT
+        expect(resultado).toBeDefined();
+        expect(resultado.fechaVisita).toEqual(fechaVisita);
+
+    } finally {
+        jest.useRealTimers();
+    }
+  });
+
 
 });
 
