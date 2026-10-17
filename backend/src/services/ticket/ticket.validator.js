@@ -77,7 +77,11 @@ function validarFecha(fechaVisita) {
     return true;
 }
 
+function validarAperturaParque(fechaVisita) {
+}
+
 module.exports = {
   validarUsuario,
   validarFecha,
+  validarAperturaParque,
 };

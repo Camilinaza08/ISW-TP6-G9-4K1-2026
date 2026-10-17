@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../server');
-const { validarUsuario, validarFecha } = require('./ticket.validator');
+const { validarUsuario, validarFecha, validarAperturaParque } = require('./ticket.validator');
 const { comprarEntradas } = require('./ticket.service');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
@@ -258,6 +258,18 @@ test("Test 26 - Probar validar fechas con una fecha calendario inexistente", () 
         jest.useRealTimers();
     }
 });
+
+});
+
+describe("validarAperturaParque", () => {
+
+    test("Test 27 - Probar validar apertura del parque con una fecha en la que está abierto", () => {
+        // ARRANGE
+        const fechaVisita = "2026-10-16";
+
+        // ACT Y ASSERT
+        expect(validarAperturaParque(fechaVisita)).toBe(true);
+    });
 
 });
 
