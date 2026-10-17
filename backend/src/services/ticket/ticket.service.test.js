@@ -219,6 +219,31 @@ describe('validarCompra', () => {
     }
   });
 
+  test("Test 37 - Probar comprar entradas con una fecha en la que el parque está cerrado", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: new Date(2026, 9, 19, 12),
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"]
+        };
+
+        // ACT Y ASSERT
+        expect(() => comprarEntradas(usuario, datosCompra))
+            .toThrow("Parque Cerrado");
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 });
 
 describe('obtenerFormasPago', () => {
