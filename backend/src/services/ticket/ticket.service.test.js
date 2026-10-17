@@ -164,6 +164,25 @@ test("Test 21 - Probar validar fechas con una fecha posterior a la actual", () =
     }
 });
 
+test("Test 22 - Probar validar fechas con más de 30 días de anticipación", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const fechaVisita = new Date(2026, 10, 16);
+
+        // ACT Y ASSERT
+        expect(() => validarFecha(fechaVisita)).toThrow(
+            "No se pueden comprar entradas con más de 30 días de anticipación"
+        );
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 });
 
 
