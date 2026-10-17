@@ -11,6 +11,15 @@ function validarUsuario(usuario) {
 }
 
 function validarFecha(fechaVisita) {
+  const fechaActual = new Date();
+
+    if (
+        fechaVisita.getFullYear() === fechaActual.getFullYear() &&
+        fechaVisita.getMonth() === fechaActual.getMonth() &&
+        fechaVisita.getDate() === fechaActual.getDate()
+    ) {
+        return true;
+    }
   throw new Error("Fecha previa a la actual");
 }
 
