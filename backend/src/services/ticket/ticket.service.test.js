@@ -282,6 +282,16 @@ describe("validarAperturaParque", () => {
     );
   });
 
+  test("Test 29 - Probar validar apertura del parque el 25 de diciembre", () => {
+    // ARRANGE
+    const fechaVisita = "2026-12-25";
+
+    // ACT Y ASSERT
+    expect(() => validarAperturaParque(fechaVisita)).toThrow(
+        "Parque Cerrado"
+    );
+  });
+
 });
 
 
