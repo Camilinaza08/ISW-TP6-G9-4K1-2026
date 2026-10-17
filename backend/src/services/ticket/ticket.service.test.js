@@ -300,7 +300,15 @@ describe("validarAperturaParque", () => {
     expect(() => validarAperturaParque(fechaVisita)).toThrow(
         "Parque Cerrado"
     );
-});
+  });
+
+  test("Test 31 - Probar validar apertura del parque con otra fecha en la que está abierto", () => {
+    // ARRANGE
+    const fechaVisita = "2026-10-17";
+
+    // ACT Y ASSERT
+    expect(validarAperturaParque(fechaVisita)).toBe(true);
+  });
 
 });
 
