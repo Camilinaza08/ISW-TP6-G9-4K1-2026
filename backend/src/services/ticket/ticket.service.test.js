@@ -574,6 +574,16 @@ describe("validarCantidadEntradas", () => {
 
     // ASSERT
     expect(resultado).toBe(true);
+
+  });  
+
+  test("Test 43 - Probar validar cantidad de entradas con 0 entradas", () => {
+    // ARRANGE
+    const cantidadEntradas = 0;
+    // ACT Y ASSERT
+    expect(() => validarCantidadEntradas(cantidadEntradas))
+        .toThrow("Cantidad inválida");
+  
 });
 
 
