@@ -603,6 +603,14 @@ describe("validarCantidadEntradas", () => {
         .toThrow("Cantidad inválida");
   });
 
+    test("Test 46 - Probar validar cantidad de entradas con una cantidad decimal", () => {
+    // ARRANGE
+    const cantidadEntradas = 2.5;
+    // ACT Y ASSERT
+    expect(() => validarCantidadEntradas(cantidadEntradas))
+        .toThrow("Cantidad inválida");
+  });
+  
 });
 
 
