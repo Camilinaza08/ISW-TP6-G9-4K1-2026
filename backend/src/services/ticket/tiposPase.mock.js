@@ -1,7 +1,7 @@
 const TIPOS_PASE = [
   {
-    id: 'COMUN',
-    nombre: 'Común',
+    id: 'REGULAR',
+    nombre: 'REGULAR',
     precioBase: 10000,
   },
   {

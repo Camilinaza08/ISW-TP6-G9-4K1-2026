@@ -41,7 +41,7 @@ describe('validarCompra', () => {
       fechaVisita: '2026-10-24',
       cantidadEntradas: 2,
       edadesVisitantes: [25, 23],
-      tipoPase: ['COMUN', 'COMUN'],
+      tipoPase: ['REGULAR', 'REGULAR'],
     };
 
     expect(() => comprarEntradas(usuario, datosCompra)).toThrow(
@@ -55,7 +55,7 @@ describe('validarCompra', () => {
       fechaVisita: '2026-10-24',
       cantidadEntradas: 2,
       edadesVisitantes: [25, 23],
-      tipoPase: ['COMUN', 'COMUN'],
+      tipoPase: ['REGULAR', 'REGULAR'],
     };
 
     const compra = comprarEntradas(usuario, datosCompra);
@@ -71,7 +71,7 @@ describe('validarCompra', () => {
       fechaVisita: '2026-10-24',
       cantidadEntradas: 2,
       edadesVisitantes: [25, 23],
-      tipoPase: ['COMUN', 'COMUN'],
+      tipoPase: ['REGULAR', 'REGULAR'],
     };
 
     const compra = comprarEntradas(usuario, datosCompra);
