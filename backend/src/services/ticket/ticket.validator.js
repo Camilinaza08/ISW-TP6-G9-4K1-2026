@@ -104,7 +104,10 @@ const MIN_ENTRADAS = 1;
 const MAX_ENTRADAS = 10;
 
 function validarCantidadEntradas(cantidadEntradas) {
-   if (cantidadEntradas > MAX_ENTRADAS) {
+    if (cantidadEntradas === null || cantidadEntradas === undefined) {
+        throw new Error("Cantidad de entradas faltante");
+    }
+    if (cantidadEntradas > MAX_ENTRADAS) {
         throw new Error(
             `No se pueden comprar más de ${MAX_ENTRADAS} entradas`
         );
