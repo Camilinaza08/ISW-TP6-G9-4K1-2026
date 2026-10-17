@@ -242,7 +242,43 @@ describe('validarCompra', () => {
     } finally {
         jest.useRealTimers();
     }
+  });
+
+  test("Test 38 - Probar comprar entradas con una fecha en la que el parque está abierto", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const fechaVisita = new Date(2026, 9, 20, 12);
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita,
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"]
+        };
+
+        // ACT
+        let resultado;
+
+        // ASSERT
+        expect(() => {
+            resultado = comprarEntradas(usuario, datosCompra);
+        }).not.toThrow();
+
+        expect(resultado).toBeDefined();
+        expect(resultado).not.toBeNull();
+        expect(resultado.fechaVisita).toEqual(fechaVisita);
+
+    } finally {
+        jest.useRealTimers();
+    }
 });
+
 
 });
 
