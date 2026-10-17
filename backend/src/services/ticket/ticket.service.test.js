@@ -240,6 +240,25 @@ test("Test 25 - Probar validar fechas con un formato inválido", () => {
     }
 });
 
+test("Test 26 - Probar validar fechas con una fecha calendario inexistente", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 0, 15, 12));
+
+        const fechaVisita = "2026-02-30";
+
+        // ACT Y ASSERT
+        expect(() => validarFecha(fechaVisita)).toThrow(
+            "Fecha inválida"
+        );
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 });
 
 
