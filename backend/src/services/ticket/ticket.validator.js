@@ -109,9 +109,13 @@ function validarCantidadEntradas(cantidadEntradas) {
     }
     if (cantidadEntradas > MAX_ENTRADAS) {
         throw new Error(
-            `No se pueden comprar más de ${MAX_ENTRADAS} entradas`
-        );
+            `No se pueden comprar más de ${MAX_ENTRADAS} entradas`);
     }
+
+    if (!Number.isInteger(cantidadEntradas)) {
+        throw new Error("Cantidad inválida");
+    }
+  
     if (cantidadEntradas < MIN_ENTRADAS) {
         throw new Error("Cantidad inválida");
     }
