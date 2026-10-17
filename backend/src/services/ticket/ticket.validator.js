@@ -112,11 +112,10 @@ function validarCantidadEntradas(cantidadEntradas) {
             `No se pueden comprar más de ${MAX_ENTRADAS} entradas`);
     }
 
-    if (!Number.isInteger(cantidadEntradas)) {
-        throw new Error("Cantidad inválida");
-    }
-  
-    if (cantidadEntradas < MIN_ENTRADAS) {
+    if (
+        !Number.isInteger(cantidadEntradas) ||
+        cantidadEntradas < MIN_ENTRADAS
+    ) {
         throw new Error("Cantidad inválida");
     }
   
