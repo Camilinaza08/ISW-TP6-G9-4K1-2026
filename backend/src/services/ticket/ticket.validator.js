@@ -107,18 +107,21 @@ function validarCantidadEntradas(cantidadEntradas) {
     if (cantidadEntradas === null || cantidadEntradas === undefined) {
         throw new Error("Cantidad de entradas faltante");
     }
-    if (cantidadEntradas > MAX_ENTRADAS) {
-        throw new Error(
-            `No se pueden comprar más de ${MAX_ENTRADAS} entradas`);
-    }
 
-    if (
-        !Number.isInteger(cantidadEntradas) ||
-        cantidadEntradas < MIN_ENTRADAS
-    ) {
+    if (!Number.isInteger(cantidadEntradas)) {
         throw new Error("Cantidad inválida");
     }
-  
+
+    if (cantidadEntradas > MAX_ENTRADAS) {
+        throw new Error(
+            `No se pueden comprar más de ${MAX_ENTRADAS} entradas`
+        );
+    }
+
+    if (cantidadEntradas < MIN_ENTRADAS) {
+        throw new Error("Cantidad inválida");
+    }
+
     return true;
 }
 
