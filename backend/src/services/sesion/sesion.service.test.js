@@ -71,4 +71,24 @@ describe("validarSesion", () => {
         .toThrow("No hay una sesión activa");
 });
 
+  test("Test 16 - Sesión con fecha de inicio futura", () => {
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date("2026-10-16T10:00:00"));
+
+        const sesion = {
+            usuario: { id: 2 },
+            fechaHoraInicio: new Date("2026-10-16T11:00:00"),
+            fechaHoraFin: null
+        };
+
+        expect(() => validarSesion(sesion))
+            .toThrow("No hay una sesión activa");
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 });
