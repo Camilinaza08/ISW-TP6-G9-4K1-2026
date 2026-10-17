@@ -77,15 +77,21 @@ function validarFecha(fechaVisita) {
     return true;
 }
 
+const FECHAS_CIERRE = [
+    { mes: 1, dia: 1 },
+    { mes: 12, dia: 25 }
+];
+
 function validarAperturaParque(fechaVisita) {
     const [anio, mes, dia] = fechaVisita.split("-").map(Number);
     const fecha = new Date(anio, mes - 1, dia);
 
     const esLunes = fecha.getDay() === 1;
-    const esNavidad = fecha.getMonth() === 11 && fecha.getDate() === 25;
-    const esAnioNuevo = fecha.getMonth() === 0 && fecha.getDate() === 1;
+    const esFechaEspecial = FECHAS_CIERRE.some(
+        (cierre) => cierre.mes === mes && cierre.dia === dia
+    );
 
-    if (esLunes || esNavidad || esAnioNuevo) {
+    if (esLunes || esFechaEspecial) {
         throw new Error("Parque Cerrado");
     }
 
