@@ -83,12 +83,7 @@ const FECHAS_CIERRE = [
 ];
 
 function validarAperturaParque(fechaVisita) {
-    const fecha = fechaVisita instanceof Date
-        ? fechaVisita
-        : (() => {
-            const [anio, mes, dia] = fechaVisita.split("-").map(Number);
-            return new Date(anio, mes - 1, dia);
-        })();
+    const fecha = convertirFechaVisita(fechaVisita);
 
     const esLunes = fecha.getDay() === 1;
 
