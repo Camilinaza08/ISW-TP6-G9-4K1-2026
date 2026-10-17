@@ -221,6 +221,25 @@ test("Test 24 - Probar validar fechas sin proporcionar una fecha de visita", () 
     }
 });
 
+test("Test 25 - Probar validar fechas con un formato inválido", () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const fechaVisita = "16/10/2026";
+
+        // ACT Y ASSERT
+        expect(() => validarFecha(fechaVisita)).toThrow(
+            "Formato de fecha inválido"
+        );
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 });
 
 
