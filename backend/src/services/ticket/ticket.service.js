@@ -27,11 +27,48 @@ function obtenerReglasCalendario() {
   return REGLAS_CALENDARIO;
 }
 
+const compras = []; // Array para almacenar las compras temporalmente
+
 function confirmarCompra(datosCompra) {
   // TODO: validar la forma de pago
   // TODO: persistir mediante el Repository
 
-  return datosCompra;
+  const compra = { ...datosCompra, id: `COMPRA-${compras.length + 70}` }; // Asignar un ID secuencial temporalmente
+  compras.push(compra);
+  return compra;
+}
+
+// Función para obtener una compra por su ID
+function obtenerCompraPorId(id) {
+  return compras.find((c) => c.id === id);
+}
+
+// Función para actualizar el estado de una compra por su ID
+function actualizarEstadoCompra(id, estadoCompra) {
+  const compra = compras.find((c) => c.id === id);
+
+  if (compra) {
+    compra.estadoCompra = estadoCompra;
+    // actualizar array de compras con el nuevo estado
+    const index = compras.findIndex((c) => c.id === id);
+    if (index !== -1) {
+      compras[index] = compra;
+    }
+  }
+  return compra;
+}
+
+function actualizarCompra(id, nuevosDatos) {
+  const compra = compras.find((c) => c.id === id);
+
+  if (compra) {
+    // actualizar array de compras con el nuevo estado
+    const index = compras.findIndex((c) => c.id === id);
+    if (index !== -1) {
+      compras[index] = { ...compra, ...nuevosDatos };
+    }
+  }
+  return compra;
 }
 
 module.exports = {
@@ -39,7 +76,9 @@ module.exports = {
   obtenerFormasPago,
   obtenerTiposPase,
   obtenerReglasCalendario,
-  confirmarCompra
+  confirmarCompra,
+  obtenerCompraPorId,
+  actualizarCompra,
 };
 
 

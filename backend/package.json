@@ -8,7 +8,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "jest": {
     "testEnvironment": "node",
@@ -26,8 +28,11 @@
     "verbose": true
   },
   "dependencies": {
+    "dotenv": "^18.0.8",
     "express": "^5.3.0",
-    "jest": "^30.5.2"
+    "jest": "^30.5.2",
+    "mercadopago": "^3.6.1",
+    "nodemon": "^3.1.14"
   },
   "devDependencies": {
     "supertest": "^7.3.1"

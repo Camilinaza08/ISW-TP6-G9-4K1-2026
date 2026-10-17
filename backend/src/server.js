@@ -1,15 +1,20 @@
+require('dotenv').config();
+
 const express = require('express');
 const {
   obtenerFormasPago,
   obtenerTiposPase,
   obtenerReglasCalendario,
   comprarEntradas,
-  confirmarCompra
+  confirmarCompra,
+  obtenerCompraPorId,
+  actualizarCompra,
 } = require('./services/ticket/ticket.service');
-
 const {
-  validarSesion,
-} = require('./services/sesion/sesion.service');
+  crearPreferencia,
+  consultarEstadoPago,
+} = require('./services/mercadopago/mercadopago.service');
+const { validarSesion } = require('./services/sesion/sesion.service');
 
 const app = express();
 
@@ -36,16 +41,12 @@ app.post('/api/compra', async (req, res) => {
 
     await validarSesion(sesion);
 
-    const resultadoCompra = comprarEntradas(
-      sesion.usuario,
-      datosCompra
-    );
+    const resultadoCompra = comprarEntradas(sesion.usuario, datosCompra);
 
     return res.status(200).json(resultadoCompra);
-
   } catch (error) {
     return res.status(error.statusCode || 400).json({
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -58,15 +59,30 @@ app.post('/api/confirmacion', async (req, res) => {
 
     const compraConfirmada = await confirmarCompra(datosCompra);
 
-    // TODO: gestionar la URL según la forma de pago
-    // Efectivo -> URL interna de confirmación
-    // Mercado Pago -> crear preferencia y obtener init_point
+    let urlRedireccion = null;
+    let estadoPago = 'no_aplica';
+    let estadoCompra = 'confirmada';
+
+    // Gestionar según la forma de pago
+    if (compraConfirmada.formaDePago === 'Efectivo') {
+      urlRedireccion = `/compra/confirmacion/${compraConfirmada.id}`;
+      estadoPago = 'no_aplica';
+      estadoCompra = 'confirmada';
+    } else if (compraConfirmada.formaDePago === 'Mercado Pago') {
+      // Llamar al método creado en el servicio de Mercado Pago para obtener el init_point
+      urlRedireccion = await crearPreferencia(compraConfirmada);
+      estadoPago = 'pending';
+      estadoCompra = 'pendiente';
+    }
+
+    actualizarCompra(compraConfirmada.id, { estadoCompra, estadoPago });
 
     return res.status(200).json({
       ...compraConfirmada,
-      urlRedireccion: null,
+      estadoCompra,
+      estadoPago,
+      urlRedireccion,
     });
-
   } catch (error) {
     return res.status(error.statusCode || 400).json({
       error: error.message,
@@ -79,18 +95,53 @@ app.get('/api/pagos/:id/estado', async (req, res) => {
     const { id } = req.params;
 
     // TODO: recuperar la compra persistida mediante el Repository
-    const compra = null;
+    let compra = obtenerCompraPorId(id);
 
-    // TODO: verificar la forma de pago
-    // Efectivo -> devolver los datos y la URL interna
-    // Mercado Pago -> consultar el estado del pago,
-    // actualizar la persistencia cuando corresponda
+    if (!compra) {
+      return res.status(404).json({ error: 'Compra no encontrada' });
+    }
+
+    let urlRedireccion = `/compra/confirmacion/${compra.id}`;
+
+    // Si la forma de pago es Mercado Pago y aún está pendiente, consultamos su estado
+    if (
+      compra.formaDePago === 'Mercado Pago' &&
+      compra.estadoPago === 'pending'
+    ) {
+      const estadoMP = await consultarEstadoPago(compra.id);
+      if (estadoMP) {
+        compra.estadoPago = estadoMP.estadoPago; // 'approved', 'rejected', etc.
+
+        console.log(
+          `Estado del pago para la compra ${compra.id}:`,
+          estadoMP.estadoPago,
+        );
+
+        if (estadoMP.estadoPago === 'approved') {
+          compra.estadoCompra = 'confirmada';
+          urlRedireccion = `/pago/resultado/${compra.id}`;
+
+          actualizarCompra(compra.id, {
+            estadoCompra: 'confirmada',
+            estadoPago: 'approved',
+          });
+        }
+      }
+    } else if (
+      compra.formaDePago === 'Mercado Pago' &&
+      compra.estadoPago === 'approved'
+    ) {
+      urlRedireccion = `/pago/resultado/${compra.id}`;
+      actualizarCompra(compra.id, {
+        estadoCompra: 'confirmada',
+        estadoPago: 'approved',
+      });
+    }
 
     return res.status(200).json({
       compra,
-      urlRedireccion: null,
+      urlRedireccion,
     });
-
   } catch (error) {
     return res.status(error.statusCode || 400).json({
       error: error.message,
@@ -98,6 +149,11 @@ app.get('/api/pagos/:id/estado', async (req, res) => {
   }
 });
 
+console.log(
+  'Token cargado:',
+  process.env.MP_ACCESS_TOKEN ? 'Sí (OK)' : 'No (Undefined)',
+  'Base URL cargada:',
+  process.env.BASE_URL,
+);
+
 module.exports = app;
-
-

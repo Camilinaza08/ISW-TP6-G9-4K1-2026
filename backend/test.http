@@ -1,0 +1,64 @@
+@baseUrl = http://localhost:3000
+
+### 1. Consultar Formas de Pago
+GET {{baseUrl}}/api/formas-pago
+
+### 2. Consultar Tipos de Pase
+GET {{baseUrl}}/api/tipos-pase
+
+### 3. Consultar Reglas del Calendario
+GET {{baseUrl}}/api/calendario/reglas
+
+### 4. Procesar una Compra (Tal como se define en Endpoints.md - Sección 5)
+POST {{baseUrl}}/api/compra
+Content-Type: application/json
+
+{
+  "sesion": {
+    "fechaHoraInicio": "2026-10-17T10:00:00",
+    "fechaHoraFin": null,
+    "usuario": {
+      "id": 2,
+      "nombre": "Brisa",
+      "email": "brisaabigaildiaz2000@gmail.com"
+    }
+  },
+  "datosCompra": {
+    "fechaVisita": "2026-10-24",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [25],
+    "tipoPase": ["COMUN"]
+  }
+}
+
+### 5. Confirmar Compra con Mercado Pago (Tal como se define en Endpoints.md - Sección 6)
+POST {{baseUrl}}/api/confirmacion
+Content-Type: application/json
+
+{
+  "sesion": {
+    "fechaHoraInicio": "2026-10-17T10:00:00",
+    "fechaHoraFin": null,
+    "usuario": {
+      "id": 2,
+      "nombre": "Brisa",
+      "email": "brisaabigaildiaz2000@gmail.com"
+    }
+  },
+  "datosCompra": {
+    "fechaVisita": "2026-10-24",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [25],
+    "tipoPase": ["COMUN"],
+    "cliente": {
+      "id": 2,
+      "nombre": "Brisa",
+      "email": "brisaabigaildiaz2000@gmail.com"
+    },
+    "montoTotal": 10000,
+    "formaDePago": "Mercado Pago"
+  }
+}
+
+### 6. Consultar el Estado del Pago (Tal como se define en Endpoints.md - Sección 7)
+GET {{baseUrl}}/api/pagos/COMPRA-70/estado
