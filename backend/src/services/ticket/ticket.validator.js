@@ -100,9 +100,13 @@ function validarAperturaParque(fechaVisita) {
     return true;
 }
 
+const MAX_ENTRADAS = 10;
+
 function validarCantidadEntradas(cantidadEntradas) {
-   if (cantidadEntradas > 10) {
-        throw new Error("No se pueden comprar más de 10 entradas");
+   if (cantidadEntradas > MAX_ENTRADAS) {
+        throw new Error(
+            `No se pueden comprar más de ${MAX_ENTRADAS} entradas`
+        );
     }
 
     return true;
