@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../server');
-const { validarUsuario } = require('./ticket.validator');
+const { validarUsuario, validarFecha } = require('./ticket.validator');
 const { comprarEntradas } = require('./ticket.service');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
@@ -107,6 +107,28 @@ describe('obtenerReglasCalendario', () => {
   });
 });
 
+describe("validarFecha", () => {
+
+    test("Test 19 - Probar validar fechas con una fecha previa a la actual", () => {
+        // ARRANGE
+        jest.useFakeTimers();
+
+        try {
+            const fechaActual = new Date("2026-10-16T12:00:00");
+            jest.setSystemTime(fechaActual);
+
+            const fechaVisita = new Date("2026-10-15T12:00:00");
+
+            // ACT Y ASSERT
+            expect(() => validarFecha(fechaVisita))
+                .toThrow("Fecha previa a la actual");
+
+        } finally {
+            jest.useRealTimers();
+        }
+    });
+
+});
 
 
 

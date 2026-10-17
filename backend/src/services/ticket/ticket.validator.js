@@ -10,6 +10,10 @@ function validarUsuario(usuario) {
   return true;
 }
 
+function validarFecha(fechaVisita) {
+}
+
 module.exports = {
   validarUsuario,
+  validarFecha,
 };
