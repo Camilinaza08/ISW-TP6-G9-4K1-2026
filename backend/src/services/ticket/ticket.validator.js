@@ -137,6 +137,20 @@ function validarCantidadDatos(
     }
 }
 
+function validarEdades(edades) {
+    if (edades.some(edad => !Number.isInteger(edad) || edad < 0)) {
+        throw new Error("Edad ingresada inválida");
+    }
+}
+
+function validarTiposPase(tiposPase) {
+    if (tiposPase.some(tipo =>
+        !TIPOS_PASE.some(pase => pase.id === tipo)
+    )) {
+        throw new Error("Tipo de pase inválido");
+    }
+}
+
 function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
     if (edades == null && tiposPase == null) {
         throw new Error("Datos faltantes");
@@ -161,17 +175,8 @@ function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
         "Sobran tipos de pase de visitantes"
     );
 
-    if (edades.some(edad =>
-        !Number.isInteger(edad) || edad < 0
-    )) {
-        throw new Error("Edad ingresada inválida");
-    }
-
-    if (tiposPase.some(tipo =>
-        !TIPOS_PASE.some(pase => pase.id === tipo)
-    )) {
-        throw new Error("Tipo de pase inválido");
-    }
+    validarEdades(edades);
+    validarTiposPase(tiposPase);
 
     return true;
 }
