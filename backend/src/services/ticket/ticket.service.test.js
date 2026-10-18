@@ -834,6 +834,16 @@ describe("validarCamposObligatorios", () => {
       )
     ).toThrow("Faltan tipos de pase de visitantes");
   });
+
+  test("Test 60 - Probar validador con una edad negativa", () => {
+    expect(() =>
+      validarCamposObligatorios(
+        [25, -1],
+        ["VIP", "REGULAR"],
+        2
+      )
+    ).toThrow("Edad ingresada inválida");
+  });
 });
 
 
