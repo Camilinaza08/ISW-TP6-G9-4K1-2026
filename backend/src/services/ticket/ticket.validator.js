@@ -125,6 +125,18 @@ function validarCantidadEntradas(cantidadEntradas) {
     return true;
 }
 
+function validarCantidadDatos(
+    cantidadDatos, cantidadEntradas, errorFaltantes, errorSobrantes
+) {
+    if (cantidadDatos < cantidadEntradas) {
+        throw new Error(errorFaltantes);
+    }
+
+    if (cantidadDatos > cantidadEntradas) {
+        throw new Error(errorSobrantes);
+    }
+}
+
 function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
     if (edades == null && tiposPase == null) {
         throw new Error("Datos faltantes");
@@ -138,21 +150,16 @@ function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
         throw new Error("Tipos de pase faltantes");
     }
 
-    if (edades.length < cantidadEntradas) {
-        throw new Error("Faltan edades de visitantes");
-    }
+    validarCantidadDatos(
+        edades.length, cantidadEntradas,
+        "Faltan edades de visitantes", "Sobran edades de visitantes"
+    );
 
-    if (edades.length > cantidadEntradas) {
-        throw new Error("Sobran edades de visitantes");
-    }
-
-    if (tiposPase.length < cantidadEntradas) {
-        throw new Error("Faltan tipos de pase de visitantes");
-    }
-
-    if (tiposPase.length > cantidadEntradas) {
-        throw new Error("Sobran tipos de pase de visitantes");
-    }
+    validarCantidadDatos(
+        tiposPase.length, cantidadEntradas,
+        "Faltan tipos de pase de visitantes",
+        "Sobran tipos de pase de visitantes"
+    );
 
     if (edades.some(edad =>
         !Number.isInteger(edad) || edad < 0
