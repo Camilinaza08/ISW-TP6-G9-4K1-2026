@@ -876,6 +876,16 @@ describe("validarCamposObligatorios", () => {
       )
     ).toThrow("Edad ingresada inválida");
   });
+
+  test("Test 65 - Probar validador con una edad decimal", () => {
+    expect(() =>
+      validarCamposObligatorios(
+        [25, 12.5],
+        ["VIP", "REGULAR"],
+        2
+      )
+    ).toThrow("Edad ingresada inválida");
+  });
 });
 
 
