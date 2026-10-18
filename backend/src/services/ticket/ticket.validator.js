@@ -150,6 +150,10 @@ function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
         throw new Error("Faltan tipos de pase de visitantes");
     }
 
+    if (tiposPase.length > cantidadEntradas) {
+        throw new Error("Sobran tipos de pase de visitantes");
+    }
+
     if (edades.some(edad =>
         !Number.isInteger(edad) || edad < 0
     )) {
