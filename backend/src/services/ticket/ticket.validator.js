@@ -124,10 +124,19 @@ function validarCantidadEntradas(cantidadEntradas) {
     return true;
 }
 
+function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
+    if (edades == null && tiposPase == null) {
+        throw new Error("Datos faltantes");
+    }
+
+    return true;
+}
+
 
 module.exports = {
   validarUsuario,
   validarFecha,
   validarAperturaParque,
-  validarCantidadEntradas
+  validarCantidadEntradas,
+  validarCamposObligatorios
 };
