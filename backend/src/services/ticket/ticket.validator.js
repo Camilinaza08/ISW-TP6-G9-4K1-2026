@@ -1,4 +1,5 @@
 const { USUARIOS_MOCK } = require('../ticket/usuarios.mock');
+const { TIPOS_PASE } = require('./tiposPase.mock');
 
 function validarUsuario(usuario) {
   const existe = USUARIOS_MOCK.some((u) => u.id === usuario?.id);
@@ -147,6 +148,12 @@ function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
 
     if (edades.some(edad => edad < 0)) {
         throw new Error("Edad ingresada inválida");
+    }
+
+    if (tiposPase.some(tipo =>
+        !TIPOS_PASE.some(pase => pase.id === tipo)
+    )) {
+        throw new Error("Tipo de pase inválido");
     }
 
     return true;
