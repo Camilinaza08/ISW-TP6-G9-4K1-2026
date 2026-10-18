@@ -575,6 +575,28 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
+  test("Test 72 - Probar comprar entradas con menos tipos de pase que visitantes", () => {
+    jest.useFakeTimers();
+
+    try {
+      jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+      const usuario = USUARIOS_MOCK[0];
+
+      const datosCompra = {
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 3,
+        edadesVisitantes: [25, 30, 12],
+        tipoPase: ["VIP", "REGULAR"]
+      };
+
+      expect(() => comprarEntradas(usuario, datosCompra))
+        .toThrow("Faltan tipos de pase de visitantes");
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
 });
 
 describe('obtenerFormasPago', () => {
