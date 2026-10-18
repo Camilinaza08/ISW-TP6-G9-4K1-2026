@@ -133,6 +133,10 @@ function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
         throw new Error("Edades faltantes");
     }
 
+    if (tiposPase == null) {
+        throw new Error("Tipos de pase faltantes");
+    }
+
     return true;
 }
 
