@@ -816,6 +816,14 @@ describe("validarCamposObligatorios", () => {
     expect(() => validarCamposObligatorios([25, 30], null, 2))
       .toThrow("Tipos de pase faltantes");
   });
+
+  test("Test 58 - Probar validador con menos edades que visitantes", () => {
+    expect(() => validarCamposObligatorios(
+      [25, 30],
+      ["VIP", "REGULAR", "VIP"],
+      3
+    )).toThrow("Faltan edades de visitantes");
+  });
 });
 
 
