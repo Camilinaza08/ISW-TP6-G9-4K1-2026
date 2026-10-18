@@ -896,6 +896,12 @@ describe("validarCamposObligatorios", () => {
       )
     ).toThrow("Sobran edades de visitantes");
   });
+
+  test("Test 67 - Probar validador con más tipos de pase que visitantes", () => {
+    expect(() => validarCamposObligatorios(
+      [25, 30], ["VIP", "REGULAR", "VIP"], 2
+    )).toThrow("Sobran tipos de pase de visitantes");
+  });
 });
 
 
