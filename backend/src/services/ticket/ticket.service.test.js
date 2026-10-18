@@ -858,6 +858,14 @@ describe("validarCamposObligatorios", () => {
       3
     )).toBe(true);
   });
+
+  test("Test 63 - Probar validador con edad igual a cero", () => {
+    expect(
+      validarCamposObligatorios(
+        [0, 30], ["REGULAR", "VIP"], 2
+      )
+    ).toBe(true);
+  });
 });
 
 
