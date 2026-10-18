@@ -886,6 +886,16 @@ describe("validarCamposObligatorios", () => {
       )
     ).toThrow("Edad ingresada inválida");
   });
+
+  test("Test 66 - Probar validador con más edades que visitantes", () => {
+    expect(() =>
+      validarCamposObligatorios(
+        [25, 30, 12],
+        ["VIP", "REGULAR"],
+        2
+      )
+    ).toThrow("Sobran edades de visitantes");
+  });
 });
 
 
