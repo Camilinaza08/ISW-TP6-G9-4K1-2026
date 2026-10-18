@@ -866,6 +866,16 @@ describe("validarCamposObligatorios", () => {
       )
     ).toBe(true);
   });
+
+  test("Test 64 - Probar validador con una edad ingresada como texto", () => {
+    expect(() =>
+      validarCamposObligatorios(
+        [25, "treinta"],
+        ["VIP", "REGULAR"],
+        2
+      )
+    ).toThrow("Edad ingresada inválida");
+  });
 });
 
 
