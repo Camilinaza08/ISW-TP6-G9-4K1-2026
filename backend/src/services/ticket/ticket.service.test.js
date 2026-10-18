@@ -850,6 +850,14 @@ describe("validarCamposObligatorios", () => {
       [25, 30], ["VIP", "Premium"], 2
     )).toThrow("Tipo de pase inválido");
   });
+
+  test("Test 62 - Probar validador con todos los datos correctos", () => {
+    expect(validarCamposObligatorios(
+      [25, 30, 12],
+      ["VIP", "REGULAR", "VIP"],
+      3
+    )).toBe(true);
+  });
 });
 
 
