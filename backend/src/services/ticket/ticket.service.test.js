@@ -811,6 +811,11 @@ describe("validarCamposObligatorios", () => {
       null, ["VIP", "REGULAR"], 2
     )).toThrow("Edades faltantes");
   });
+
+  test("Test 57 - Probar validador de datos requeridos sin tipos de pase", () => {
+    expect(() => validarCamposObligatorios([25, 30], null, 2))
+      .toThrow("Tipos de pase faltantes");
+  });
 });
 
 
