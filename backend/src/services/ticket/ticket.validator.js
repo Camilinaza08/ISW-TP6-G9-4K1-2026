@@ -145,6 +145,10 @@ function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
         throw new Error("Faltan tipos de pase de visitantes");
     }
 
+    if (edades.some(edad => edad < 0)) {
+        throw new Error("Edad ingresada inválida");
+    }
+
     return true;
 }
 
