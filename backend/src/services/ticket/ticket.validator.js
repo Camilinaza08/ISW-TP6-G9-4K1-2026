@@ -150,6 +150,10 @@ function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
         throw new Error("Edad ingresada inválida");
     }
 
+    if (edades.some(edad => !Number.isInteger(edad))) {
+        throw new Error("Edad ingresada inválida");
+    }
+
     if (tiposPase.some(tipo =>
         !TIPOS_PASE.some(pase => pase.id === tipo)
     )) {
