@@ -487,6 +487,28 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
 });
 
+  test("Test 68 - Probar comprar entradas sin edades ni tipos de pase", () => {
+    jest.useFakeTimers();
+
+    try {
+      jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+      const usuario = USUARIOS_MOCK[0];
+
+      const datosCompra = {
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        edadesVisitantes: null,
+        tipoPase: null
+      };
+
+      expect(() => comprarEntradas(usuario, datosCompra))
+        .toThrow("Datos faltantes");
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
 });
 
 describe('obtenerFormasPago', () => {
