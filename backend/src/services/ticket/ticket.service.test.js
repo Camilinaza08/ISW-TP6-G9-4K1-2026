@@ -844,6 +844,12 @@ describe("validarCamposObligatorios", () => {
       )
     ).toThrow("Edad ingresada inválida");
   });
+
+  test("Test 61 - Probar validador con un tipo de pase no permitido", () => {
+    expect(() => validarCamposObligatorios(
+      [25, 30], ["VIP", "Premium"], 2
+    )).toThrow("Tipo de pase inválido");
+  });
 });
 
 
