@@ -1516,6 +1516,41 @@ describe('confirmarCompra', () => {
     }
 });
 
+test("Test 109 - Confirmar una compra seleccionando Efectivo", async () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"]
+        };
+
+        const compra = comprarEntradas(usuario, datosCompra);
+
+        // ACT
+        const resultado = await confirmarCompra(compra, "Efectivo");
+
+        // ASSERT
+        expect(resultado).toEqual(
+            expect.objectContaining({
+                formaPago: "Efectivo",
+                estadoCompra: "pendiente",
+                estadoPago: "pendiente"
+            })
+        );
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 })
 
 
