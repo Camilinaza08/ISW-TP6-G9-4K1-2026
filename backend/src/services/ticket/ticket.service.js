@@ -37,24 +37,28 @@ function obtenerReglasCalendario() {
   return REGLAS_CALENDARIO;
 }
 
-async function confirmarCompra(datosCompra, formaPago) {
-  validarFormaPago(formaPago);
-
-  const compra = { ...datosCompra };
-
-   if (formaPago === "Efectivo") {
-        compra.estadoCompra = "pendiente";
-        compra.estadoPago = "pendiente";
-    }else if (formaPago === "Mercado Pago") {
-        compra.estadoCompra = "pendiente";
-        compra.estadoPago = "pending";
+const ESTADOS_INICIALES_PAGO = {
+    "Efectivo": {
+        estadoCompra: "pendiente",
+        estadoPago: "pendiente"
+    },
+    "Mercado Pago": {
+        estadoCompra: "pendiente",
+        estadoPago: "pending"
     }
+};
 
+async function confirmarCompra(compra, formaPago) {
+    validarFormaPago(formaPago);
+
+    const estados = ESTADOS_INICIALES_PAGO[formaPago];
+
+    compra.estadoCompra = estados.estadoCompra;
+    compra.estadoPago = estados.estadoPago;
     compra.formaPago = formaPago;
-  // TODO: persistir mediante el Repository
 
-  return compra;
-}
+    return compra;
+  }
 
 module.exports = {
   comprarEntradas,
