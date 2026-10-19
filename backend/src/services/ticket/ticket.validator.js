@@ -203,6 +203,10 @@ function calcularMonto(edades, tiposPase) {
 }
 
 function validarFormaPago(formaPago) {
+    if (formaPago === null || formaPago === undefined) {
+        throw new Error("Forma de pago faltante");
+    }
+    
     throw new Error("Forma de pago inválida");
 }
 
