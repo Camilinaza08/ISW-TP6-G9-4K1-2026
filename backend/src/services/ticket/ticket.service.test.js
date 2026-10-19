@@ -1443,6 +1443,10 @@ describe('validarFormaPago', () => {
     }).toThrow('Forma de pago faltante');
   });
 
+  test('Test 105 - Probar validador de forma de pago seleccionando Efectivo', () => {
+    expect(validarFormaPago('Efectivo')).toBe(true);
+  });
+
 });
 
 
