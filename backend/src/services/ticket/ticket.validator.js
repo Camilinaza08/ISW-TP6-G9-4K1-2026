@@ -208,13 +208,9 @@ function validarFormaPago(formaPago) {
         throw new Error("Forma de pago faltante");
     }
 
-    let formaPagoValida = false;
-    for (const opcion of FORMAS_PAGO) {
-        if (opcion.nombre === formaPago) {
-            formaPagoValida = true;
-        break;
-        }
-    }
+    const formaPagoValida = FORMAS_PAGO.some(
+        opcion => opcion.nombre === formaPago
+    );
 
     if (!formaPagoValida) {
         throw new Error("Forma de pago inválida");
