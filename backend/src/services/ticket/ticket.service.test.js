@@ -782,6 +782,13 @@ describe('calcularMonto', () => {
       ['REGULAR', 'VIP', 'VIP', 'REGULAR']
     )).toBe(30000);
   });
+
+  test('Test 92 - Probar cálculo del monto de una compra con el máximo de 10 entradas', () => {
+    const edades = Array(10).fill(25);
+    const tiposPase = Array(10).fill('REGULAR');
+
+    expect(calcularMonto(edades, tiposPase)).toBe(100000);
+  });
 });
 
 describe('obtenerFormasPago', () => {
