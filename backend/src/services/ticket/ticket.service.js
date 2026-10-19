@@ -1,4 +1,5 @@
-const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios,} = require('./ticket.validator');
+const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios,
+  calcularMonto} = require('./ticket.validator');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
 const { REGLAS_CALENDARIO } = require('./calendario.mock');
@@ -13,11 +14,12 @@ function comprarEntradas(usuario, datosCompra) {
     datosCompra.tipoPase,
     datosCompra.cantidadEntradas
   );
-  
+
+  const montoTotal = calcularMonto(datosCompra.edadesVisitantes, datosCompra.tipoPase);
   const compra = {
     ...datosCompra,
     cliente: usuario,
-    montoTotal: null,
+    montoTotal: montoTotal,
   };
 
   return compra;

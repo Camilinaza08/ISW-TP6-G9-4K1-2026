@@ -705,7 +705,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
       expect(resultado).toEqual({
         ...datosCompra,
         cliente: usuario,
-        montoTotal: null
+        montoTotal: 40000,
       });
     } finally {
       jest.useRealTimers();
