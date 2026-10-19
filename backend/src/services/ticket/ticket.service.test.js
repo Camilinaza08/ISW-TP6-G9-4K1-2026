@@ -751,6 +751,10 @@ describe('calcularMonto', () => {
   test('Test 84 - Probar cálculo del monto de una entrada VIP para un visitante de 0 a 3 años', () => {
     expect(calcularMonto([2], ['VIP'])).toBe(0);
   });
+
+  test('Test 85 - Probar cálculo del monto de una entrada Común para un visitante de 4 a 15 años', () => {
+    expect(calcularMonto([8], ['REGULAR'])).toBe(5000);
+  });
 });
 
 describe('obtenerFormasPago', () => {
