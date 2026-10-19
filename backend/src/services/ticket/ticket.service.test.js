@@ -1447,6 +1447,10 @@ describe('validarFormaPago', () => {
     expect(validarFormaPago('Efectivo')).toBe(true);
   });
 
+  test('Test 106 - Probar validador de forma de pago seleccionando Mercado Pago', () => {
+    expect(validarFormaPago('Mercado Pago')).toBe(true);
+  });
+
 });
 
 
