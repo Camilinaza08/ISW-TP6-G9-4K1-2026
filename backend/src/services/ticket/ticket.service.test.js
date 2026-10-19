@@ -827,6 +827,29 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
+   test('Test 99 - Probar que una compra de una entrada Común para un visitante de 60 años o más devuelva el monto con descuento del 50 %', () => {
+    jest.useFakeTimers();
+
+    try {
+      jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+      const usuario = USUARIOS_MOCK[0];
+
+      const datosCompra = {
+        fechaVisita: '2026-10-20',
+        cantidadEntradas: 1,
+        edadesVisitantes: [70],
+        tipoPase: ['REGULAR']
+      };
+
+      const resultado = comprarEntradas(usuario, datosCompra);
+
+      expect(resultado.montoTotal).toBe(5000);
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
 
 });
 
