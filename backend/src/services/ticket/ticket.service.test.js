@@ -729,6 +729,13 @@ describe('calcularMonto', () => {
       ['REGULAR', 'REGULAR', 'REGULAR']
     )).toBe(30000);
   });
+
+  test('Test 81 - Probar cálculo del monto de varias entradas VIP', () => {
+    expect(calcularMonto(
+      [25, 30, 35],
+      ['VIP', 'VIP', 'VIP']
+    )).toBe(60000);
+  });
 });
 
 describe('obtenerFormasPago', () => {
