@@ -181,11 +181,14 @@ function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
     return true;
 }
 
+function calcularMonto(edades, tiposPase) {
+}
 
 module.exports = {
   validarUsuario,
   validarFecha,
   validarAperturaParque,
   validarCantidadEntradas,
-  validarCamposObligatorios
+  validarCamposObligatorios,
+  calcularMonto
 };

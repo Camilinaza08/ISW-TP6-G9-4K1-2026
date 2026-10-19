@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../server');
-const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios } = require('./ticket.validator');
+const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios, calcularMonto } = require('./ticket.validator');
 const { comprarEntradas } = require('./ticket.service');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
@@ -712,6 +712,12 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
+});
+
+describe('calcularMonto', () => {
+  test('Test 78 - Probar cálculo del monto de una entrada Común', () => {
+    expect(calcularMonto([25], ['REGULAR'])).toBe(10000);
+  });
 });
 
 describe('obtenerFormasPago', () => {
