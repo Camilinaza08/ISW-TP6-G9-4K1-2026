@@ -203,7 +203,7 @@ function calcularMonto(edades, tiposPase) {
 }
 
 function validarFormaPago(formaPago) {
-
+    throw new Error("Forma de pago inválida");
 }
 
 module.exports = {
