@@ -1482,6 +1482,40 @@ describe('confirmarCompra', () => {
     }
 });
 
+  test("Test 108 - Confirmar una compra seleccionando una forma de pago inválida", async () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"]
+        };
+
+        const compra = comprarEntradas(usuario, datosCompra);
+
+        const compraOriginal = structuredClone(compra);
+
+        // ACT Y ASSERT
+        await expect(
+            confirmarCompra(compra, "Transferencia")
+        ).rejects.toThrow("Forma de pago inválida");
+
+        expect(compra).toEqual(compraOriginal);
+        expect(compra.estadoCompra).toBeUndefined();
+        expect(compra.estadoPago).toBeUndefined();
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 })
 
 
