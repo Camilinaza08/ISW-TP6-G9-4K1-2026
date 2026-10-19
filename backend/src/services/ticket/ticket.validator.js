@@ -186,6 +186,10 @@ function obtenerDescuentoPorEdad(edad) {
     return 1;
   }
 
+  if (edad >= 4 && edad <= 15) {
+    return 0.5;
+  }
+
   return 0;
 }
 
