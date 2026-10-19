@@ -789,6 +789,23 @@ describe('calcularMonto', () => {
 
     expect(calcularMonto(edades, tiposPase)).toBe(100000);
   });
+
+  test.each([
+    [3, 0],
+    [4, 5000],
+    [15, 5000],
+    [16, 10000],
+    [59, 10000],
+    [60, 5000]
+  ])(
+    'Test 93 - Probar cálculo del monto en los valores límite de los grupos etarios - %i años',
+    (edad, montoEsperado) => {
+      expect(calcularMonto([edad], ['REGULAR']))
+        .toBe(montoEsperado);
+    }
+  );
+
+  
 });
 
 describe('obtenerFormasPago', () => {
