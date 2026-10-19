@@ -182,7 +182,8 @@ function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
 }
 
 function calcularMonto(edades, tiposPase) {
-  return 10000;
+  const pase = TIPOS_PASE.find(pase => pase.id === tiposPase[0]);
+  return pase.precioBase;
 }
 
 module.exports = {
