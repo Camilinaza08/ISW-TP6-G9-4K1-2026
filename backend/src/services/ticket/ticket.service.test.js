@@ -685,6 +685,33 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
+  test("Test 77 - Probar comprar entradas con todos los datos requeridos válidos", () => {
+    jest.useFakeTimers();
+
+    try {
+      jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+      const usuario = USUARIOS_MOCK[0];
+
+      const datosCompra = {
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 3,
+        edadesVisitantes: [25, 30, 12],
+        tipoPase: ["VIP", "REGULAR", "VIP"]
+      };
+
+      const resultado = comprarEntradas(usuario, datosCompra);
+
+      expect(resultado).toEqual({
+        ...datosCompra,
+        cliente: usuario,
+        montoTotal: null
+      });
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
 });
 
 describe('obtenerFormasPago', () => {
