@@ -143,20 +143,26 @@ function validarFormulario() {
 // Mientras el backend no esté disponible, devuelve null y se usa el monto estimado.
 async function procesarCompra(datosCompra) {
   const sesion = obtenerSesion();
-  if (!sesion) return null;
-  try {
-    const res = await fetch(`${API_URL}/api/compra`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sesion, datosCompra }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'No se pudo procesar la compra.');
-    return data;
-  } catch (err) {
-    if (err.message === 'Failed to fetch') return null;
-    throw err;
+
+  if (!sesion) {
+    throw new Error('No hay una sesión activa');
   }
+
+  const res = await fetch(`${API_URL}/api/compra`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ sesion, datosCompra })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || 'No se pudo procesar la compra.');
+  }
+
+  return data;
 }
 
 /* ----- Modal resumen ----- */
@@ -186,7 +192,9 @@ document.getElementById('resumen-continuar').addEventListener('click', () => {
 
 document.getElementById('btn-comprar').addEventListener('click', async (e) => {
   const error = validarFormulario();
+
   if (error) return mostrarMensaje(error);
+
   ocultarMensaje();
 
   const datosCompra = {
@@ -198,15 +206,21 @@ document.getElementById('btn-comprar').addEventListener('click', async (e) => {
 
   const boton = e.currentTarget;
   boton.disabled = true;
+
   try {
-    const respuesta = await procesarCompra(datosCompra);
-    const montoEstimado = entradas.reduce((total, en) => total + precioEntrada(en), 0);
-    const compra = { ...datosCompra, ...respuesta, montoTotal: respuesta?.montoTotal ?? montoEstimado };
+    const compra = await procesarCompra(datosCompra);
 
     sessionStorage.setItem('compraEnCurso', JSON.stringify(compra));
+
     abrirResumen(compra);
+
   } catch (err) {
-    mostrarMensaje(err.message);
+    mostrarMensaje(
+      err.message === 'Failed to fetch'
+        ? 'No se pudo conectar con el servidor. Intentá nuevamente.'
+        : err.message
+    );
+
   } finally {
     boton.disabled = false;
   }

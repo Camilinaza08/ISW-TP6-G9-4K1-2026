@@ -3,10 +3,9 @@
 // TODO: reemplazar por la sesión real cuando se conecte el login.
 function crearSesionMock() {
   const inicio = new Date();
-  const fin = new Date(inicio.getTime() + 2 * 60 * 60 * 1000);
   return {
     fechaHoraInicio: inicio.toISOString(),
-    fechaHoraFin: fin.toISOString(),
+    fechaHoraFin: null,
     usuario: {
       id: 2,
       nombre: 'Brisa',
