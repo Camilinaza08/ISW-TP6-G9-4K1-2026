@@ -45,6 +45,9 @@ async function confirmarCompra(datosCompra, formaPago) {
    if (formaPago === "Efectivo") {
         compra.estadoCompra = "pendiente";
         compra.estadoPago = "pendiente";
+    }else if (formaPago === "Mercado Pago") {
+        compra.estadoCompra = "pendiente";
+        compra.estadoPago = "pending";
     }
 
     compra.formaPago = formaPago;
