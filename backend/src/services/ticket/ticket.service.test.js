@@ -771,6 +771,10 @@ describe('calcularMonto', () => {
   test('Test 89 - Probar cálculo del monto de una entrada Común para un visitante de 60 años o más', () => {
     expect(calcularMonto([70], ['REGULAR'])).toBe(5000);
   });
+
+  test('Test 90 - Probar cálculo del monto de una entrada VIP para un visitante de 60 años o más', () => {
+    expect(calcularMonto([70], ['VIP'])).toBe(10000);
+  });
 });
 
 describe('obtenerFormasPago', () => {
