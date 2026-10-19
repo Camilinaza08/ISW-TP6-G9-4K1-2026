@@ -190,6 +190,10 @@ function obtenerDescuentoPorEdad(edad) {
     return 0.5;
   }
 
+  if (edad >= 60) {
+    return 0.5;
+  }
+
   return 0;
 }
 
