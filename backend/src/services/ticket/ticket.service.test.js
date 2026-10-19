@@ -1551,6 +1551,44 @@ test("Test 109 - Confirmar una compra seleccionando Efectivo", async () => {
     }
 });
 
+test("Test 110 - Confirmar una compra seleccionando Mercado Pago", async () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"]
+        };
+
+        const compra = comprarEntradas(usuario, datosCompra);
+
+        expect(compra.estadoCompra).toBeUndefined();
+        expect(compra.estadoPago).toBeUndefined();
+
+        // ACT
+        const resultado = await confirmarCompra(compra, "Mercado Pago");
+
+        // ASSERT
+        expect(resultado).toEqual(
+            expect.objectContaining({
+                formaPago: "Mercado Pago",
+                estadoCompra: "pendiente",
+                estadoPago: "pending"
+            })
+        );
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
 })
 
 
