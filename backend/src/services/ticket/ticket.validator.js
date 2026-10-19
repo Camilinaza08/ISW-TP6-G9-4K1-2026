@@ -182,9 +182,12 @@ function validarCamposObligatorios(edades, tiposPase, cantidadEntradas) {
 }
 
 function calcularMonto(edades, tiposPase) {
-  return tiposPase.reduce((total, tipo) => {
+  return tiposPase.reduce((total, tipo, i) => {
     const pase = TIPOS_PASE.find(pase => pase.id === tipo);
-    return total + pase.precioBase;
+    const edad = edades[i];
+    const descuento = edad >= 0 && edad <= 3 ? 1 : 0;
+
+    return total + pase.precioBase * (1 - descuento);
   }, 0);
 }
 
