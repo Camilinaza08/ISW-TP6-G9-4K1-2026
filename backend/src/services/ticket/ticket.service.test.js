@@ -722,6 +722,13 @@ describe('calcularMonto', () => {
   test('Test 79 - Probar cálculo del monto de una entrada VIP', () => {
     expect(calcularMonto([25], ['VIP'])).toBe(20000);
   });
+
+  test('Test 80 - Probar cálculo del monto de varias entradas Común', () => {
+    expect(calcularMonto(
+      [25, 30, 35],
+      ['REGULAR', 'REGULAR', 'REGULAR']
+    )).toBe(30000);
+  });
 });
 
 describe('obtenerFormasPago', () => {
