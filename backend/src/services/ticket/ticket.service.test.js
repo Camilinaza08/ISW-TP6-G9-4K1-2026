@@ -896,6 +896,29 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
+   test('Test 102 - Probar que una compra con el máximo de 10 entradas devuelva correctamente el monto total acumulado', () => {
+    jest.useFakeTimers();
+
+    try {
+      jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+      const usuario = USUARIOS_MOCK[0];
+
+      const datosCompra = {
+        fechaVisita: '2026-10-20',
+        cantidadEntradas: 10,
+        edadesVisitantes: Array(10).fill(25),
+        tipoPase: Array(10).fill('REGULAR')
+      };
+
+      const resultado = comprarEntradas(usuario, datosCompra);
+
+      expect(resultado.montoTotal).toBe(100000);
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
 
 });
 
