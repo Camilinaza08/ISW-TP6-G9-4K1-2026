@@ -202,7 +202,6 @@ function calcularMonto(edades, tiposPase) {
     return total + pase.precioBase * (1 - descuento);
   }, 0);
 }
-
 function validarFormaPago(formaPago) {
     if (formaPago === null || formaPago === undefined) {
         throw new Error("Forma de pago faltante");

@@ -1,5 +1,5 @@
 const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios,
-  calcularMonto} = require('./ticket.validator');
+  calcularMonto, validarFormaPago} = require('./ticket.validator');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
 const { REGLAS_CALENDARIO } = require('./calendario.mock');
@@ -37,8 +37,8 @@ function obtenerReglasCalendario() {
   return REGLAS_CALENDARIO;
 }
 
-function confirmarCompra(datosCompra, formaPago) {
-  // TODO: validar la forma de pago
+async function confirmarCompra(datosCompra, formaPago) {
+  validarFormaPago(formaPago);
   // TODO: persistir mediante el Repository
 
   return datosCompra;
