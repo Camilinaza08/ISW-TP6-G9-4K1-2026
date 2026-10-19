@@ -1,6 +1,10 @@
 const CompraRepository = require("./CompraRepository");
 const { USUARIOS_MOCK } = require("../ticket/usuarios.mock");
 
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+
 describe("guardarCompra", () => {
 
     test("Test 111 - Generar un identificador incremental para una compra", async () => {
@@ -38,5 +42,51 @@ describe("guardarCompra", () => {
         expect(resultado2.id).toBe(2);
 
     });
+
+    test("Test 112 - Almacenar una compra en un archivo JSON", async () => {
+
+    const directorioTemporal = fs.mkdtempSync(
+        path.join(os.tmpdir(), "ecoharmony-")
+    );
+
+    const rutaArchivo = path.join(
+        directorioTemporal,
+        "compras",
+        "compras.json"
+    );
+
+    try {
+        const repository = new CompraRepository(rutaArchivo);
+
+        const compra = {
+            cliente: USUARIOS_MOCK[0],
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"],
+            montoTotal: 10000,
+            formaPago: "Efectivo",
+            estadoCompra: "confirmada",
+            estadoPago: "no_aplica"
+        };
+
+        const resultado = await repository.guardarCompra(compra);
+
+        const contenido = fs.readFileSync(rutaArchivo, "utf8");
+        const comprasGuardadas = JSON.parse(contenido);
+
+        expect(fs.existsSync(path.dirname(rutaArchivo))).toBe(true);
+        expect(fs.existsSync(rutaArchivo)).toBe(true);
+
+        expect(comprasGuardadas).toEqual([resultado]);
+
+    } finally {
+        fs.rmSync(directorioTemporal, {
+            recursive: true,
+            force: true
+        });
+    }
+
+});
 
 });
