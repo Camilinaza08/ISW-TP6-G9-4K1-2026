@@ -827,7 +827,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-   test('Test 99 - Probar que una compra de una entrada Común para un visitante de 60 años o más devuelva el monto con descuento del 50 %', () => {
+   test('Test 99 - Probar que una compra de una entrada Regular para un visitante de 60 años o más devuelva el monto con descuento del 50 %', () => {
     jest.useFakeTimers();
 
     try {
@@ -850,7 +850,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-     test('Test 100 - Probar que una compra de varias entradas Común sin descuentos devuelva el monto total acumulado', () => {
+     test('Test 100 - Probar que una compra de varias entradas Regular sin descuentos devuelva el monto total acumulado', () => {
     jest.useFakeTimers();
 
     try {
@@ -863,6 +863,29 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         cantidadEntradas: 3,
         edadesVisitantes: [25, 30, 35],
         tipoPase: ['REGULAR', 'REGULAR', 'REGULAR']
+      };
+
+      const resultado = comprarEntradas(usuario, datosCompra);
+
+      expect(resultado.montoTotal).toBe(30000);
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
+  test('Test 101 - Probar que una compra con diferentes grupos etarios y tipos de pase devuelva el monto total con los descuentos correspondientes', () => {
+    jest.useFakeTimers();
+
+    try {
+      jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+      const usuario = USUARIOS_MOCK[0];
+
+      const datosCompra = {
+        fechaVisita: '2026-10-20',
+        cantidadEntradas: 4,
+        edadesVisitantes: [8, 25, 2, 70],
+        tipoPase: ['REGULAR', 'VIP', 'VIP', 'REGULAR']
       };
 
       const resultado = comprarEntradas(usuario, datosCompra);
