@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const {
   obtenerFormasPago,
   obtenerTiposPase,
@@ -12,6 +13,13 @@ const {
 } = require('./services/sesion/sesion.service');
 
 const app = express();
+
+app.use(cors({
+    origin: [
+        'http://127.0.0.1:5500',
+        'http://localhost:5500'
+    ]
+}));
 
 app.use(express.json());
 
@@ -31,23 +39,30 @@ app.get('/api/calendario/reglas', (req, res) => {
 });
 
 app.post('/api/compra', async (req, res) => {
-  try {
-    const { sesion, datosCompra } = req.body;
+    try {
+        const { sesion, datosCompra } = req.body;
 
-    await validarSesion(sesion);
+        const sesionNormalizada = sesion
+            ? {
+                ...sesion,
+                fechaHoraInicio: new Date(sesion.fechaHoraInicio)
+            }
+            : null;
 
-    const resultadoCompra = comprarEntradas(
-      sesion.usuario,
-      datosCompra
-    );
+        await validarSesion(sesionNormalizada);
 
-    return res.status(200).json(resultadoCompra);
+        const resultadoCompra = comprarEntradas(
+            sesionNormalizada.usuario,
+            datosCompra
+        );
 
-  } catch (error) {
-    return res.status(error.statusCode || 400).json({
-      error: error.message
-    });
-  }
+        return res.status(200).json(resultadoCompra);
+
+    } catch (error) {
+        return res.status(error.statusCode || 400).json({
+            error: error.message
+        });
+    }
 });
 
 app.post('/api/confirmacion', async (req, res) => {
