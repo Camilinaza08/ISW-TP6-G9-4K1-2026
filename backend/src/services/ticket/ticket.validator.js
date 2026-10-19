@@ -202,11 +202,16 @@ function calcularMonto(edades, tiposPase) {
   }, 0);
 }
 
+function validarFormaPago(formaPago) {
+
+}
+
 module.exports = {
   validarUsuario,
   validarFecha,
   validarAperturaParque,
   validarCantidadEntradas,
   validarCamposObligatorios,
+  validarFormaPago,
   calcularMonto
 };

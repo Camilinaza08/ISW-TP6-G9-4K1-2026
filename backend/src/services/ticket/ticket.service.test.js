@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../server');
-const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios, calcularMonto } = require('./ticket.validator');
+const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios, calcularMonto, validarFormaPago } = require('./ticket.validator');
 const { comprarEntradas } = require('./ticket.service');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
@@ -1429,6 +1429,16 @@ describe("validarCamposObligatorios", () => {
     )).toThrow("Sobran tipos de pase de visitantes");
   });
 });
+
+describe('validarFormaPago', () => {
+  test('Test 103 - Probar validador de forma de pago seleccionando una opción inválida', () => {
+    expect(() => {
+      validarFormaPago('Transferencia');
+    }).toThrow('Forma de pago inválida');
+  });
+
+});
+
 
 
 
