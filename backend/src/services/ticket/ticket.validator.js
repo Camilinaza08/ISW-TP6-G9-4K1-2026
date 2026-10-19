@@ -1,5 +1,6 @@
 const { USUARIOS_MOCK } = require('../ticket/usuarios.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
+const { FORMAS_PAGO } = require('./formasPago.mock');
 
 function validarUsuario(usuario) {
   const existe = USUARIOS_MOCK.some((u) => u.id === usuario?.id);
@@ -206,8 +207,19 @@ function validarFormaPago(formaPago) {
     if (formaPago === null || formaPago === undefined) {
         throw new Error("Forma de pago faltante");
     }
-    
-    throw new Error("Forma de pago inválida");
+
+    let formaPagoValida = false;
+    for (const opcion of FORMAS_PAGO) {
+        if (opcion.nombre === formaPago) {
+            formaPagoValida = true;
+        break;
+        }
+    }
+
+    if (!formaPagoValida) {
+        throw new Error("Forma de pago inválida");
+    }
+    return true;
 }
 
 module.exports = {
