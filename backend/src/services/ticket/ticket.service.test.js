@@ -735,6 +735,29 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
       }
     });
 
+   test('Test 95 - Probar que una compra de una entrada Común sin descuento devuelva el monto correcto', () => {
+    jest.useFakeTimers();
+
+    try {
+      jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+      const usuario = USUARIOS_MOCK[0];
+
+      const datosCompra = {
+        fechaVisita: '2026-10-20',
+        cantidadEntradas: 1,
+        edadesVisitantes: [25],
+        tipoPase: ['REGULAR']
+      };
+
+      const resultado = comprarEntradas(usuario, datosCompra);
+
+      expect(resultado.montoTotal).toBe(10000);
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
 });
 
 describe('calcularMonto', () => {
