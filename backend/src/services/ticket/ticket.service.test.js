@@ -1437,6 +1437,12 @@ describe('validarFormaPago', () => {
     }).toThrow('Forma de pago inválida');
   });
 
+  test('Test 104 - Probar validador de forma de pago sin seleccionar una opción', () => {
+    expect(() => {
+      validarFormaPago(null);
+    }).toThrow('Forma de pago faltante');
+  });
+
 });
 
 
