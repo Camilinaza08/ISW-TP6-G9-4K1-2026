@@ -39,9 +39,18 @@ function obtenerReglasCalendario() {
 
 async function confirmarCompra(datosCompra, formaPago) {
   validarFormaPago(formaPago);
+
+  const compra = { ...datosCompra };
+
+   if (formaPago === "Efectivo") {
+        compra.estadoCompra = "pendiente";
+        compra.estadoPago = "pendiente";
+    }
+
+    compra.formaPago = formaPago;
   // TODO: persistir mediante el Repository
 
-  return datosCompra;
+  return compra;
 }
 
 module.exports = {
