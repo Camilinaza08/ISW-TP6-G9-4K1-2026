@@ -735,7 +735,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
       }
     });
 
-   test('Test 95 - Probar que una compra de una entrada Común sin descuento devuelva el monto correcto', () => {
+   test('Test 95 - Probar que una compra de una entrada Regular sin descuento devuelva el monto correcto', () => {
     jest.useFakeTimers();
 
     try {
@@ -761,7 +761,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
 });
 
 describe('calcularMonto', () => {
-  test('Test 78 - Probar cálculo del monto de una entrada Común', () => {
+  test('Test 78 - Probar cálculo del monto de una entrada Regular', () => {
     expect(calcularMonto([25], ['REGULAR'])).toBe(10000);
   });
 
@@ -769,7 +769,7 @@ describe('calcularMonto', () => {
     expect(calcularMonto([25], ['VIP'])).toBe(20000);
   });
 
-  test('Test 80 - Probar cálculo del monto de varias entradas Común', () => {
+  test('Test 80 - Probar cálculo del monto de varias entradas Regular', () => {
     expect(calcularMonto(
       [25, 30, 35],
       ['REGULAR', 'REGULAR', 'REGULAR']
@@ -783,14 +783,14 @@ describe('calcularMonto', () => {
     )).toBe(60000);
   });
 
-  test('Test 82 - Probar cálculo del monto de una compra con entradas VIP y Común', () => {
+  test('Test 82 - Probar cálculo del monto de una compra con entradas VIP y Regular', () => {
     expect(calcularMonto(
       [25, 30, 35],
       ['VIP', 'REGULAR', 'VIP']
     )).toBe(50000);
   });
 
-  test('Test 83 - Probar cálculo del monto de una entrada Común para un visitante de 0 a 3 años', () => {
+  test('Test 83 - Probar cálculo del monto de una entrada Regular para un visitante de 0 a 3 años', () => {
     expect(calcularMonto([2], ['REGULAR'])).toBe(0);
   });
 
@@ -798,7 +798,7 @@ describe('calcularMonto', () => {
     expect(calcularMonto([2], ['VIP'])).toBe(0);
   });
 
-  test('Test 85 - Probar cálculo del monto de una entrada Común para un visitante de 4 a 15 años', () => {
+  test('Test 85 - Probar cálculo del monto de una entrada Regular para un visitante de 4 a 15 años', () => {
     expect(calcularMonto([8], ['REGULAR'])).toBe(5000);
   });
 
@@ -806,7 +806,7 @@ describe('calcularMonto', () => {
     expect(calcularMonto([8], ['VIP'])).toBe(10000);
   });
 
-  test('Test 87 - Probar cálculo del monto de una entrada Común para un visitante de 16 a 59 años', () => {
+  test('Test 87 - Probar cálculo del monto de una entrada Regular para un visitante de 16 a 59 años', () => {
     expect(calcularMonto([25], ['REGULAR'])).toBe(10000);
   });
 
@@ -814,7 +814,7 @@ describe('calcularMonto', () => {
     expect(calcularMonto([25], ['VIP'])).toBe(20000);
   });
 
-  test('Test 89 - Probar cálculo del monto de una entrada Común para un visitante de 60 años o más', () => {
+  test('Test 89 - Probar cálculo del monto de una entrada Regular para un visitante de 60 años o más', () => {
     expect(calcularMonto([70], ['REGULAR'])).toBe(5000);
   });
 
