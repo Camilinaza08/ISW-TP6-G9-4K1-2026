@@ -1,7 +1,16 @@
 class CompraRepository {
 
+    constructor() {
+        this.ultimoID = 0;
+    }
+
     async guardarCompra(compra) {
-        // Pendiente de implementación
+        this.ultimoID++;
+
+        return {
+            ...compra,
+            id: this.ultimoID
+        };
     }
 
 }
