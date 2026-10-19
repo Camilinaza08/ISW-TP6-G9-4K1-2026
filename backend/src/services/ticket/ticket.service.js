@@ -37,7 +37,7 @@ function obtenerReglasCalendario() {
   return REGLAS_CALENDARIO;
 }
 
-function confirmarCompra(datosCompra) {
+function confirmarCompra(datosCompra, formaPago) {
   // TODO: validar la forma de pago
   // TODO: persistir mediante el Repository
 

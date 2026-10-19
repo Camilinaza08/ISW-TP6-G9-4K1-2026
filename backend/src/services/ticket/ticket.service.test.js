@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../server');
 const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios, calcularMonto, validarFormaPago } = require('./ticket.validator');
-const { comprarEntradas } = require('./ticket.service');
+const { comprarEntradas, confirmarCompra } = require('./ticket.service');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
 const { REGLAS_CALENDARIO } = require('./calendario.mock');
@@ -1452,6 +1452,37 @@ describe('validarFormaPago', () => {
   });
 
 });
+
+describe('confirmarCompra', () => {
+  test("Test 107 - Confirmar una compra sin seleccionar una forma de pago", async () => {
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"]
+        };
+
+        const compra = comprarEntradas(usuario, datosCompra);
+
+        // ACT Y ASSERT
+        await expect(
+            confirmarCompra(compra, null)
+        ).rejects.toThrow("Forma de pago faltante");
+
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
+})
 
 
 
