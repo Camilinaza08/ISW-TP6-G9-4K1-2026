@@ -758,6 +758,30 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
+  test('Test 96 - Probar que una compra de una entrada VIP sin descuento devuelva el monto correcto', () => {
+    jest.useFakeTimers();
+
+    try {
+      jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+      const usuario = USUARIOS_MOCK[0];
+
+      const datosCompra = {
+        fechaVisita: '2026-10-20',
+        cantidadEntradas: 1,
+        edadesVisitantes: [25],
+        tipoPase: ['VIP']
+      };
+
+      const resultado = comprarEntradas(usuario, datosCompra);
+
+      expect(resultado.montoTotal).toBe(20000);
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
+
 });
 
 describe('calcularMonto', () => {
