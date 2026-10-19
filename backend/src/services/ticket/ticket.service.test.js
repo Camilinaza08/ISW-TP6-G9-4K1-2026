@@ -718,6 +718,10 @@ describe('calcularMonto', () => {
   test('Test 78 - Probar cálculo del monto de una entrada Común', () => {
     expect(calcularMonto([25], ['REGULAR'])).toBe(10000);
   });
+
+  test('Test 79 - Probar cálculo del monto de una entrada VIP', () => {
+    expect(calcularMonto([25], ['VIP'])).toBe(20000);
+  });
 });
 
 describe('obtenerFormasPago', () => {
