@@ -42,7 +42,9 @@ function generarContenidoMail(compra) {
     });
 }
 
-function validarEmailDestinatario(mail) {}
+function validarEmailDestinatario(email) {
+    throw new Error("No se ha indicado un correo electrónico");
+}
 
 module.exports = {
     generarContenidoMail,
