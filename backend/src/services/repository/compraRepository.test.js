@@ -452,4 +452,29 @@ test("Test 122 - Excluir compras correspondientes a otras fechas", async () => {
 
 });
 
+test("Test 123 - Consultar el acumulado cuando no existen compras coincidentes", async () => {
+
+    const compra = {
+        cliente: USUARIOS_MOCK[0],
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 3,
+        edadesVisitantes: [25, 30, 12],
+        tipoPase: ["REGULAR", "VIP", "REGULAR"],
+        montoTotal: 40000,
+        formaPago: "Efectivo",
+        estadoCompra: "confirmada",
+        estadoPago: "no_aplica"
+    };
+
+    await repository.guardarCompra(compra);
+
+    const entradasAcumuladas = await repository.obtenerEntradasAcumuladas(
+        USUARIOS_MOCK[0].id,
+        "2026-10-25"
+    );
+
+    expect(entradasAcumuladas).toBe(0);
+
+});
+
 });
