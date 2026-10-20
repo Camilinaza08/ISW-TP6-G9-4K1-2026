@@ -14,6 +14,8 @@ const plantilla = `
             <p>Hola, {{cliente.nombre}}</p>
 
             <p>Compra N.º {{id}}</p>
+
+            <p>Fecha de visita: {{fechaFormateada}}</p>
         </body>
     </html>
 `;
@@ -21,7 +23,18 @@ const plantilla = `
 const plantillaCompilada = Handlebars.compile(plantilla);
 
 function generarContenidoMail(compra) {
-    return plantillaCompilada(compra);
+
+    let fechaFormateada = "";
+
+    if (compra.fechaVisita) {
+        const [anio, mes, dia] = compra.fechaVisita.split("-");
+        fechaFormateada = `${dia}/${mes}/${anio}`;
+    }
+
+    return plantillaCompilada({
+        ...compra,
+        fechaFormateada
+    });
 }
 
 module.exports = {
