@@ -22,9 +22,22 @@ class CompraRepository {
             recursive: true
         });
 
+        let comprasGuardadas = [];
+
+        if (fs.existsSync(this.rutaArchivo)) {
+            const contenido = fs.readFileSync(
+                this.rutaArchivo,
+                "utf8"
+            );
+
+            comprasGuardadas = JSON.parse(contenido);
+        }
+
+        comprasGuardadas.push(compraRegistrada);
+
         fs.writeFileSync(
             this.rutaArchivo,
-            JSON.stringify([compraRegistrada], null, 2),
+            JSON.stringify(comprasGuardadas, null, 2),
             "utf8"
         );
 
