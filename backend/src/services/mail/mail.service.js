@@ -46,6 +46,8 @@ function validarEmailDestinatario(email) {
     throw new Error("No se ha indicado un correo electrónico");
 }
 
+
+
 module.exports = {
     generarContenidoMail,
     validarEmailDestinatario

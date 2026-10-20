@@ -371,4 +371,14 @@ describe("validarEmailDestinatario", () => {
 
     });
 
+    test("Test 146 - Validar que un correo electrónico informado sea aceptado", () => {
+
+    // ARRANGE
+    const email = "ana@gmail.com";
+
+    // ACT Y ASSERT
+    expect(() => validarEmailDestinatario(email)).not.toThrow();
+
+})
+
 });
