@@ -1,0 +1,42 @@
+[
+  {
+    "fechaVisita": "2026-10-20",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      25
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 1,
+      "nombre": "Ana",
+      "email": "ana@example.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 1
+  },
+  {
+    "fechaVisita": "2026-10-20",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      25
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 1,
+      "nombre": "Ana",
+      "email": "ana@example.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pending",
+    "formaPago": "Mercado Pago",
+    "id": 2
+  }
+]

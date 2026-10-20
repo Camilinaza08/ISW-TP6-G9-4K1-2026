@@ -77,9 +77,10 @@ async function confirmarCompra(compra, formaPago) {
     compra.estadoPago = estados.estadoPago;
     compra.formaPago = formaPago;
 
-    return compra;
-  }
+    const compraRegistrada = await repository.guardarCompra(compra);
 
+    return compraRegistrada;
+}
 module.exports = {
   comprarEntradas,
   obtenerFormasPago,
