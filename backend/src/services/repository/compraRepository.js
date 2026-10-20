@@ -36,21 +36,28 @@ class CompraRepository {
     }
 
     async guardarCompra(compra) {
-        this.ultimoID++;
 
-        const compraRegistrada = {
-            ...compra,
-            id: this.ultimoID
-        };
+    const comprasGuardadas = this.leerCompras();
 
-        const comprasGuardadas = this.leerCompras();
+    const ultimoID = comprasGuardadas.reduce(
+        (maximo, compraGuardada) =>
+            Math.max(maximo, compraGuardada.id),
+        0
+    );
 
-        comprasGuardadas.push(compraRegistrada);
+    this.ultimoID = ultimoID + 1;
 
-        this.escribirCompras(comprasGuardadas);
+    const compraRegistrada = {
+        ...compra,
+        id: this.ultimoID
+    };
 
-        return compraRegistrada;
-    }
+    comprasGuardadas.push(compraRegistrada);
+
+    this.escribirCompras(comprasGuardadas);
+
+    return compraRegistrada;
+}
 
   async obtenerCompraPorId(id) {
     const comprasGuardadas = this.leerCompras();
