@@ -119,4 +119,41 @@ test("Test 139 - Probar la incorporación de la fecha de visita", () => {
 
 });
 
+test("Test 140 - Probar la incorporación de la cantidad de entradas y los tipos de pase", () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        cliente: {
+            id: 1,
+            nombre: "Ana"
+        },
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        tiposPase: ["REGULAR", "VIP"]
+    };
+
+    const compraOriginal = structuredClone(compra);
+
+    // ACT
+    const resultado = generarContenidoMail(compra);
+
+    // ASSERT
+    expect(resultado).toContain("Cantidad de entradas: 2");
+
+    expect(resultado).toContain("Regular");
+    expect(resultado).toContain("VIP");
+
+    expect(resultado).not.toContain("Precio por entrada");
+
+    expect(resultado).toContain("EcoHarmony Park");
+    expect(resultado).toContain("Resumen de tu compra");
+    expect(resultado).toContain("Hola, Ana");
+    expect(resultado).toContain("Compra N.º 1");
+    expect(resultado).toContain("20/10/2026");
+
+    expect(compra).toEqual(compraOriginal);
+
+});
+
 });
