@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../../server');
-const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios, calcularMonto, validarFormaPago } = require('./ticket.validator');
+const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios, 
+  calcularMonto, validarFormaPago, validarLimiteAcumulado } = require('./ticket.validator');
 const { comprarEntradas, confirmarCompra } = require('./ticket.service');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
@@ -1767,6 +1768,51 @@ test("Test 129 - Registrar una compra válida mediante Mercado Pago", async () =
         ...compra,
         id: 1
     });
+
+});
+describe("validarLimiteAcumulado", () => {
+
+    test.each([
+        {
+            caso: "A - Total inferior al límite",
+            entradasAcumuladas: 5,
+            cantidadEntradas: 3,
+            permitido: true
+        },
+        {
+            caso: "B - Total exactamente igual al límite",
+            entradasAcumuladas: 7,
+            cantidadEntradas: 3,
+            permitido: true
+        },
+        {
+            caso: "C - Total superior al límite",
+            entradasAcumuladas: 7,
+            cantidadEntradas: 4,
+            permitido: false
+        }
+    ])(
+        "Test 134 - Validar el límite acumulado de entradas ($caso)",
+        ({ entradasAcumuladas, cantidadEntradas, permitido }) => {
+
+            // ARRANGE
+            const ejecutarValidacion = () =>
+                validarLimiteAcumulado(
+                    entradasAcumuladas,
+                    cantidadEntradas
+                );
+
+            // ACT Y ASSERT
+            if (permitido) {
+                expect(ejecutarValidacion).not.toThrow();
+            } else {
+                expect(ejecutarValidacion).toThrow(
+                    "Se ha superado el límite de 10 entradas por usuario para la fecha seleccionada"
+                );
+            }
+
+        }
+    );
 
 });
 
