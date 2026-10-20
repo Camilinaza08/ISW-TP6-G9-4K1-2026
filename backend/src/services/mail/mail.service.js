@@ -44,21 +44,22 @@ function formatearTiposPase(tiposPase) {
         .join(", ");
 }
 
-function generarContenidoMail(compra) {
+function formatearMonto(monto) {
 
-    let montoFormateado;
-
-    if (compra.montoTotal !== undefined && compra.montoTotal !== null) {
-        montoFormateado = new Intl.NumberFormat("es-AR").format(
-            compra.montoTotal
-        );
+    if (monto === undefined || monto === null) {
+        return undefined;
     }
 
+    return new Intl.NumberFormat("es-AR").format(monto);
+}
+
+function generarContenidoMail(compra) {
+    
     return plantillaCompilada({
         ...compra,
         fechaFormateada: formatearFecha(compra.fechaVisita),
         tiposPaseFormateados: formatearTiposPase(compra.tiposPase),
-        montoFormateado
+        montoFormateado: formatearMonto(compra.montoTotal)
     });
 }
 module.exports = {
