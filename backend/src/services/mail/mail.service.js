@@ -37,19 +37,21 @@ function formatearFecha(fecha) {
     return `${dia}/${mes}/${anio}`;
 }
 
-function generarContenidoMail(compra) {
+function formatearTiposPase(tiposPase) {
 
-    const tiposPaseFormateados = (compra.tiposPase ?? [])
+    return (tiposPase ?? [])
         .map(tipo => tipo === "REGULAR" ? "Regular" : tipo)
         .join(", ");
+}
+
+function generarContenidoMail(compra) {
 
     return plantillaCompilada({
         ...compra,
         fechaFormateada: formatearFecha(compra.fechaVisita),
-        tiposPaseFormateados
+        tiposPaseFormateados: formatearTiposPase(compra.tiposPase)
     });
 }
-
 module.exports = {
     generarContenidoMail
 };
