@@ -58,4 +58,33 @@ describe("generarContenidoMail", () => {
 
 });
 
+test("Test 138 - Probar la incorporación del identificador de compra", () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        cliente: {
+            id: 1,
+            nombre: "Ana"
+        }
+    };
+
+    const compraOriginal = structuredClone(compra);
+
+    // ACT
+    const resultado = generarContenidoMail(compra);
+
+    // ASSERT
+    expect(resultado).toContain("Compra N.º 1");
+
+    expect(resultado).toContain("EcoHarmony Park");
+
+    expect(resultado).toContain("Resumen de tu compra");
+
+    expect(resultado).toContain("Hola, Ana");
+
+    expect(compra).toEqual(compraOriginal);
+
+});
+
 });
