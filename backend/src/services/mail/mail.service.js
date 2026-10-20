@@ -18,7 +18,11 @@ const plantilla = `
             <p>Tipos de pase: {{tiposPaseFormateados}}</p>
 
             {{#if montoFormateado}}
-            <p>Monto total: \${{montoFormateado}}</p>
+             <p>Monto total: \${{montoFormateado}}</p>
+            {{/if}}
+
+            {{#if formaPago}}
+                <p>Forma de pago: {{formaPago}}</p>
             {{/if}}
         </body>
     </html>
@@ -54,7 +58,7 @@ function formatearMonto(monto) {
 }
 
 function generarContenidoMail(compra) {
-    
+
     return plantillaCompilada({
         ...compra,
         fechaFormateada: formatearFecha(compra.fechaVisita),
