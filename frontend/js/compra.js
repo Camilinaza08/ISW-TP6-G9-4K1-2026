@@ -139,8 +139,7 @@ function validarFormulario() {
   return valido ? null : 'Completá la edad y el tipo de cada entrada.';
 }
 
-// Envía la compra al backend para validarla y calcular el monto.
-// Mientras el backend no esté disponible, devuelve null y se usa el monto estimado.
+// Envía la compra al backend para validarla y obtener el monto definitivo.
 async function procesarCompra(datosCompra) {
   const sesion = obtenerSesion();
 

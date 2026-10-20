@@ -1,0 +1,139 @@
+
+/* ===== Fondo de la página ===== */
+.resultado {
+  min-height: 65vh;
+  padding: 60px 0;
+  background-color: #f2e8cf;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110' viewBox='0 0 110 110'%3E%3Cg fill='%23d6cab0'%3E%3Cg transform='translate(30 30) rotate(-20)'%3E%3Cellipse cx='0' cy='8' rx='10' ry='8'/%3E%3Cellipse cx='-11' cy='-6' rx='4' ry='5.5'/%3E%3Cellipse cx='-4' cy='-12' rx='4' ry='5.5'/%3E%3Cellipse cx='5' cy='-12' rx='4' ry='5.5'/%3E%3Cellipse cx='12' cy='-5' rx='4' ry='5.5'/%3E%3C/g%3E%3Cg transform='translate(82 82) rotate(25)'%3E%3Cellipse cx='0' cy='8' rx='10' ry='8'/%3E%3Cellipse cx='-11' cy='-6' rx='4' ry='5.5'/%3E%3Cellipse cx='-4' cy='-12' rx='4' ry='5.5'/%3E%3Cellipse cx='5' cy='-12' rx='4' ry='5.5'/%3E%3Cellipse cx='12' cy='-5' rx='4' ry='5.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ===== Tarjeta central ===== */
+.resultado__tarjeta {
+  width: min(100%, 600px);
+  margin: 0 auto;
+  padding: 38px;
+  background: #fffdf7;
+  border: 1px solid #d6cab0;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(56, 102, 65, 0.12);
+  text-align: center;
+}
+
+.resultado__icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #e6efcf;
+  font-size: 36px;
+}
+
+.resultado__tarjeta h1 {
+  margin-bottom: 12px;
+  color: #386641;
+  font-size: 1.8rem;
+}
+
+.resultado__descripcion {
+  max-width: 460px;
+  margin: 0 auto 28px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ===== Estados ===== */
+.resultado__tarjeta--aprobado .resultado__icono {
+  background: #d9f0dc;
+}
+
+.resultado__tarjeta--pendiente .resultado__icono {
+  background: #fff0c9;
+}
+
+.resultado__tarjeta--rechazado .resultado__icono {
+  background: #f8d7da;
+}
+
+.resultado__tarjeta--rechazado h1 {
+  color: #bc4749;
+}
+
+/* ===== Detalle de compra ===== */
+.resultado__detalle {
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid #e5ddca;
+  text-align: left;
+}
+
+.resultado__detalle h2 {
+  margin-bottom: 20px;
+  color: #386641;
+  font-size: 1.2rem;
+}
+
+.resultado__datos {
+  margin: 0;
+}
+
+.resultado__datos > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid #eee8db;
+}
+
+.resultado__datos dt {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.resultado__datos dd {
+  margin: 0;
+  color: #252525;
+  font-weight: 700;
+  text-align: right;
+}
+
+.resultado__datos .resultado__total {
+  margin-top: 10px;
+  padding-top: 18px;
+  border-bottom: none;
+}
+
+.resultado__total dt,
+.resultado__total dd {
+  color: #386641;
+  font-size: 1.2rem;
+}
+
+/* ===== Navegación ===== */
+.resultado__volver {
+  display: inline-flex;
+  margin-top: 30px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 760px) {
+  .resultado {
+    padding: 36px 0;
+  }
+
+  .resultado__tarjeta {
+    padding: 26px 18px;
+  }
+
+  .resultado__tarjeta h1 {
+    font-size: 1.5rem;
+  }
+
+  .resultado__datos dt,
+  .resultado__datos dd {
+    font-size: 0.85rem;
+  }
+}
