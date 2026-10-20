@@ -56,4 +56,49 @@ describe("procesarResultadoMP", () => {
 
     });
 
+    test("Test 131 - Evitar actualizaciones repetidas de una compra ya confirmada", async () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        cliente: {
+            id: 1,
+            nombre: "Usuario Test"
+        },
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        edadesVisitantes: [25, 30],
+        tipoPase: ["REGULAR", "VIP"],
+        montoTotal: 30000,
+        formaPago: "Mercado Pago",
+        estadoCompra: "confirmada",
+        estadoPago: "approved"
+    };
+
+    const compraOriginal = structuredClone(compra);
+
+    const obtenerCompraMock = jest.spyOn(
+        CompraRepository.prototype,
+        "obtenerCompraPorId"
+    ).mockResolvedValue(compra);
+
+    const actualizarEstadosMock = jest.spyOn(
+        CompraRepository.prototype,
+        "actualizarEstadosCompra"
+    ).mockResolvedValue(null);
+
+    // ACT
+    const resultado = await procesarResultadoMP(1, "approved");
+
+    // ASSERT
+    expect(obtenerCompraMock).toHaveBeenCalledWith(1);
+
+    expect(resultado).toEqual(compraOriginal);
+
+    expect(actualizarEstadosMock).not.toHaveBeenCalled();
+
+    expect(compra).toEqual(compraOriginal);
+
+});
+
 });
