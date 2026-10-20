@@ -1,5 +1,12 @@
 const { generarContenidoMail } = require("./mail.service");
 
+function obtenerTextoVisible(html) {
+    return html
+        .replace(/<[^>]*>/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
 describe("generarContenidoMail", () => {
 
     test("Test 136 - Probar la generación de la estructura HTML básica", () => {
@@ -13,353 +20,340 @@ describe("generarContenidoMail", () => {
             }
         };
 
-        const compraOriginal = structuredClone(compra);
-
         // ACT
         const resultado = generarContenidoMail(compra);
+        const textoVisible = obtenerTextoVisible(resultado);
 
         // ASSERT
-        expect(typeof resultado).toBe("string");
+        expect(resultado).toContain("<!DOCTYPE html>");
+        expect(resultado).toContain('<html lang="es">');
+        expect(resultado).toContain("<head>");
+        expect(resultado).toContain("<body");
 
-        expect(resultado).toMatch(/<html\b[^>]*>/i);
-        expect(resultado).toMatch(/<\/html>/i);
-
-        expect(resultado).toContain("EcoHarmony Park");
-        expect(resultado).toContain("Resumen de tu compra");
-
-        expect(compra).toEqual(compraOriginal);
-
+        expect(textoVisible).toContain("EcoHarmony Park");
+        expect(textoVisible).toContain("Resumen de tu compra");
     });
 
     test("Test 137 - Probar la incorporación del saludo personalizado", () => {
 
-    // ARRANGE
-    const compra = {
-        id: 1,
-        cliente: {
+        // ARRANGE
+        const compra = {
             id: 1,
-            nombre: "Ana"
-        }
-    };
+            cliente: {
+                id: 1,
+                nombre: "Ana"
+            }
+        };
 
-    const compraOriginal = structuredClone(compra);
+        // ACT
+        const resultado = generarContenidoMail(compra);
+        const textoVisible = obtenerTextoVisible(resultado);
 
-    // ACT
-    const resultado = generarContenidoMail(compra);
+        // ASSERT
+        expect(textoVisible).toContain("Hola, Ana");
+        expect(textoVisible).toContain("EcoHarmony Park");
+        expect(textoVisible).toContain("Resumen de tu compra");
+    });
 
-    // ASSERT
-    expect(resultado).toContain("Hola, Ana");
+    test("Test 138 - Probar la incorporación del identificador de compra", () => {
 
-    expect(resultado).toContain("EcoHarmony Park");
-
-    expect(resultado).toContain("Resumen de tu compra");
-
-    expect(compra).toEqual(compraOriginal);
-
-});
-
-test("Test 138 - Probar la incorporación del identificador de compra", () => {
-
-    // ARRANGE
-    const compra = {
-        id: 1,
-        cliente: {
+        // ARRANGE
+        const compra = {
             id: 1,
-            nombre: "Ana"
-        }
-    };
+            cliente: {
+                id: 1,
+                nombre: "Ana"
+            }
+        };
 
-    const compraOriginal = structuredClone(compra);
+        // ACT
+        const resultado = generarContenidoMail(compra);
+        const textoVisible = obtenerTextoVisible(resultado);
 
-    // ACT
-    const resultado = generarContenidoMail(compra);
+        // ASSERT
+        expect(textoVisible).toContain("Compra N.º 1");
+        expect(textoVisible).toContain("Hola, Ana");
+        expect(textoVisible).toContain("EcoHarmony Park");
+        expect(textoVisible).toContain("Resumen de tu compra");
+    });
 
-    // ASSERT
-    expect(resultado).toContain("Compra N.º 1");
+    test("Test 139 - Probar la incorporación de la fecha de visita", () => {
 
-    expect(resultado).toContain("EcoHarmony Park");
-
-    expect(resultado).toContain("Resumen de tu compra");
-
-    expect(resultado).toContain("Hola, Ana");
-
-    expect(compra).toEqual(compraOriginal);
-
-});
-
-test("Test 139 - Probar la incorporación de la fecha de visita", () => {
-
-    // ARRANGE
-    const compra = {
-        id: 1,
-        cliente: {
+        // ARRANGE
+        const compra = {
             id: 1,
-            nombre: "Ana"
-        },
-        fechaVisita: "2026-10-20"
-    };
+            cliente: {
+                id: 1,
+                nombre: "Ana"
+            },
+            fechaVisita: "2026-10-20"
+        };
 
-    const compraOriginal = structuredClone(compra);
+        const compraOriginal = structuredClone(compra);
 
-    // ACT
-    const resultado = generarContenidoMail(compra);
+        // ACT
+        const resultado = generarContenidoMail(compra);
+        const textoVisible = obtenerTextoVisible(resultado);
 
-    // ASSERT
-    expect(resultado).toContain("20/10/2026");
+        // ASSERT
+        expect(textoVisible).toContain("20/10/2026");
+        expect(textoVisible).toContain("EcoHarmony Park");
+        expect(textoVisible).toContain("Resumen de tu compra");
+        expect(textoVisible).toContain("Hola, Ana");
+        expect(textoVisible).toContain("Compra N.º 1");
 
-    expect(resultado).toContain("EcoHarmony Park");
+        expect(compra).toEqual(compraOriginal);
+    });
 
-    expect(resultado).toContain("Resumen de tu compra");
+    test("Test 140 - Probar la incorporación de la cantidad de entradas y los tipos de pase", () => {
 
-    expect(resultado).toContain("Hola, Ana");
-
-    expect(resultado).toContain("Compra N.º 1");
-
-    expect(compra).toEqual(compraOriginal);
-
-});
-
-test("Test 140 - Probar la incorporación de la cantidad de entradas y los tipos de pase", () => {
-
-    // ARRANGE
-    const compra = {
-        id: 1,
-        cliente: {
+        // ARRANGE
+        const compra = {
             id: 1,
-            nombre: "Ana"
-        },
-        fechaVisita: "2026-10-20",
-        cantidadEntradas: 2,
-        tiposPase: ["REGULAR", "VIP"]
-    };
+            cliente: {
+                id: 1,
+                nombre: "Ana"
+            },
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 2,
+            tiposPase: ["REGULAR", "VIP"]
+        };
 
-    const compraOriginal = structuredClone(compra);
+        const compraOriginal = structuredClone(compra);
 
-    // ACT
-    const resultado = generarContenidoMail(compra);
+        // ACT
+        const resultado = generarContenidoMail(compra);
+        const textoVisible = obtenerTextoVisible(resultado);
 
-    // ASSERT
-    expect(resultado).toContain("Cantidad de entradas: 2");
+        // ASSERT
+        expect(textoVisible).toContain("Cantidad de entradas: 2");
+        expect(textoVisible).toContain("Tipos de pase: Regular, VIP");
 
-    expect(resultado).toContain("Regular");
-    expect(resultado).toContain("VIP");
+        expect(textoVisible).not.toContain("Precio por entrada");
 
-    expect(resultado).not.toContain("Precio por entrada");
+        expect(textoVisible).toContain("EcoHarmony Park");
+        expect(textoVisible).toContain("Resumen de tu compra");
+        expect(textoVisible).toContain("Hola, Ana");
+        expect(textoVisible).toContain("Compra N.º 1");
+        expect(textoVisible).toContain("20/10/2026");
 
-    expect(resultado).toContain("EcoHarmony Park");
-    expect(resultado).toContain("Resumen de tu compra");
-    expect(resultado).toContain("Hola, Ana");
-    expect(resultado).toContain("Compra N.º 1");
-    expect(resultado).toContain("20/10/2026");
+        expect(compra).toEqual(compraOriginal);
+    });
 
-    expect(compra).toEqual(compraOriginal);
+    test("Test 141 - Probar la incorporación del monto total", () => {
 
-});
-
-test("Test 141 - Probar la incorporación del monto total", () => {
-
-    // ARRANGE
-    const compra = {
-        id: 1,
-        cliente: {
+        // ARRANGE
+        const compra = {
             id: 1,
-            nombre: "Ana"
-        },
-        fechaVisita: "2026-10-20",
-        cantidadEntradas: 2,
-        tiposPase: ["REGULAR", "VIP"],
-        montoTotal: 30000
-    };
+            cliente: {
+                id: 1,
+                nombre: "Ana"
+            },
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 2,
+            tiposPase: ["REGULAR", "VIP"],
+            montoTotal: 30000
+        };
 
-    const compraOriginal = structuredClone(compra);
+        const compraOriginal = structuredClone(compra);
 
-    // ACT
-    const resultado = generarContenidoMail(compra);
+        // ACT
+        const resultado = generarContenidoMail(compra);
+        const textoVisible = obtenerTextoVisible(resultado);
 
-    // ASSERT
-    expect(resultado).toContain("Monto total: $30.000");
+        // ASSERT
+        expect(textoVisible).toContain("Monto total: $30.000");
 
-    expect(resultado).not.toContain("Precio por entrada");
+        expect(textoVisible).not.toContain("Precio por entrada");
 
-    expect(resultado).toContain("EcoHarmony Park");
-    expect(resultado).toContain("Resumen de tu compra");
-    expect(resultado).toContain("Hola, Ana");
-    expect(resultado).toContain("Compra N.º 1");
-    expect(resultado).toContain("20/10/2026");
-    expect(resultado).toContain("Cantidad de entradas: 2");
-    expect(resultado).toContain("Regular");
-    expect(resultado).toContain("VIP");
+        expect(textoVisible).toContain("EcoHarmony Park");
+        expect(textoVisible).toContain("Resumen de tu compra");
+        expect(textoVisible).toContain("Hola, Ana");
+        expect(textoVisible).toContain("Compra N.º 1");
+        expect(textoVisible).toContain("20/10/2026");
+        expect(textoVisible).toContain("Cantidad de entradas: 2");
+        expect(textoVisible).toContain("Tipos de pase: Regular, VIP");
 
-    expect(compra.montoTotal).toBe(30000);
-    expect(compra).toEqual(compraOriginal);
+        expect(compra.montoTotal).toBe(30000);
+        expect(compra).toEqual(compraOriginal);
+    });
 
-});
+    test("Test 142 - Probar la incorporación de la forma de pago", () => {
 
-test("Test 142 - Probar la incorporación de la forma de pago", () => {
-
-    // ARRANGE
-    const compra = {
-        id: 1,
-        cliente: {
+        // ARRANGE
+        const compra = {
             id: 1,
-            nombre: "Ana"
-        },
-        fechaVisita: "2026-10-20",
-        cantidadEntradas: 2,
-        tiposPase: ["REGULAR", "VIP"],
-        montoTotal: 30000,
-        formaPago: "Mercado Pago"
-    };
+            cliente: {
+                id: 1,
+                nombre: "Ana"
+            },
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 2,
+            tiposPase: ["REGULAR", "VIP"],
+            montoTotal: 30000,
+            formaPago: "Mercado Pago"
+        };
 
-    const compraOriginal = structuredClone(compra);
+        const compraOriginal = structuredClone(compra);
 
-    // ACT
-    const resultado = generarContenidoMail(compra);
+        // ACT
+        const resultado = generarContenidoMail(compra);
+        const textoVisible = obtenerTextoVisible(resultado);
 
-    // ASSERT
-    expect(resultado).toContain("Forma de pago: Mercado Pago");
+        // ASSERT
+        expect(textoVisible).toContain("Forma de pago: Mercado Pago");
 
-    expect(resultado).toContain("EcoHarmony Park");
-    expect(resultado).toContain("Resumen de tu compra");
-    expect(resultado).toContain("Hola, Ana");
-    expect(resultado).toContain("Compra N.º 1");
-    expect(resultado).toContain("20/10/2026");
-    expect(resultado).toContain("Cantidad de entradas: 2");
-    expect(resultado).toContain("Regular");
-    expect(resultado).toContain("VIP");
-    expect(resultado).toContain("Monto total: $30.000");
+        expect(textoVisible).toContain("EcoHarmony Park");
+        expect(textoVisible).toContain("Resumen de tu compra");
+        expect(textoVisible).toContain("Hola, Ana");
+        expect(textoVisible).toContain("Compra N.º 1");
+        expect(textoVisible).toContain("20/10/2026");
+        expect(textoVisible).toContain("Cantidad de entradas: 2");
+        expect(textoVisible).toContain("Tipos de pase: Regular, VIP");
+        expect(textoVisible).toContain("Monto total: $30.000");
 
-    expect(compra).toEqual(compraOriginal);
-});
+        expect(compra).toEqual(compraOriginal);
+    });
 
-test("Test 143 - Probar la generación independiente del contenido para diferentes compras", () => {
+    test("Test 143 - Probar la generación independiente del contenido para diferentes compras", () => {
 
-    // ARRANGE
-    const compra1 = {
-        id: 1,
-        cliente: {
+        // ARRANGE
+        const compra1 = {
             id: 1,
-            nombre: "Ana"
-        },
-        fechaVisita: "2026-10-20",
-        cantidadEntradas: 2,
-        tiposPase: ["REGULAR", "VIP"],
-        montoTotal: 30000,
-        formaPago: "Mercado Pago"
-    };
+            cliente: {
+                id: 1,
+                nombre: "Ana"
+            },
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 2,
+            tiposPase: ["REGULAR", "VIP"],
+            montoTotal: 30000,
+            formaPago: "Mercado Pago"
+        };
 
-    const compra2 = {
-        id: 2,
-        cliente: {
+        const compra2 = {
             id: 2,
-            nombre: "Juan"
-        },
-        fechaVisita: "2026-10-25",
-        cantidadEntradas: 1,
-        tiposPase: ["VIP"],
-        montoTotal: 20000,
-        formaPago: "Efectivo"
-    };
+            cliente: {
+                id: 2,
+                nombre: "Juan"
+            },
+            fechaVisita: "2026-10-25",
+            cantidadEntradas: 1,
+            tiposPase: ["VIP"],
+            montoTotal: 20000,
+            formaPago: "Efectivo"
+        };
 
-    const compra1Original = structuredClone(compra1);
-    const compra2Original = structuredClone(compra2);
+        const compra1Original = structuredClone(compra1);
+        const compra2Original = structuredClone(compra2);
 
-    // ACT
-    const resultado1 = generarContenidoMail(compra1);
-    const resultado2 = generarContenidoMail(compra2);
+        // ACT
+        const resultado1 = generarContenidoMail(compra1);
+        const resultado2 = generarContenidoMail(compra2);
 
-    // ASSERT
-    expect(resultado1).toContain("Hola, Ana");
-    expect(resultado1).toContain("Compra N.º 1");
-    expect(resultado1).toContain("20/10/2026");
-    expect(resultado1).toContain("Cantidad de entradas: 2");
-    expect(resultado1).toContain("Regular, VIP");
-    expect(resultado1).toContain("Monto total: $30.000");
-    expect(resultado1).toContain("Forma de pago: Mercado Pago");
+        const texto1 = obtenerTextoVisible(resultado1);
+        const texto2 = obtenerTextoVisible(resultado2);
 
-    expect(resultado2).toContain("Hola, Juan");
-    expect(resultado2).toContain("Compra N.º 2");
-    expect(resultado2).toContain("25/10/2026");
-    expect(resultado2).toContain("Cantidad de entradas: 1");
-    expect(resultado2).toContain("Tipos de pase: VIP");
-    expect(resultado2).toContain("Monto total: $20.000");
-    expect(resultado2).toContain("Forma de pago: Efectivo");
+        // ASSERT
+        expect(texto1).toContain("Hola, Ana");
+        expect(texto1).toContain("Compra N.º 1");
+        expect(texto1).toContain("20/10/2026");
+        expect(texto1).toContain("Cantidad de entradas: 2");
+        expect(texto1).toContain("Tipos de pase: Regular, VIP");
+        expect(texto1).toContain("Monto total: $30.000");
+        expect(texto1).toContain("Forma de pago: Mercado Pago");
 
-    expect(resultado1).not.toContain("Hola, Juan");
-    expect(resultado1).not.toContain("Compra N.º 2");
-    expect(resultado1).not.toContain("Forma de pago: Efectivo");
+        expect(texto2).toContain("Hola, Juan");
+        expect(texto2).toContain("Compra N.º 2");
+        expect(texto2).toContain("25/10/2026");
+        expect(texto2).toContain("Cantidad de entradas: 1");
+        expect(texto2).toContain("Tipos de pase: VIP");
+        expect(texto2).toContain("Monto total: $20.000");
+        expect(texto2).toContain("Forma de pago: Efectivo");
 
-    expect(resultado2).not.toContain("Hola, Ana");
-    expect(resultado2).not.toContain("Compra N.º 1");
-    expect(resultado2).not.toContain("Forma de pago: Mercado Pago");
+        expect(texto1).not.toContain("Hola, Juan");
+        expect(texto1).not.toContain("Compra N.º 2");
+        expect(texto1).not.toContain("Forma de pago: Efectivo");
 
-    expect(resultado1).not.toBe(resultado2);
+        expect(texto2).not.toContain("Hola, Ana");
+        expect(texto2).not.toContain("Compra N.º 1");
+        expect(texto2).not.toContain("Forma de pago: Mercado Pago");
 
-    expect(compra1).toEqual(compra1Original);
-    expect(compra2).toEqual(compra2Original);
+        expect(resultado1).not.toBe(resultado2);
 
-});
+        expect(compra1).toEqual(compra1Original);
+        expect(compra2).toEqual(compra2Original);
+    });
 
-test("Test 144 - Probar la generación de una plantilla HTML estructurada", () => {
+    test("Test 144 - Probar la generación de una plantilla HTML estructurada", () => {
 
-    // ARRANGE
-    const compra = {
-        id: 1,
-        cliente: {
+        // ARRANGE
+        const compra = {
             id: 1,
-            nombre: "Ana"
-        },
-        fechaVisita: "2026-10-20",
-        cantidadEntradas: 2,
-        tiposPase: ["REGULAR", "VIP"],
-        montoTotal: 30000,
-        formaPago: "Mercado Pago"
-    };
+            cliente: {
+                id: 1,
+                nombre: "Ana"
+            },
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 2,
+            tiposPase: ["REGULAR", "VIP"],
+            montoTotal: 30000,
+            formaPago: "Mercado Pago"
+        };
 
-    const compraOriginal = structuredClone(compra);
+        const compraOriginal = structuredClone(compra);
 
-    // ACT
-    const resultado = generarContenidoMail(compra);
+        // ACT
+        const resultado = generarContenidoMail(compra);
+        const textoVisible = obtenerTextoVisible(resultado);
 
-    // ASSERT
+        // ASSERT
 
-    // Estructura HTML
-    expect(resultado).toContain("<!DOCTYPE html>");
-    expect(resultado).toContain('<html lang="es">');
-    expect(resultado).toContain('<meta charset="UTF-8">');
-    expect(resultado).toContain("<body");
+        // Estructura HTML
+        expect(resultado).toContain("<!DOCTYPE html>");
+        expect(resultado).toContain('<html lang="es">');
+        expect(resultado).toContain('<meta charset="UTF-8">');
+        expect(resultado).toContain("<body");
 
-    // Secciones del correo
-    expect(resultado).toMatch(/<header\b[^>]*>/);
-    expect(resultado).toContain("</header>");
+        // Secciones del correo
+        expect(resultado).toMatch(/<header\b[^>]*>/);
+        expect(resultado).toContain("</header>");
 
-    expect(resultado).toMatch(/<main\b[^>]*>/);
-    expect(resultado).toContain("</main>");
+        expect(resultado).toMatch(/<main\b[^>]*>/);
+        expect(resultado).toContain("</main>");
 
-    expect(resultado).toMatch(/<footer\b[^>]*>/);
-    expect(resultado).toContain("</footer>");
+        expect(resultado).toMatch(/<footer\b[^>]*>/);
+        expect(resultado).toContain("</footer>");
 
-    // Estilos de presentación
-    expect(resultado).toMatch(/<header\b[^>]*\bstyle="/);
-    expect(resultado).toMatch(/<main\b[^>]*\bstyle="/);
-    expect(resultado).toMatch(/<footer\b[^>]*\bstyle="/);
+        // Estilos inline
+        expect(resultado).toMatch(/<header\b[^>]*\bstyle="/);
+        expect(resultado).toMatch(/<main\b[^>]*\bstyle="/);
+        expect(resultado).toMatch(/<footer\b[^>]*\bstyle="/);
 
-    // Información institucional
-    expect(resultado).toContain("EcoHarmony Park");
-    expect(resultado).toContain("Resumen de tu compra");
+        // Identidad visual
+        expect(resultado).toContain('alt="Logo EcoHarmony Park"');
+        expect(resultado).toContain('src="logo.png"');
 
-    // Información de la compra
-    expect(resultado).toContain("Hola, Ana");
-    expect(resultado).toContain("Compra N.º 1");
-    expect(resultado).toContain("20/10/2026");
-    expect(resultado).toContain("Cantidad de entradas: 2");
-    expect(resultado).toContain("Regular, VIP");
-    expect(resultado).toContain("Monto total: $30.000");
-    expect(resultado).toContain("Forma de pago: Mercado Pago");
+        expect(resultado).toContain("#f6f4ea");
+        expect(resultado).toContain("#386641");
+        expect(resultado).toContain("#6a994e");
+        expect(resultado).toContain("#a7c957");
 
-    // Independencia de los datos originales
-    expect(compra).toEqual(compraOriginal);
+        // Información institucional
+        expect(textoVisible).toContain("EcoHarmony Park");
+        expect(textoVisible).toContain("Resumen de tu compra");
 
-});
+        // Información de la compra
+        expect(textoVisible).toContain("Hola, Ana");
+        expect(textoVisible).toContain("Compra N.º 1");
+        expect(textoVisible).toContain("20/10/2026");
+        expect(textoVisible).toContain("Cantidad de entradas: 2");
+        expect(textoVisible).toContain("Tipos de pase: Regular, VIP");
+        expect(textoVisible).toContain("Monto total: $30.000");
+        expect(textoVisible).toContain("Forma de pago: Mercado Pago");
+
+        // Independencia de los datos originales
+        expect(compra).toEqual(compraOriginal);
+    });
 
 });

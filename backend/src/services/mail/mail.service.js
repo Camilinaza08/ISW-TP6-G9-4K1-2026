@@ -6,46 +6,158 @@ const plantilla = `
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>EcoHarmony Park</title>
+            <title>EcoHarmony Park - Resumen de tu compra</title>
         </head>
 
-        <body style="margin: 0; padding: 20px; font-family: Arial, sans-serif; background-color: #f5f5f5;">
+        <body style="
+            margin: 0;
+            padding: 32px 16px;
+            background-color: #f6f4ea;
+            font-family: Lato, Arial, sans-serif;
+            color: #3a3a32;
+            line-height: 1.6;
+        ">
 
-            <header style="padding: 20px; background-color: #ffffff; text-align: center;">
-                <h1>EcoHarmony Park</h1>
-                <h2>Resumen de tu compra</h2>
-            </header>
+            <div style="max-width: 620px; margin: 0 auto;">
 
-            <main style="padding: 20px; background-color: #ffffff;">
+                <header style="
+                    background-color: #f6f4ea;
+                    padding: 24px 20px;
+                    text-align: center;
+                ">
 
-                <p>Hola, {{cliente.nombre}}</p>
+                    <img
+                        src="logo.png"
+                        alt="Logo EcoHarmony Park"
+                        width="76"
+                        height="76"
+                        style="
+                            display: block;
+                            width: 76px;
+                            height: 76px;
+                            object-fit: contain;
+                            margin: 0 auto 12px;
+                        "
+                    >
 
-                <p>Gracias por realizar tu compra en EcoHarmony Park.</p>
+                    <h1 style="
+                        margin: 0;
+                        color: #386641;
+                        font-size: 27px;
+                        font-weight: 500;
+                    ">
+                        EcoHarmony Park
+                    </h1>
 
-                <h3>Detalles de la compra</h3>
+                    <h2 style="
+                        margin: 12px 0 0;
+                        color: #6a994e;
+                        font-size: 17px;
+                        font-weight: 400;
+                    ">
+                        Resumen de tu compra
+                    </h2>
 
-                <p>Compra N.º {{id}}</p>
+                </header>
 
-                <p>Fecha de visita: {{fechaFormateada}}</p>
+                <main style="
+                    background-color: #ffffff;
+                    padding: 30px 28px;
+                    border-radius: 14px;
+                ">
 
-                <p>Cantidad de entradas: {{cantidadEntradas}}</p>
+                    <p style="margin: 0 0 12px; font-size: 17px; color: #386641;">
+                        Hola, {{cliente.nombre}}
+                    </p>
 
-                <p>Tipos de pase: {{tiposPaseFormateados}}</p>
+                    <p style="margin: 0 0 26px;">
+                        Gracias por realizar tu compra en EcoHarmony Park.
+                    </p>
 
-                {{#if montoFormateado}}
-                    <p>Monto total: \${{montoFormateado}}</p>
-                {{/if}}
+                    <h3 style="
+                        color: #386641;
+                        font-size: 19px;
+                        font-weight: 600;
+                        margin: 0 0 18px;
+                        padding-bottom: 10px;
+                        border-bottom: 2px solid #a7c957;
+                    ">
+                        Detalles de la compra
+                    </h3>
 
-                {{#if formaPago}}
-                    <p>Forma de pago: {{formaPago}}</p>
-                {{/if}}
+                    <p style="margin: 0 0 12px;">
+                        <strong>Compra N.º {{id}}</strong>
+                    </p>
 
-            </main>
+                    {{#if fechaFormateada}}
+                        <p style="margin: 0 0 12px;">
+                            <strong>Fecha de visita:</strong> {{fechaFormateada}}
+                        </p>
+                    {{/if}}
 
-            <footer style="padding: 15px; background-color: #ffffff; text-align: center;">
-                <p>EcoHarmony Park</p>
-                <p>Gracias por elegirnos.</p>
-            </footer>
+                    {{#if cantidadEntradas}}
+                        <p style="margin: 0 0 12px;">
+                            <strong>Cantidad de entradas:</strong> {{cantidadEntradas}}
+                        </p>
+                    {{/if}}
+
+                    {{#if tiposPaseFormateados}}
+                        <p style="margin: 0 0 12px;">
+                            <strong>Tipos de pase:</strong> {{tiposPaseFormateados}}
+                        </p>
+                    {{/if}}
+
+                    {{#if formaPago}}
+                        <p style="margin: 0 0 20px;">
+                            <strong>Forma de pago:</strong> {{formaPago}}
+                        </p>
+                    {{/if}}
+
+                    {{#if montoFormateado}}
+                        <div style="
+                            background-color: #f6f4ea;
+                            border-left: 4px solid #6a994e;
+                            border-radius: 8px;
+                            padding: 18px;
+                            margin-top: 22px;
+                        ">
+                            <p style="
+                                margin: 0;
+                                color: #386641;
+                                font-size: 21px;
+                                font-weight: 600;
+                            ">
+                                Monto total: \${{montoFormateado}}
+                            </p>
+                        </div>
+                    {{/if}}
+
+                </main>
+
+                <footer style="
+                    background-color: #a7c957;
+                    color: #386641;
+                    padding: 24px 20px;
+                    margin-top: 18px;
+                    border-radius: 14px;
+                    text-align: center;
+                ">
+
+                    <p style="margin: 0 0 6px; font-weight: 600;">
+                        EcoHarmony Park
+                    </p>
+
+                    <p style="margin: 0; font-size: 13px;">
+                        Gracias por elegirnos.
+                    </p>
+
+                    <p style="margin: 10px 0 0; font-size: 12px;">
+                        Cada visita, una oportunidad para aprender.
+                    </p>
+
+                </footer>
+
+            </div>
 
         </body>
     </html>
