@@ -1666,6 +1666,51 @@ test("Test 110 - Confirmar una compra seleccionando Mercado Pago", async () => {
     }
 });
 
+test("Test 128 - Registrar una compra válida mediante efectivo", async () => {
+
+    // ARRANGE
+    const usuario = USUARIOS_MOCK[0];
+
+    const compra = {
+        cliente: usuario,
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        edadesVisitantes: [25, 30],
+        tipoPase: ["REGULAR", "VIP"],
+        montoTotal: 30000
+    };
+
+    const guardarCompraMock = jest.spyOn(
+        CompraRepository.prototype,
+        "guardarCompra"
+    ).mockImplementation(async (compraRecibida) => ({
+        ...compraRecibida,
+        id: 1
+    }));
+
+    // ACT
+    const resultado = await confirmarCompra(compra, "Efectivo");
+
+    // ASSERT
+    expect(guardarCompraMock).toHaveBeenCalledTimes(1);
+
+    expect(guardarCompraMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+            cliente: usuario,
+            cantidadEntradas: 2,
+            formaPago: "Efectivo",
+            estadoCompra: "pendiente",
+            estadoPago: "pendiente"
+        })
+    );
+
+    expect(resultado).toEqual({
+        ...compra,
+        id: 1
+    });
+
+});
+
 })
 
 
