@@ -379,6 +379,18 @@ describe("validarEmailDestinatario", () => {
     // ACT Y ASSERT
     expect(() => validarEmailDestinatario(email)).not.toThrow();
 
-})
+    })
+
+    
+    test("Test 147 - Validar que un correo electrónico con formato inválido sea rechazado", () => {
+
+    // ARRANGE
+    const email = "correo-invalido";
+
+    // ACT Y ASSERT
+    expect(() => validarEmailDestinatario(email))
+        .toThrow("Formato de correo electrónico inválido");
+
+    });
 
 });
