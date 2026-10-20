@@ -217,6 +217,14 @@ function validarFormaPago(formaPago) {
     return true;
 }
 
+function validarLimiteAcumulado(entradasAcumuladas, cantidadEntradas) {
+    if (entradasAcumuladas + cantidadEntradas > 10) {
+        throw new Error(
+            "Se ha superado el límite de 10 entradas por usuario para la fecha seleccionada"
+        );
+    }
+}
+
 module.exports = {
   validarUsuario,
   validarFecha,
@@ -224,5 +232,6 @@ module.exports = {
   validarCantidadEntradas,
   validarCamposObligatorios,
   validarFormaPago,
-  calcularMonto
+  calcularMonto,
+  validarLimiteAcumulado
 };

@@ -1,5 +1,5 @@
 const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntradas, validarCamposObligatorios,
-  calcularMonto, validarFormaPago} = require('./ticket.validator');
+  calcularMonto, validarFormaPago, validarLimiteAcumulado} = require('./ticket.validator');
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
 const { REGLAS_CALENDARIO } = require('./calendario.mock');
@@ -26,11 +26,10 @@ async function comprarEntradas(usuario, datosCompra) {
         datosCompra.fechaVisita
     );
 
-    if (entradasAcumuladas + datosCompra.cantidadEntradas > 10) {
-        throw new Error(
-            "Se ha superado el límite de 10 entradas por usuario para la fecha seleccionada"
-        );
-    }
+    validarLimiteAcumulado(
+        entradasAcumuladas,
+        datosCompra.cantidadEntradas
+    );
 
     const montoTotal = calcularMonto(
         datosCompra.edadesVisitantes,
