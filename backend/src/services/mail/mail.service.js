@@ -12,6 +12,8 @@ const plantilla = `
             <h2>Resumen de tu compra</h2>
 
             <p>Hola, {{cliente.nombre}}</p>
+
+            <p>Compra N.º {{id}}</p>
         </body>
     </html>
 `;
