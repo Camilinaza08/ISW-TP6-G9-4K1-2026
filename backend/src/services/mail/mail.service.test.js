@@ -1,4 +1,4 @@
-const { generarContenidoMail } = require("./mail.service");
+const { generarContenidoMail, validarEmailDestinatario } = require("./mail.service");
 
 function obtenerTextoVisible(html) {
     return html
@@ -354,6 +354,21 @@ describe("generarContenidoMail", () => {
 
         // Independencia de los datos originales
         expect(compra).toEqual(compraOriginal);
+    });
+    
+});
+
+describe("validarEmailDestinatario", () => {
+
+    test("Test 145 - Validar que el correo electrónico del destinatario sea obligatorio", () => {
+
+        // ARRANGE
+        const email = null;
+
+        // ACT Y ASSERT
+        expect(() => validarEmailDestinatario(email))
+            .toThrow("No se ha indicado un correo electrónico");
+
     });
 
 });

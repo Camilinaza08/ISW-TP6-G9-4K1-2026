@@ -60,5 +60,25 @@
     "estadoPago": "pendiente",
     "formaPago": "Efectivo",
     "id": 3
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      30
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 2,
+      "nombre": "Brisa",
+      "email": "brisaabigaildiaz2000@gmail.com"
+    },
+    "montoTotal": 20000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 4
   }
 ]

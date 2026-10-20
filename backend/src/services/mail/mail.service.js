@@ -42,6 +42,9 @@ function generarContenidoMail(compra) {
     });
 }
 
+function validarEmailDestinatario(mail) {}
+
 module.exports = {
-    generarContenidoMail
+    generarContenidoMail,
+    validarEmailDestinatario
 };
