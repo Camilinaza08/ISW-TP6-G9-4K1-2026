@@ -1531,6 +1531,16 @@ describe('validarFormaPago', () => {
 });
 
 describe('confirmarCompra', () => {
+   beforeEach(() => {
+        jest.spyOn(
+            CompraRepository.prototype,
+            "guardarCompra"
+        ).mockImplementation(async (compra) => compra);
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
   test("Test 107 - Confirmar una compra sin seleccionar una forma de pago", async () => {
     // ARRANGE
     jest.useFakeTimers();
