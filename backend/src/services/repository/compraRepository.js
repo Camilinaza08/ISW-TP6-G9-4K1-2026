@@ -82,12 +82,7 @@ class CompraRepository {
 
 async obtenerEntradasAcumuladas(idUsuario, fechaVisita) {
 
-    const contenido = fs.readFileSync(
-        this.rutaArchivo,
-        "utf8"
-    );
-
-    const comprasGuardadas = JSON.parse(contenido);
+    const comprasGuardadas = this.leerCompras();
 
     const comprasDelUsuario = comprasGuardadas.filter(
         compra => compra.cliente.id === idUsuario
