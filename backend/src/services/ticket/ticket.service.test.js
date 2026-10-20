@@ -37,7 +37,15 @@ describe('validarUsuario', () => {
 });
 
 describe('validarCompra', () => {
-  test('Test 04 - Comprar entradas con usuario no registrado', () => {
+  beforeEach(() => {
+    jest.spyOn(CompraRepository.prototype, 'obtenerEntradasAcumuladas')
+      .mockResolvedValue(0);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+  test('Test 04 - Comprar entradas con usuario no registrado', async () => {
     usuario = { id: 999, nombre: 'Usuario inexistente', email:'inexistente@example.com' };
     datosCompra = {
       fechaVisita: '2026-10-24',
@@ -46,12 +54,12 @@ describe('validarCompra', () => {
       tipoPase: ['REGULAR', 'REGULAR'],
     };
 
-    expect(() => comprarEntradas(usuario, datosCompra)).toThrow(
+    await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow(
       'ERROR: Usuario no registrado',
     );
   });
 
-  test('Test 05 - Comprar entradas con usuario registrado', () => {
+  test('Test 05 - Comprar entradas con usuario registrado', async () => {
     usuario = { id: 2, nombre: 'Brisa', email: 'brisaabigaildiaz2000@gmail.com', };
     datosCompra = {
       fechaVisita: '2026-10-24',
@@ -60,7 +68,7 @@ describe('validarCompra', () => {
       tipoPase: ['REGULAR', 'REGULAR'],
     };
 
-    const compra = comprarEntradas(usuario, datosCompra);
+    const compra = await comprarEntradas(usuario, datosCompra);
     expect(compra).not.toBeNull();
     expect(compra.fechaVisita).toBe(datosCompra.fechaVisita);
     expect(compra.cantidadEntradas).toBe(datosCompra.cantidadEntradas);
@@ -68,7 +76,7 @@ describe('validarCompra', () => {
     expect(compra.tipoPase).toEqual(datosCompra.tipoPase);
   });
 
-  test('Test 06 - Conservar datos del usuario en la compra', () => {
+  test('Test 06 - Conservar datos del usuario en la compra', async () => {
     datosCompra = {
       fechaVisita: '2026-10-24',
       cantidadEntradas: 2,
@@ -76,12 +84,12 @@ describe('validarCompra', () => {
       tipoPase: ['REGULAR', 'REGULAR'],
     };
 
-    const compra = comprarEntradas(usuario, datosCompra);
+    const compra = await comprarEntradas(usuario, datosCompra);
 
     expect(compra.cliente).toEqual(usuario);
   });
 
-  test("Test 32 - Probar comprar entradas con una fecha previa a la actual", () => {
+  test("Test 32 - Probar comprar entradas con una fecha previa a la actual", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -98,15 +106,14 @@ describe('validarCompra', () => {
         };
 
         // ACT Y ASSERT
-        expect(() => comprarEntradas(usuario, datosCompra))
-            .toThrow("Fecha previa a la actual");
+        await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Fecha previa a la actual");
 
     } finally {
         jest.useRealTimers();
     }
 });
 
-  test("Test 33 - Probar comprar entradas con una fecha actual", () => {
+  test("Test 33 - Probar comprar entradas con una fecha actual", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -126,7 +133,7 @@ describe('validarCompra', () => {
         };
 
         // ACT
-        const resultado = comprarEntradas(usuario, datosCompra);
+        const resultado = await comprarEntradas(usuario, datosCompra);
 
         // ASSERT
         expect(resultado).toBeDefined();
@@ -137,7 +144,7 @@ describe('validarCompra', () => {
     }
   });
 
-  test("Test 34 - Probar comprar entradas con una fecha posterior a la actual", () => {
+  test("Test 34 - Probar comprar entradas con una fecha posterior a la actual", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -157,7 +164,7 @@ describe('validarCompra', () => {
         };
 
         // ACT
-        const resultado = comprarEntradas(usuario, datosCompra);
+        const resultado = await comprarEntradas(usuario, datosCompra);
 
         // ASSERT
         expect(resultado).toBeDefined();
@@ -168,7 +175,7 @@ describe('validarCompra', () => {
     }
   });
 
-  test("Test 35 - Probar comprar entradas sin fecha de visita", () => {
+  test("Test 35 - Probar comprar entradas sin fecha de visita", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -185,15 +192,14 @@ describe('validarCompra', () => {
         };
 
         // ACT Y ASSERT
-        expect(() => comprarEntradas(usuario, datosCompra))
-            .toThrow("Debe seleccionar una fecha de visita");
+        await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Debe seleccionar una fecha de visita");
 
     } finally {
         jest.useRealTimers();
     }
   });
 
-  test("Test 36 - Probar comprar entradas con más de 30 días de anticipación", () => {
+  test("Test 36 - Probar comprar entradas con más de 30 días de anticipación", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -210,8 +216,7 @@ describe('validarCompra', () => {
         };
 
         // ACT Y ASSERT
-        expect(() => comprarEntradas(usuario, datosCompra))
-            .toThrow(
+        await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow(
                 "No se pueden comprar entradas con más de 30 días de anticipación"
             );
 
@@ -220,7 +225,7 @@ describe('validarCompra', () => {
     }
   });
 
-  test("Test 37 - Probar comprar entradas con una fecha en la que el parque está cerrado", () => {
+  test("Test 37 - Probar comprar entradas con una fecha en la que el parque está cerrado", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -237,15 +242,14 @@ describe('validarCompra', () => {
         };
 
         // ACT Y ASSERT
-        expect(() => comprarEntradas(usuario, datosCompra))
-            .toThrow("Parque Cerrado");
+        await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Parque Cerrado");
 
     } finally {
         jest.useRealTimers();
     }
   });
 
-  test("Test 38 - Probar comprar entradas con una fecha en la que el parque está abierto", () => {
+  test("Test 38 - Probar comprar entradas con una fecha en la que el parque está abierto", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -264,12 +268,9 @@ describe('validarCompra', () => {
         };
 
         // ACT
-        let resultado;
+        const resultado = await comprarEntradas(usuario, datosCompra);
 
         // ASSERT
-        expect(() => {
-            resultado = comprarEntradas(usuario, datosCompra);
-        }).not.toThrow();
 
         expect(resultado).toBeDefined();
         expect(resultado).not.toBeNull();
@@ -280,7 +281,7 @@ describe('validarCompra', () => {
     }
 });
 
-test("Test 39 - Probar que una compra válida conserve la fecha de visita seleccionada", () => {
+test("Test 39 - Probar que una compra válida conserve la fecha de visita seleccionada", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -297,7 +298,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         };
 
         // ACT
-        const resultado = comprarEntradas(usuario, datosCompra);
+        const resultado = await comprarEntradas(usuario, datosCompra);
 
         // ASSERT
         expect(resultado).toBeDefined();
@@ -309,7 +310,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
 });
 
-  test("Test 48 - Probar comprar entradas con una cantidad superior a 10", () => {
+  test("Test 48 - Probar comprar entradas con una cantidad superior a 10", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -326,15 +327,14 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         };
 
         // ACT Y ASSERT
-        expect(() => comprarEntradas(usuario, datosCompra))
-            .toThrow("No se pueden comprar más de 10 entradas");
+        await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("No se pueden comprar más de 10 entradas");
 
     } finally {
         jest.useRealTimers();
     }
 });
 
-  test("Test 49 - Probar comprar exactamente 10 entradas", () => {
+  test("Test 49 - Probar comprar exactamente 10 entradas", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -351,7 +351,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         };
 
         // ACT
-        const resultado = comprarEntradas(usuario, datosCompra);
+        const resultado = await comprarEntradas(usuario, datosCompra);
 
         // ASSERT
         expect(resultado).toBeDefined();
@@ -363,7 +363,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
 });
 
-  test("Test 50 - Probar comprar 0 entradas", () => {
+  test("Test 50 - Probar comprar 0 entradas", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -380,15 +380,14 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         };
 
         // ACT Y ASSERT
-        expect(() => comprarEntradas(usuario, datosCompra))
-            .toThrow("Cantidad inválida");
+        await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Cantidad inválida");
 
     } finally {
         jest.useRealTimers();
     }
   });
 
-  test("Test 51 - Probar comprar entradas sin proporcionar una cantidad", () => {
+  test("Test 51 - Probar comprar entradas sin proporcionar una cantidad", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -405,15 +404,14 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         };
 
         // ACT Y ASSERT
-        expect(() => comprarEntradas(usuario, datosCompra))
-            .toThrow("Cantidad de entradas faltante");
+        await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Cantidad de entradas faltante");
 
     } finally {
         jest.useRealTimers();
     }
   });
 
-  test("Test 52 - Probar comprar entradas con una cantidad decimal", () => {
+  test("Test 52 - Probar comprar entradas con una cantidad decimal", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -430,15 +428,14 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         };
 
         // ACT Y ASSERT
-        expect(() => comprarEntradas(usuario, datosCompra))
-            .toThrow("Cantidad inválida");
+        await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Cantidad inválida");
 
     } finally {
         jest.useRealTimers();
     }
   });
 
-  test("Test 53 - Probar comprar entradas con una cantidad no numérica", () => {
+  test("Test 53 - Probar comprar entradas con una cantidad no numérica", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -455,15 +452,14 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         };
 
         // ACT Y ASSERT
-        expect(() => comprarEntradas(usuario, datosCompra))
-            .toThrow("Cantidad inválida");
+        await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Cantidad inválida");
 
     } finally {
         jest.useRealTimers();
     }
   });
 
-  test("Test 54 - Probar comprar entradas con una cantidad negativa", () => {
+  test("Test 54 - Probar comprar entradas con una cantidad negativa", async () => {
     // ARRANGE
     jest.useFakeTimers();
 
@@ -480,15 +476,14 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         };
 
         // ACT Y ASSERT
-        expect(() => comprarEntradas(usuario, datosCompra))
-            .toThrow("Cantidad inválida");
+        await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Cantidad inválida");
 
     } finally {
         jest.useRealTimers();
     }
 });
 
-  test("Test 68 - Probar comprar entradas sin edades ni tipos de pase", () => {
+  test("Test 68 - Probar comprar entradas sin edades ni tipos de pase", async () => {
     jest.useFakeTimers();
 
     try {
@@ -503,14 +498,13 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: null
       };
 
-      expect(() => comprarEntradas(usuario, datosCompra))
-        .toThrow("Datos faltantes");
+      await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Datos faltantes");
     } finally {
       jest.useRealTimers();
     }
   });
 
-  test("Test 69 - Probar comprar entradas sin edades", () => {
+  test("Test 69 - Probar comprar entradas sin edades", async () => {
     jest.useFakeTimers();
 
     try {
@@ -525,14 +519,13 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ["VIP", "REGULAR"]
       };
 
-      expect(() => comprarEntradas(usuario, datosCompra))
-        .toThrow("Edades faltantes");
+      await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Edades faltantes");
     } finally {
       jest.useRealTimers();
     }
   });
 
-  test("Test 70 - Probar comprar entradas sin tipos de pase", () => {
+  test("Test 70 - Probar comprar entradas sin tipos de pase", async () => {
     jest.useFakeTimers();
 
     try {
@@ -547,14 +540,13 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: null
       };
 
-      expect(() => comprarEntradas(usuario, datosCompra))
-        .toThrow("Tipos de pase faltantes");
+      await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Tipos de pase faltantes");
     } finally {
       jest.useRealTimers();
     }
   });
 
-  test("Test 71 - Probar comprar entradas con menos edades que visitantes", () => {
+  test("Test 71 - Probar comprar entradas con menos edades que visitantes", async () => {
     jest.useFakeTimers();
 
     try {
@@ -569,14 +561,13 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ["VIP", "REGULAR", "VIP"]
       };
 
-      expect(() => comprarEntradas(usuario, datosCompra))
-        .toThrow("Faltan edades de visitantes");
+      await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Faltan edades de visitantes");
     } finally {
       jest.useRealTimers();
     }
   });
 
-  test("Test 72 - Probar comprar entradas con menos tipos de pase que visitantes", () => {
+  test("Test 72 - Probar comprar entradas con menos tipos de pase que visitantes", async () => {
     jest.useFakeTimers();
 
     try {
@@ -591,14 +582,13 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ["VIP", "REGULAR"]
       };
 
-      expect(() => comprarEntradas(usuario, datosCompra))
-        .toThrow("Faltan tipos de pase de visitantes");
+      await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Faltan tipos de pase de visitantes");
     } finally {
       jest.useRealTimers();
     }
   });
 
-  test("Test 73 - Probar comprar entradas con una edad negativa", () => {
+  test("Test 73 - Probar comprar entradas con una edad negativa", async () => {
     jest.useFakeTimers();
 
     try {
@@ -613,14 +603,13 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ["VIP", "REGULAR"]
       };
 
-      expect(() => comprarEntradas(usuario, datosCompra))
-        .toThrow("Edad ingresada inválida");
+      await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Edad ingresada inválida");
     } finally {
       jest.useRealTimers();
     }
   });
 
-  test("Test 74 - Probar comprar entradas con un tipo de pase no permitido", () => {
+  test("Test 74 - Probar comprar entradas con un tipo de pase no permitido", async () => {
     jest.useFakeTimers();
 
     try {
@@ -635,14 +624,13 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ["VIP", "Premium"]
       };
 
-      expect(() => comprarEntradas(usuario, datosCompra))
-        .toThrow("Tipo de pase inválido");
+      await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Tipo de pase inválido");
     } finally {
       jest.useRealTimers();
     }
   });
 
-  test("Test 75 - Probar comprar entradas con una edad ingresada como texto", () => {
+  test("Test 75 - Probar comprar entradas con una edad ingresada como texto", async () => {
     jest.useFakeTimers();
 
     try {
@@ -657,14 +645,13 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ["VIP", "REGULAR"]
       };
 
-      expect(() => comprarEntradas(usuario, datosCompra))
-        .toThrow("Edad ingresada inválida");
+      await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Edad ingresada inválida");
     } finally {
       jest.useRealTimers();
     }
   });
 
-  test("Test 76 - Probar comprar entradas con una edad decimal", () => {
+  test("Test 76 - Probar comprar entradas con una edad decimal", async () => {
     jest.useFakeTimers();
 
     try {
@@ -679,14 +666,13 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ["VIP", "REGULAR"]
       };
 
-      expect(() => comprarEntradas(usuario, datosCompra))
-        .toThrow("Edad ingresada inválida");
+      await expect(comprarEntradas(usuario, datosCompra)).rejects.toThrow("Edad ingresada inválida");
     } finally {
       jest.useRealTimers();
     }
   });
 
-  test("Test 77 - Probar comprar entradas con todos los datos requeridos válidos", () => {
+  test("Test 77 - Probar comprar entradas con todos los datos requeridos válidos", async () => {
     jest.useFakeTimers();
 
     try {
@@ -701,7 +687,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ["VIP", "REGULAR", "VIP"]
       };
 
-      const resultado = comprarEntradas(usuario, datosCompra);
+      const resultado = await comprarEntradas(usuario, datosCompra);
 
       expect(resultado).toEqual({
         ...datosCompra,
@@ -713,7 +699,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-    test('Test 94 - Probar que una compra válida devuelva un monto total no nulo', () => {
+    test('Test 94 - Probar que una compra válida devuelva un monto total no nulo', async () => {
       jest.useFakeTimers();
   
       try {
@@ -728,7 +714,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
           tipoPase: ['REGULAR']
         };
   
-        const resultado = comprarEntradas(usuario, datosCompra);
+        const resultado = await comprarEntradas(usuario, datosCompra);
   
         expect(resultado.montoTotal).not.toBeNull();
       } finally {
@@ -736,7 +722,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
       }
     });
 
-   test('Test 95 - Probar que una compra de una entrada Regular sin descuento devuelva el monto correcto', () => {
+   test('Test 95 - Probar que una compra de una entrada Regular sin descuento devuelva el monto correcto', async () => {
     jest.useFakeTimers();
 
     try {
@@ -751,7 +737,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ['REGULAR']
       };
 
-      const resultado = comprarEntradas(usuario, datosCompra);
+      const resultado = await comprarEntradas(usuario, datosCompra);
 
       expect(resultado.montoTotal).toBe(10000);
     } finally {
@@ -759,7 +745,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-  test('Test 96 - Probar que una compra de una entrada VIP sin descuento devuelva el monto correcto', () => {
+  test('Test 96 - Probar que una compra de una entrada VIP sin descuento devuelva el monto correcto', async () => {
     jest.useFakeTimers();
 
     try {
@@ -774,7 +760,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ['VIP']
       };
 
-      const resultado = comprarEntradas(usuario, datosCompra);
+      const resultado = await comprarEntradas(usuario, datosCompra);
 
       expect(resultado.montoTotal).toBe(20000);
     } finally {
@@ -782,7 +768,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-   test('Test 97 - Probar que una compra de una entrada Regular para un visitante de 0 a 3 años devuelva un monto total de $0', () => {
+   test('Test 97 - Probar que una compra de una entrada Regular para un visitante de 0 a 3 años devuelva un monto total de $0', async () => {
     jest.useFakeTimers();
 
     try {
@@ -797,7 +783,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ['REGULAR']
       };
 
-      const resultado = comprarEntradas(usuario, datosCompra);
+      const resultado = await comprarEntradas(usuario, datosCompra);
 
       expect(resultado.montoTotal).toBe(0);
     } finally {
@@ -805,7 +791,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-  test('Test 98 - Probar que una compra de una entrada VIP para un visitante de 4 a 15 años devuelva el monto con descuento del 50 %', () => {
+  test('Test 98 - Probar que una compra de una entrada VIP para un visitante de 4 a 15 años devuelva el monto con descuento del 50 %', async () => {
     jest.useFakeTimers();
 
     try {
@@ -820,7 +806,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ['VIP']
       };
 
-      const resultado = comprarEntradas(usuario, datosCompra);
+      const resultado = await comprarEntradas(usuario, datosCompra);
 
       expect(resultado.montoTotal).toBe(10000);
     } finally {
@@ -828,7 +814,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-   test('Test 99 - Probar que una compra de una entrada Regular para un visitante de 60 años o más devuelva el monto con descuento del 50 %', () => {
+   test('Test 99 - Probar que una compra de una entrada Regular para un visitante de 60 años o más devuelva el monto con descuento del 50 %', async () => {
     jest.useFakeTimers();
 
     try {
@@ -843,7 +829,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ['REGULAR']
       };
 
-      const resultado = comprarEntradas(usuario, datosCompra);
+      const resultado = await comprarEntradas(usuario, datosCompra);
 
       expect(resultado.montoTotal).toBe(5000);
     } finally {
@@ -851,7 +837,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-     test('Test 100 - Probar que una compra de varias entradas Regular sin descuentos devuelva el monto total acumulado', () => {
+     test('Test 100 - Probar que una compra de varias entradas Regular sin descuentos devuelva el monto total acumulado', async () => {
     jest.useFakeTimers();
 
     try {
@@ -866,7 +852,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ['REGULAR', 'REGULAR', 'REGULAR']
       };
 
-      const resultado = comprarEntradas(usuario, datosCompra);
+      const resultado = await comprarEntradas(usuario, datosCompra);
 
       expect(resultado.montoTotal).toBe(30000);
     } finally {
@@ -874,7 +860,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-  test('Test 101 - Probar que una compra con diferentes grupos etarios y tipos de pase devuelva el monto total con los descuentos correspondientes', () => {
+  test('Test 101 - Probar que una compra con diferentes grupos etarios y tipos de pase devuelva el monto total con los descuentos correspondientes', async () => {
     jest.useFakeTimers();
 
     try {
@@ -889,7 +875,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ['REGULAR', 'VIP', 'VIP', 'REGULAR']
       };
 
-      const resultado = comprarEntradas(usuario, datosCompra);
+      const resultado = await comprarEntradas(usuario, datosCompra);
 
       expect(resultado.montoTotal).toBe(30000);
     } finally {
@@ -897,7 +883,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-   test('Test 102 - Probar que una compra con el máximo de 10 entradas devuelva correctamente el monto total acumulado', () => {
+   test('Test 102 - Probar que una compra con el máximo de 10 entradas devuelva correctamente el monto total acumulado', async () => {
     jest.useFakeTimers();
 
     try {
@@ -912,7 +898,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: Array(10).fill('REGULAR')
       };
 
-      const resultado = comprarEntradas(usuario, datosCompra);
+      const resultado = await comprarEntradas(usuario, datosCompra);
 
       expect(resultado.montoTotal).toBe(100000);
     } finally {
@@ -931,10 +917,7 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
         tipoPase: ["REGULAR", "REGULAR", "VIP", "VIP"]
     };
 
-    jest.spyOn(
-        CompraRepository.prototype,
-        "obtenerEntradasAcumuladas"
-    ).mockResolvedValue(7);
+    CompraRepository.prototype.obtenerEntradasAcumuladas.mockResolvedValue(7);
 
     await expect(
         comprarEntradas(usuario, datosCompra)
@@ -944,8 +927,8 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
 
 });
 
-
 });
+
 
 describe('calcularMonto', () => {
   test('Test 78 - Probar cálculo del monto de una entrada Regular', () => {
@@ -1523,7 +1506,7 @@ describe('confirmarCompra', () => {
             tipoPase: ["REGULAR"]
         };
 
-        const compra = comprarEntradas(usuario, datosCompra);
+        const compra = await comprarEntradas(usuario, datosCompra);
 
         const compraOriginal = structuredClone(compra);
 
@@ -1557,7 +1540,7 @@ test("Test 109 - Confirmar una compra seleccionando Efectivo", async () => {
             tipoPase: ["REGULAR"]
         };
 
-        const compra = comprarEntradas(usuario, datosCompra);
+        const compra = await comprarEntradas(usuario, datosCompra);
 
         // ACT
         const resultado = await confirmarCompra(compra, "Efectivo");
@@ -1592,7 +1575,7 @@ test("Test 110 - Confirmar una compra seleccionando Mercado Pago", async () => {
             tipoPase: ["REGULAR"]
         };
 
-        const compra = comprarEntradas(usuario, datosCompra);
+        const compra = await comprarEntradas(usuario, datosCompra);
 
         expect(compra.estadoCompra).toBeUndefined();
         expect(compra.estadoPago).toBeUndefined();

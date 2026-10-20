@@ -9,25 +9,41 @@ const path = require("node:path");
 const rutaArchivo = path.join(__dirname, "../../data/compras.json");
 const repository = new CompraRepository(rutaArchivo);
 
-function comprarEntradas(usuario, datosCompra) {
-  validarUsuario(usuario);
-  validarFecha(datosCompra.fechaVisita);
-  validarAperturaParque(datosCompra.fechaVisita);
-  validarCantidadEntradas(datosCompra.cantidadEntradas);
-  validarCamposObligatorios(
-    datosCompra.edadesVisitantes,
-    datosCompra.tipoPase,
-    datosCompra.cantidadEntradas
-  );
+async function comprarEntradas(usuario, datosCompra) {
+    validarUsuario(usuario);
+    validarFecha(datosCompra.fechaVisita);
+    validarAperturaParque(datosCompra.fechaVisita);
+    validarCantidadEntradas(datosCompra.cantidadEntradas);
 
-  const montoTotal = calcularMonto(datosCompra.edadesVisitantes, datosCompra.tipoPase);
-  const compra = {
-    ...datosCompra,
-    cliente: usuario,
-    montoTotal: montoTotal,
-  };
+    validarCamposObligatorios(
+        datosCompra.edadesVisitantes,
+        datosCompra.tipoPase,
+        datosCompra.cantidadEntradas
+    );
 
-  return compra;
+    const entradasAcumuladas = await repository.obtenerEntradasAcumuladas(
+        usuario.id,
+        datosCompra.fechaVisita
+    );
+
+    if (entradasAcumuladas + datosCompra.cantidadEntradas > 10) {
+        throw new Error(
+            "Se ha superado el límite de 10 entradas por usuario para la fecha seleccionada"
+        );
+    }
+
+    const montoTotal = calcularMonto(
+        datosCompra.edadesVisitantes,
+        datosCompra.tipoPase
+    );
+
+    const compra = {
+        ...datosCompra,
+        cliente: usuario,
+        montoTotal: montoTotal
+    };
+
+    return compra;
 }
 
 function obtenerFormasPago() {
