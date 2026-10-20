@@ -294,4 +294,44 @@ describe("actualizarEstadosCompra", () => {
 
 });
 
+test("Test 119 - Recuperar estados actualizados desde otra instancia", async () => {
+
+    const compra = {
+        cliente: USUARIOS_MOCK[0],
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 1,
+        edadesVisitantes: [25],
+        tipoPase: ["REGULAR"],
+        montoTotal: 10000,
+        formaPago: "Mercado Pago",
+        estadoCompra: "pendiente",
+        estadoPago: "pending"
+    };
+
+    const repository1 = new CompraRepository(rutaArchivo);
+
+    const compraGuardada = await repository1.guardarCompra(compra);
+
+    const repository2 = new CompraRepository(rutaArchivo);
+
+    await repository1.actualizarEstadosCompra(
+        compraGuardada.id,
+        "confirmada",
+        "approved"
+    );
+
+    const compraRecuperada = await repository2.obtenerCompraPorId(
+        compraGuardada.id
+    );
+
+    expect(repository2).not.toBe(repository1);
+
+    expect(compraRecuperada).toEqual({
+        ...compraGuardada,
+        estadoCompra: "confirmada",
+        estadoPago: "approved"
+    });
+
+});
+
 });
