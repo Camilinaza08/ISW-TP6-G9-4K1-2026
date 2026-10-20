@@ -232,4 +232,36 @@ describe("actualizarEstadosCompra", () => {
 
     });
 
+    test("Test 117 - Intentar actualizar una compra inexistente", async () => {
+
+    const compra = {
+        cliente: USUARIOS_MOCK[0],
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 1,
+        edadesVisitantes: [25],
+        tipoPase: ["REGULAR"],
+        montoTotal: 10000,
+        formaPago: "Mercado Pago",
+        estadoCompra: "pendiente",
+        estadoPago: "pending"
+    };
+
+    const compraGuardada = await repository.guardarCompra(compra);
+
+    await expect(
+        repository.actualizarEstadosCompra(
+            999,
+            "confirmada",
+            "approved"
+        )
+    ).rejects.toThrow("Compra no encontrada");
+
+    const compraPersistida = await repository.obtenerCompraPorId(
+        compraGuardada.id
+    );
+
+    expect(compraPersistida).toEqual(compraGuardada);
+
+});
+
 });
