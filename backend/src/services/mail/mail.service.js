@@ -16,6 +16,10 @@ const plantilla = `
             <p>Compra N.º {{id}}</p>
 
             <p>Fecha de visita: {{fechaFormateada}}</p>
+
+            <p>Cantidad de entradas: {{cantidadEntradas}}</p>
+
+            <p>Tipos de pase: {{tiposPaseFormateados}}</p>
         </body>
     </html>
 `;
@@ -35,9 +39,14 @@ function formatearFecha(fecha) {
 
 function generarContenidoMail(compra) {
 
+    const tiposPaseFormateados = (compra.tiposPase ?? [])
+        .map(tipo => tipo === "REGULAR" ? "Regular" : tipo)
+        .join(", ");
+
     return plantillaCompilada({
         ...compra,
-        fechaFormateada: formatearFecha(compra.fechaVisita)
+        fechaFormateada: formatearFecha(compra.fechaVisita),
+        tiposPaseFormateados
     });
 }
 
