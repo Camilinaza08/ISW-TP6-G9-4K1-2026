@@ -10,6 +10,8 @@ const plantilla = `
         <body>
             <h1>EcoHarmony Park</h1>
             <h2>Resumen de tu compra</h2>
+
+            <p>Hola, {{cliente.nombre}}</p>
         </body>
     </html>
 `;
