@@ -927,6 +927,40 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
 
 });
 
+test("Test 126 - Permitir una compra que alcance exactamente el límite acumulado", async () => {
+
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 3,
+            edadesVisitantes: [25, 30, 12],
+            tipoPase: ["REGULAR", "VIP", "REGULAR"]
+        };
+
+        CompraRepository.prototype.obtenerEntradasAcumuladas
+            .mockResolvedValue(7);
+
+        // ACT
+        const resultado = await comprarEntradas(usuario, datosCompra);
+
+        // ASSERT
+        expect(resultado).toBeDefined();
+        expect(resultado).not.toBeNull();
+        expect(resultado.cantidadEntradas).toBe(3);
+
+    } finally {
+        jest.useRealTimers();
+    }
+
+});
+
 });
 
 
