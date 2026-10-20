@@ -42,9 +42,15 @@ function generarContenidoMail(compra) {
     });
 }
 
+
 function validarEmailDestinatario(email) {
-    throw new Error("No se ha indicado un correo electrónico");
+    if (email === null || email === undefined) {
+        throw new Error("No se ha indicado un correo electrónico");
+    }
+
+    return true
 }
+
 
 
 
