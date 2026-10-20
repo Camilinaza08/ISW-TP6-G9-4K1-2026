@@ -79,6 +79,9 @@ class CompraRepository {
 
     return compra;
 }
+async obtenerEntradasAcumuladas(idUsuario, fechaVisita) {
+    // Pendiente de implementación
+}
 
 }
 

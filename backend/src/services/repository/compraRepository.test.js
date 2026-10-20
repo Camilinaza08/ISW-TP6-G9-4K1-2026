@@ -335,3 +335,45 @@ test("Test 119 - Recuperar estados actualizados desde otra instancia", async () 
 });
 
 });
+
+describe("obtenerEntradasAcumuladas", () => {
+
+    test("Test 120 - Calcular las entradas acumuladas de un usuario para una fecha", async () => {
+
+        const compra1 = {
+            cliente: USUARIOS_MOCK[0],
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 3,
+            edadesVisitantes: [25, 30, 12],
+            tipoPase: ["REGULAR", "VIP", "REGULAR"],
+            montoTotal: 40000,
+            formaPago: "Efectivo",
+            estadoCompra: "confirmada",
+            estadoPago: "no_aplica"
+        };
+
+        const compra2 = {
+            cliente: USUARIOS_MOCK[0],
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 4,
+            edadesVisitantes: [25, 30, 12, 40],
+            tipoPase: ["REGULAR", "REGULAR", "VIP", "VIP"],
+            montoTotal: 60000,
+            formaPago: "Efectivo",
+            estadoCompra: "confirmada",
+            estadoPago: "no_aplica"
+        };
+
+        await repository.guardarCompra(compra1);
+        await repository.guardarCompra(compra2);
+
+        const entradasAcumuladas = await repository.obtenerEntradasAcumuladas(
+            USUARIOS_MOCK[0].id,
+            "2026-10-20"
+        );
+
+        expect(entradasAcumuladas).toBe(7);
+
+    });
+
+});
