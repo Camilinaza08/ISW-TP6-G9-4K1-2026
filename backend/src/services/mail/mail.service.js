@@ -22,18 +22,22 @@ const plantilla = `
 
 const plantillaCompilada = Handlebars.compile(plantilla);
 
-function generarContenidoMail(compra) {
+function formatearFecha(fecha) {
 
-    let fechaFormateada = "";
-
-    if (compra.fechaVisita) {
-        const [anio, mes, dia] = compra.fechaVisita.split("-");
-        fechaFormateada = `${dia}/${mes}/${anio}`;
+    if (!fecha) {
+        return "";
     }
+
+    const [anio, mes, dia] = fecha.split("-");
+
+    return `${dia}/${mes}/${anio}`;
+}
+
+function generarContenidoMail(compra) {
 
     return plantillaCompilada({
         ...compra,
-        fechaFormateada
+        fechaFormateada: formatearFecha(compra.fechaVisita)
     });
 }
 
