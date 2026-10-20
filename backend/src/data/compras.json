@@ -1,0 +1,64 @@
+[
+  {
+    "fechaVisita": "2026-10-25",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      6
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 2,
+      "nombre": "Brisa",
+      "email": "brisaabigaildiaz2000@gmail.com"
+    },
+    "montoTotal": 5000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 1
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      25
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 2,
+      "nombre": "Brisa",
+      "email": "brisaabigaildiaz2000@gmail.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 2
+  },
+  {
+    "fechaVisita": "2026-10-20",
+    "cantidadEntradas": 2,
+    "edadesVisitantes": [
+      23,
+      80
+    ],
+    "tipoPase": [
+      "VIP",
+      "VIP"
+    ],
+    "cliente": {
+      "id": 2,
+      "nombre": "Brisa",
+      "email": "brisaabigaildiaz2000@gmail.com"
+    },
+    "montoTotal": 30000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 3
+  }
+]

@@ -49,9 +49,9 @@ app.post('/api/compra', async (req, res) => {
             }
             : null;
 
-        await validarSesion(sesionNormalizada);
+         validarSesion(sesionNormalizada);
 
-        const resultadoCompra = comprarEntradas(
+        const resultadoCompra = await comprarEntradas(
             sesionNormalizada.usuario,
             datosCompra
         );
@@ -66,27 +66,38 @@ app.post('/api/compra', async (req, res) => {
 });
 
 app.post('/api/confirmacion', async (req, res) => {
-  try {
-    const { sesion, datosCompra } = req.body;
+    try {
+        const { sesion, compra, formaPago } = req.body;
 
-    await validarSesion(sesion);
+        const sesionNormalizada = sesion
+            ? {
+                ...sesion,
+                fechaHoraInicio: new Date(sesion.fechaHoraInicio)
+            }
+            : null;
 
-    const compraConfirmada = await confirmarCompra(datosCompra);
+        await validarSesion(sesionNormalizada);
 
-    // TODO: gestionar la URL según la forma de pago
-    // Efectivo -> URL interna de confirmación
-    // Mercado Pago -> crear preferencia y obtener init_point
+        const compraConfirmada = await confirmarCompra(
+          compra,
+        formaPago
+      );
+
+        let urlRedireccion = null;
+
+      if (formaPago === 'Efectivo') {
+          urlRedireccion = 'resultado.html';
+      }
 
     return res.status(200).json({
-      ...compraConfirmada,
-      urlRedireccion: null,
-    });
-
-  } catch (error) {
-    return res.status(error.statusCode || 400).json({
-      error: error.message,
-    });
-  }
+    ...compraConfirmada,
+    urlRedireccion
+}); 
+    } catch (error) {
+        return res.status(error.statusCode || 400).json({
+            error: error.message
+        });
+    }
 });
 
 app.get('/api/pagos/:id/estado', async (req, res) => {
