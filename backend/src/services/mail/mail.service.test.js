@@ -300,4 +300,66 @@ test("Test 143 - Probar la generación independiente del contenido para diferent
 
 });
 
+test("Test 144 - Probar la generación de una plantilla HTML estructurada", () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        cliente: {
+            id: 1,
+            nombre: "Ana"
+        },
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        tiposPase: ["REGULAR", "VIP"],
+        montoTotal: 30000,
+        formaPago: "Mercado Pago"
+    };
+
+    const compraOriginal = structuredClone(compra);
+
+    // ACT
+    const resultado = generarContenidoMail(compra);
+
+    // ASSERT
+
+    // Estructura HTML
+    expect(resultado).toContain("<!DOCTYPE html>");
+    expect(resultado).toContain('<html lang="es">');
+    expect(resultado).toContain('<meta charset="UTF-8">');
+    expect(resultado).toContain("<body");
+
+    // Secciones del correo
+    expect(resultado).toMatch(/<header\b[^>]*>/);
+    expect(resultado).toContain("</header>");
+
+    expect(resultado).toMatch(/<main\b[^>]*>/);
+    expect(resultado).toContain("</main>");
+
+    expect(resultado).toMatch(/<footer\b[^>]*>/);
+    expect(resultado).toContain("</footer>");
+
+    // Estilos de presentación
+    expect(resultado).toMatch(/<header\b[^>]*\bstyle="/);
+    expect(resultado).toMatch(/<main\b[^>]*\bstyle="/);
+    expect(resultado).toMatch(/<footer\b[^>]*\bstyle="/);
+
+    // Información institucional
+    expect(resultado).toContain("EcoHarmony Park");
+    expect(resultado).toContain("Resumen de tu compra");
+
+    // Información de la compra
+    expect(resultado).toContain("Hola, Ana");
+    expect(resultado).toContain("Compra N.º 1");
+    expect(resultado).toContain("20/10/2026");
+    expect(resultado).toContain("Cantidad de entradas: 2");
+    expect(resultado).toContain("Regular, VIP");
+    expect(resultado).toContain("Monto total: $30.000");
+    expect(resultado).toContain("Forma de pago: Mercado Pago");
+
+    // Independencia de los datos originales
+    expect(compra).toEqual(compraOriginal);
+
+});
+
 });
