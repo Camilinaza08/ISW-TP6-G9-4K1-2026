@@ -31,4 +31,31 @@ describe("generarContenidoMail", () => {
 
     });
 
+    test("Test 137 - Probar la incorporación del saludo personalizado", () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        cliente: {
+            id: 1,
+            nombre: "Ana"
+        }
+    };
+
+    const compraOriginal = structuredClone(compra);
+
+    // ACT
+    const resultado = generarContenidoMail(compra);
+
+    // ASSERT
+    expect(resultado).toContain("Hola, Ana");
+
+    expect(resultado).toContain("EcoHarmony Park");
+
+    expect(resultado).toContain("Resumen de tu compra");
+
+    expect(compra).toEqual(compraOriginal);
+
+});
+
 });
