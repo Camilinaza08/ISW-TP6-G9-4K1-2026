@@ -52,12 +52,12 @@ class CompraRepository {
         return compraRegistrada;
     }
 
-    async obtenerCompraPorId(id) {
+  async obtenerCompraPorId(id) {
     const comprasGuardadas = this.leerCompras();
 
     return comprasGuardadas.find(
         compra => compra.id === id
-    );
+    ) ?? null;
 }
 
 }
