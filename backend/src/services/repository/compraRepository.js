@@ -4,9 +4,8 @@ const path = require("node:path");
 class CompraRepository {
 
     constructor(rutaArchivo) {
-        this.ultimoID = 0;
-        this.rutaArchivo = rutaArchivo;
-    }
+    this.rutaArchivo = rutaArchivo;
+}
 
     leerCompras() {
         if (!fs.existsSync(this.rutaArchivo)) {
@@ -35,7 +34,7 @@ class CompraRepository {
         );
     }
 
-    async guardarCompra(compra) {
+   async guardarCompra(compra) {
 
     const comprasGuardadas = this.leerCompras();
 
@@ -45,11 +44,11 @@ class CompraRepository {
         0
     );
 
-    this.ultimoID = ultimoID + 1;
+    const nuevoID = ultimoID + 1;
 
     const compraRegistrada = {
         ...compra,
-        id: this.ultimoID
+        id: nuevoID
     };
 
     comprasGuardadas.push(compraRegistrada);
