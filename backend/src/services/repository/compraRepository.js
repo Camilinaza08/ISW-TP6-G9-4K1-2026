@@ -62,12 +62,7 @@ class CompraRepository {
 
     async actualizarEstadosCompra(id, estadoCompra, estadoPago) {
 
-    const contenido = fs.readFileSync(
-        this.rutaArchivo,
-        "utf8"
-    );
-
-    const comprasGuardadas = JSON.parse(contenido);
+    const comprasGuardadas = this.leerCompras();
 
     const compra = comprasGuardadas.find(
         compra => compra.id === id
@@ -76,17 +71,7 @@ class CompraRepository {
     compra.estadoCompra = estadoCompra;
     compra.estadoPago = estadoPago;
 
-    const directorio = path.dirname(this.rutaArchivo);
-
-    fs.mkdirSync(directorio, {
-        recursive: true
-    });
-
-    fs.writeFileSync(
-        this.rutaArchivo,
-        JSON.stringify(comprasGuardadas, null, 2),
-        "utf8"
-    );
+    this.escribirCompras(comprasGuardadas);
 
     return compra;
 }
