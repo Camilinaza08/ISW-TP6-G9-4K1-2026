@@ -9,7 +9,17 @@ describe("guardarCompra", () => {
 
     test("Test 111 - Generar un identificador incremental para una compra", async () => {
 
-        const repository = new CompraRepository();
+    const directorioTemporal = fs.mkdtempSync(
+        path.join(os.tmpdir(), "ecoharmony-")
+    );
+
+    try {
+        const rutaArchivo = path.join(
+            directorioTemporal,
+            "compras.json"
+        );
+
+        const repository = new CompraRepository(rutaArchivo);
 
         const compra1 = {
             cliente: USUARIOS_MOCK[0],
@@ -41,7 +51,15 @@ describe("guardarCompra", () => {
         expect(resultado1.id).toBe(1);
         expect(resultado2.id).toBe(2);
 
-    });
+    } finally {
+        fs.rmSync(directorioTemporal, {
+            recursive: true,
+            force: true
+        });
+    }
+
+});
+
 
     test("Test 112 - Almacenar una compra en un archivo JSON", async () => {
 
