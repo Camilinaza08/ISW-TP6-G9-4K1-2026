@@ -79,8 +79,30 @@ class CompraRepository {
 
     return compra;
 }
+
 async obtenerEntradasAcumuladas(idUsuario, fechaVisita) {
-    // Pendiente de implementación
+
+    const contenido = fs.readFileSync(
+        this.rutaArchivo,
+        "utf8"
+    );
+
+    const comprasGuardadas = JSON.parse(contenido);
+
+    const comprasDelUsuario = comprasGuardadas.filter(
+        compra => compra.cliente.id === idUsuario
+    );
+
+    const comprasDeLaFecha = comprasDelUsuario.filter(
+        compra => compra.fechaVisita === fechaVisita
+    );
+
+    const entradasAcumuladas = comprasDeLaFecha.reduce(
+        (total, compra) => total + compra.cantidadEntradas,
+        0
+    );
+
+    return entradasAcumuladas;
 }
 
 }
