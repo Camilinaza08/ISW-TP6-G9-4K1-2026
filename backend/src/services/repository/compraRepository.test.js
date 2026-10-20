@@ -138,6 +138,65 @@ describe("guardarCompra", () => {
 
     });
 
+    test("Test 133 - Garantizar identificadores únicos y secuenciales entre instancias", async () => {
+
+    // ARRANGE
+    const directorioTemporal = fs.mkdtempSync(
+        path.join(os.tmpdir(), "ecoharmony-test-")
+    );
+
+    try {
+        const rutaArchivo = path.join(
+            directorioTemporal,
+            "compras.json"
+        );
+
+        const comprasExistentes = [
+            { id: 1, cantidadEntradas: 2 },
+            { id: 2, cantidadEntradas: 3 }
+        ];
+
+        fs.writeFileSync(
+            rutaArchivo,
+            JSON.stringify(comprasExistentes, null, 2),
+            "utf8"
+        );
+
+        const repository = new CompraRepository(rutaArchivo);
+
+        const nuevaCompra = {
+            cantidadEntradas: 1
+        };
+
+        // ACT
+        const resultado = await repository.guardarCompra(nuevaCompra);
+
+        const comprasGuardadas = JSON.parse(
+            fs.readFileSync(rutaArchivo, "utf8")
+        );
+
+        // ASSERT
+        expect(resultado.id).toBe(3);
+
+        expect(comprasGuardadas).toHaveLength(3);
+
+        expect(
+            comprasGuardadas.map(compra => compra.id)
+        ).toEqual([1, 2, 3]);
+
+        expect(
+            new Set(comprasGuardadas.map(compra => compra.id)).size
+        ).toBe(3);
+
+    } finally {
+        fs.rmSync(directorioTemporal, {
+            recursive: true,
+            force: true
+        });
+    }
+
+});
+
 });
 
 // ========================================
