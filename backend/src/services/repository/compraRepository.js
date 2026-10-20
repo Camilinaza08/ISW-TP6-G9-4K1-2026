@@ -53,16 +53,7 @@ class CompraRepository {
     }
 
     async obtenerCompraPorId(id) {
-    if (!fs.existsSync(this.rutaArchivo)) {
-        return undefined;
-    }
-
-    const contenido = fs.readFileSync(
-        this.rutaArchivo,
-        "utf8"
-    );
-
-    const comprasGuardadas = JSON.parse(contenido);
+    const comprasGuardadas = this.leerCompras();
 
     return comprasGuardadas.find(
         compra => compra.id === id
