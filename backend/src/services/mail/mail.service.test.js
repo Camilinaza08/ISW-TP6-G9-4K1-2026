@@ -232,4 +232,72 @@ test("Test 142 - Probar la incorporación de la forma de pago", () => {
     expect(compra).toEqual(compraOriginal);
 });
 
+test("Test 143 - Probar la generación independiente del contenido para diferentes compras", () => {
+
+    // ARRANGE
+    const compra1 = {
+        id: 1,
+        cliente: {
+            id: 1,
+            nombre: "Ana"
+        },
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        tiposPase: ["REGULAR", "VIP"],
+        montoTotal: 30000,
+        formaPago: "Mercado Pago"
+    };
+
+    const compra2 = {
+        id: 2,
+        cliente: {
+            id: 2,
+            nombre: "Juan"
+        },
+        fechaVisita: "2026-10-25",
+        cantidadEntradas: 1,
+        tiposPase: ["VIP"],
+        montoTotal: 20000,
+        formaPago: "Efectivo"
+    };
+
+    const compra1Original = structuredClone(compra1);
+    const compra2Original = structuredClone(compra2);
+
+    // ACT
+    const resultado1 = generarContenidoMail(compra1);
+    const resultado2 = generarContenidoMail(compra2);
+
+    // ASSERT
+    expect(resultado1).toContain("Hola, Ana");
+    expect(resultado1).toContain("Compra N.º 1");
+    expect(resultado1).toContain("20/10/2026");
+    expect(resultado1).toContain("Cantidad de entradas: 2");
+    expect(resultado1).toContain("Regular, VIP");
+    expect(resultado1).toContain("Monto total: $30.000");
+    expect(resultado1).toContain("Forma de pago: Mercado Pago");
+
+    expect(resultado2).toContain("Hola, Juan");
+    expect(resultado2).toContain("Compra N.º 2");
+    expect(resultado2).toContain("25/10/2026");
+    expect(resultado2).toContain("Cantidad de entradas: 1");
+    expect(resultado2).toContain("Tipos de pase: VIP");
+    expect(resultado2).toContain("Monto total: $20.000");
+    expect(resultado2).toContain("Forma de pago: Efectivo");
+
+    expect(resultado1).not.toContain("Hola, Juan");
+    expect(resultado1).not.toContain("Compra N.º 2");
+    expect(resultado1).not.toContain("Forma de pago: Efectivo");
+
+    expect(resultado2).not.toContain("Hola, Ana");
+    expect(resultado2).not.toContain("Compra N.º 1");
+    expect(resultado2).not.toContain("Forma de pago: Mercado Pago");
+
+    expect(resultado1).not.toBe(resultado2);
+
+    expect(compra1).toEqual(compra1Original);
+    expect(compra2).toEqual(compra2Original);
+
+});
+
 });
