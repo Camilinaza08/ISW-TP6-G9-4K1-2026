@@ -160,4 +160,34 @@ test.each([
     }
 );
 
+test("Test 135 - Manejar una compra inexistente en Mercado Pago", async () => {
+
+    // ARRANGE
+    const idCompra = 999;
+    const estadoPago = "approved";
+
+    const obtenerCompraMock = jest.spyOn(
+        CompraRepository.prototype,
+        "obtenerCompraPorId"
+    ).mockResolvedValue(null);
+
+    const actualizarEstadosMock = jest.spyOn(
+        CompraRepository.prototype,
+        "actualizarEstadosCompra"
+    ).mockResolvedValue(null);
+
+    // ACT Y ASSERT
+    await expect(
+        procesarResultadoMP(idCompra, estadoPago)
+    ).rejects.toThrow(
+        "Compra no encontrada"
+    );
+
+    expect(obtenerCompraMock).toHaveBeenCalledTimes(1);
+    expect(obtenerCompraMock).toHaveBeenCalledWith(idCompra);
+
+    expect(actualizarEstadosMock).not.toHaveBeenCalled();
+
+});
+
 });
