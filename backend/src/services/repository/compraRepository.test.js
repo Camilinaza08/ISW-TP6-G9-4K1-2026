@@ -170,4 +170,26 @@ describe("obtenerCompraPorId", () => {
 
     });
 
+    test("Test 115 - Consultar una compra inexistente", async () => {
+
+    const compra = {
+        cliente: USUARIOS_MOCK[0],
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 1,
+        edadesVisitantes: [25],
+        tipoPase: ["REGULAR"],
+        montoTotal: 10000,
+        formaPago: "Efectivo",
+        estadoCompra: "confirmada",
+        estadoPago: "no_aplica"
+    };
+
+    await repository.guardarCompra(compra);
+
+    const compraRecuperada = await repository.obtenerCompraPorId(999);
+
+    expect(compraRecuperada).toBeNull();
+
+});
+
 });
