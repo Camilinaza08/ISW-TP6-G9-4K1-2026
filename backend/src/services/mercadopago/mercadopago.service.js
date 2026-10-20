@@ -9,6 +9,10 @@ async function procesarResultadoMP(idCompra, estadoPago) {
 
     const compra = await repository.obtenerCompraPorId(idCompra);
 
+    if (!compra) {
+        throw new Error("Compra no encontrada");
+    }
+
     if (compra.formaPago !== "Mercado Pago") {
         throw new Error(
             "La compra no corresponde a Mercado Pago"
