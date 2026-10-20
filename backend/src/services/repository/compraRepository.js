@@ -68,6 +68,10 @@ class CompraRepository {
         compra => compra.id === id
     );
 
+    if (!compra) {
+        throw new Error("Compra no encontrada");
+    }
+
     compra.estadoCompra = estadoCompra;
     compra.estadoPago = estadoPago;
 
