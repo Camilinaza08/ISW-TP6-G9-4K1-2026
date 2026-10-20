@@ -1721,6 +1721,55 @@ test("Test 128 - Registrar una compra válida mediante efectivo", async () => {
 
 });
 
+test("Test 129 - Registrar una compra válida mediante Mercado Pago", async () => {
+
+    // ARRANGE
+    const usuario = USUARIOS_MOCK[0];
+
+    const compra = {
+        cliente: usuario,
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        edadesVisitantes: [25, 30],
+        tipoPase: ["REGULAR", "VIP"],
+        montoTotal: 30000
+    };
+
+    const guardarCompraMock =
+        CompraRepository.prototype.guardarCompra;
+
+    guardarCompraMock.mockImplementation(async (compraRecibida) => ({
+        ...compraRecibida,
+        id: 1
+    }));
+
+    // ACT
+    const resultado = await confirmarCompra(
+        compra,
+        "Mercado Pago"
+    );
+
+    // ASSERT
+    expect(guardarCompraMock).toHaveBeenCalledTimes(1);
+
+    expect(guardarCompraMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+            cliente: usuario,
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 2,
+            formaPago: "Mercado Pago",
+            estadoCompra: "pendiente",
+            estadoPago: "pending"
+        })
+    );
+
+    expect(resultado).toEqual({
+        ...compra,
+        id: 1
+    });
+
+});
+
 })
 
 
