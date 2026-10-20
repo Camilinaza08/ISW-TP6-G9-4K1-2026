@@ -60,6 +60,10 @@ class CompraRepository {
     ) ?? null;
 }
 
+    async actualizarEstadosCompra(id, estadoCompra, estadoPago) {
+    // Pendiente de implementación
+}
+
 }
 
 module.exports = CompraRepository;

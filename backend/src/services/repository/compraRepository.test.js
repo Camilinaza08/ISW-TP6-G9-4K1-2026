@@ -193,3 +193,43 @@ describe("obtenerCompraPorId", () => {
 });
 
 });
+
+describe("actualizarEstadosCompra", () => {
+
+    test("Test 116 - Actualizar los estados de una compra existente", async () => {
+
+        const compra = {
+            cliente: USUARIOS_MOCK[0],
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 1,
+            edadesVisitantes: [25],
+            tipoPase: ["REGULAR"],
+            montoTotal: 10000,
+            formaPago: "Mercado Pago",
+            estadoCompra: "pendiente",
+            estadoPago: "pending"
+        };
+
+        const compraGuardada = await repository.guardarCompra(compra);
+
+        const compraActualizada = await repository.actualizarEstadosCompra(
+            compraGuardada.id,
+            "confirmada",
+            "approved"
+        );
+
+        expect(compraActualizada).toEqual({
+            ...compraGuardada,
+            estadoCompra: "confirmada",
+            estadoPago: "approved"
+        });
+
+        const compraPersistida = await repository.obtenerCompraPorId(
+            compraGuardada.id
+        );
+
+        expect(compraPersistida).toEqual(compraActualizada);
+
+    });
+
+});
