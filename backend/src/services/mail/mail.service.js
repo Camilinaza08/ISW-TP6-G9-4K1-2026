@@ -12,14 +12,14 @@ const plantilla = `
             <h2>Resumen de tu compra</h2>
 
             <p>Hola, {{cliente.nombre}}</p>
-
             <p>Compra N.º {{id}}</p>
-
             <p>Fecha de visita: {{fechaFormateada}}</p>
-
             <p>Cantidad de entradas: {{cantidadEntradas}}</p>
-
             <p>Tipos de pase: {{tiposPaseFormateados}}</p>
+
+            {{#if montoFormateado}}
+            <p>Monto total: \${{montoFormateado}}</p>
+            {{/if}}
         </body>
     </html>
 `;
@@ -46,10 +46,19 @@ function formatearTiposPase(tiposPase) {
 
 function generarContenidoMail(compra) {
 
+    let montoFormateado;
+
+    if (compra.montoTotal !== undefined && compra.montoTotal !== null) {
+        montoFormateado = new Intl.NumberFormat("es-AR").format(
+            compra.montoTotal
+        );
+    }
+
     return plantillaCompilada({
         ...compra,
         fechaFormateada: formatearFecha(compra.fechaVisita),
-        tiposPaseFormateados: formatearTiposPase(compra.tiposPase)
+        tiposPaseFormateados: formatearTiposPase(compra.tiposPase),
+        montoFormateado
     });
 }
 module.exports = {
