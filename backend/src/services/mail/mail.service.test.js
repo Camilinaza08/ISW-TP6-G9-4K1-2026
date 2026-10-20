@@ -1,4 +1,15 @@
-const { generarContenidoMail, validarEmailDestinatario } = require("./mail.service");
+jest.mock("nodemailer", () => ({
+    createTransport: jest.fn()
+}));
+
+const nodemailer = require("nodemailer");
+
+const {
+    generarContenidoMail,
+    validarEmailDestinatario,
+    enviarMailConfirmacion
+} = require("./mail.service");
+
 
 function obtenerTextoVisible(html) {
     return html
@@ -394,3 +405,42 @@ describe("validarEmailDestinatario", () => {
     });
 
 });
+
+
+describe("enviarMailConfirmacion", () => {
+
+    test("Test 148 - Verificar que se invoque el envío del correo de confirmación", async () => {
+
+        // ARRANGE
+        const sendMailMock = jest.fn().mockResolvedValue({
+            messageId: "mail-test-148"
+        });
+
+        nodemailer.createTransport.mockReturnValue({
+            sendMail: sendMailMock
+        });
+
+        const compra = {
+            id: 1,
+            cliente: {
+                id: 1,
+                nombre: "Ana",
+                email: "ana@gmail.com"
+            },
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 2,
+            tiposPase: ["REGULAR", "VIP"],
+            montoTotal: 30000,
+            formaPago: "Mercado Pago"
+        };
+
+        // ACT
+        await enviarMailConfirmacion(compra);
+
+        // ASSERT
+        expect(sendMailMock).toHaveBeenCalledTimes(1);
+
+    });
+
+});
+

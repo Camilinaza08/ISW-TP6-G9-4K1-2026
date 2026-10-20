@@ -53,11 +53,12 @@ function validarEmailDestinatario(email) {
     }
 }
 
-
-
-
+async function enviarMailConfirmacion(compra) {
+    // Implementation for sending confirmation email
+}
 
 module.exports = {
     generarContenidoMail,
-    validarEmailDestinatario
+    validarEmailDestinatario,
+    enviarMailConfirmacion
 };

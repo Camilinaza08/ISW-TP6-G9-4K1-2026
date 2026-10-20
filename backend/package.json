@@ -30,7 +30,8 @@
     "cors": "^2.8.6",
     "express": "^5.3.0",
     "handlebars": "^4.7.10",
-    "jest": "^30.5.2"
+    "jest": "^30.5.2",
+    "nodemailer": "^10.1.7"
   },
   "devDependencies": {
     "supertest": "^7.3.1"
