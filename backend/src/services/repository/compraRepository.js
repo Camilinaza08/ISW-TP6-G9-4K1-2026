@@ -52,6 +52,10 @@ class CompraRepository {
         return compraRegistrada;
     }
 
+    async obtenerCompraPorId(id) {
+    // Pendiente de implementación
+}
+
 }
 
 module.exports = CompraRepository;
