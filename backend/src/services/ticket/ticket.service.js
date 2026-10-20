@@ -3,6 +3,11 @@ const { validarUsuario, validarFecha, validarAperturaParque, validarCantidadEntr
 const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
 const { REGLAS_CALENDARIO } = require('./calendario.mock');
+const CompraRepository = require("../repository/compraRepository");
+const path = require("node:path");
+
+const rutaArchivo = path.join(__dirname, "../../data/compras.json");
+const repository = new CompraRepository(rutaArchivo);
 
 function comprarEntradas(usuario, datosCompra) {
   validarUsuario(usuario);

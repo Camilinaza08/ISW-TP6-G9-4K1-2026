@@ -6,6 +6,7 @@ const { FORMAS_PAGO } = require('./formasPago.mock');
 const { TIPOS_PASE } = require('./tiposPase.mock');
 const { REGLAS_CALENDARIO } = require('./calendario.mock');
 const { USUARIOS_MOCK } = require('./usuarios.mock');
+const CompraRepository = require('../repository/compraRepository');
 
 describe('validarUsuario', () => {
   test('Test 01 - Probar validar usuario con un usuario no registrado', () => {
@@ -918,6 +919,30 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
       jest.useRealTimers();
     }
   });
+
+  test("Test 125 - Rechazar una compra que supere el límite acumulado", async () => {
+
+    const usuario = USUARIOS_MOCK[0];
+
+    const datosCompra = {
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 4,
+        edadesVisitantes: [25, 30, 12, 40],
+        tipoPase: ["REGULAR", "REGULAR", "VIP", "VIP"]
+    };
+
+    jest.spyOn(
+        CompraRepository.prototype,
+        "obtenerEntradasAcumuladas"
+    ).mockResolvedValue(7);
+
+    await expect(
+        comprarEntradas(usuario, datosCompra)
+    ).rejects.toThrow(
+        "Se ha superado el límite de 10 entradas por usuario para la fecha seleccionada"
+    );
+
+});
 
 
 });
