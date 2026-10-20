@@ -8,6 +8,33 @@ class CompraRepository {
         this.rutaArchivo = rutaArchivo;
     }
 
+    leerCompras() {
+        if (!fs.existsSync(this.rutaArchivo)) {
+            return [];
+        }
+
+        const contenido = fs.readFileSync(
+            this.rutaArchivo,
+            "utf8"
+        );
+
+        return JSON.parse(contenido);
+    }
+
+    escribirCompras(compras) {
+        const directorio = path.dirname(this.rutaArchivo);
+
+        fs.mkdirSync(directorio, {
+            recursive: true
+        });
+
+        fs.writeFileSync(
+            this.rutaArchivo,
+            JSON.stringify(compras, null, 2),
+            "utf8"
+        );
+    }
+
     async guardarCompra(compra) {
         this.ultimoID++;
 
@@ -16,30 +43,11 @@ class CompraRepository {
             id: this.ultimoID
         };
 
-        const directorio = path.dirname(this.rutaArchivo);
-
-        fs.mkdirSync(directorio, {
-            recursive: true
-        });
-
-        let comprasGuardadas = [];
-
-        if (fs.existsSync(this.rutaArchivo)) {
-            const contenido = fs.readFileSync(
-                this.rutaArchivo,
-                "utf8"
-            );
-
-            comprasGuardadas = JSON.parse(contenido);
-        }
+        const comprasGuardadas = this.leerCompras();
 
         comprasGuardadas.push(compraRegistrada);
 
-        fs.writeFileSync(
-            this.rutaArchivo,
-            JSON.stringify(comprasGuardadas, null, 2),
-            "utf8"
-        );
+        this.escribirCompras(comprasGuardadas);
 
         return compraRegistrada;
     }
