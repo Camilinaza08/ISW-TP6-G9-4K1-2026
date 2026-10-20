@@ -48,8 +48,11 @@ function validarEmailDestinatario(email) {
         throw new Error("No se ha indicado un correo electrónico");
     }
 
-    return true
+    if (!email.includes("@")) {
+        throw new Error("Formato de correo electrónico inválido");
+    }
 }
+
 
 
 
