@@ -961,6 +961,41 @@ test("Test 126 - Permitir una compra que alcance exactamente el límite acumulad
 
 });
 
+test("Test 127 - Impedir la compra cuando falla la consulta de entradas acumuladas", async () => {
+
+    // ARRANGE
+    jest.useFakeTimers();
+
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+        const usuario = USUARIOS_MOCK[0];
+
+        const datosCompra = {
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 3,
+            edadesVisitantes: [25, 30, 12],
+            tipoPase: ["REGULAR", "VIP", "REGULAR"]
+        };
+
+        CompraRepository.prototype.obtenerEntradasAcumuladas
+            .mockRejectedValue(
+                new Error("Error al consultar las entradas acumuladas")
+            );
+
+        // ACT Y ASSERT
+        await expect(
+            comprarEntradas(usuario, datosCompra)
+        ).rejects.toThrow(
+            "Error al consultar las entradas acumuladas"
+        );
+
+    } finally {
+        jest.useRealTimers();
+    }
+
+});
+
 });
 
 
