@@ -1939,6 +1939,56 @@ test("Test 153 - Mantener la compra persistida cuando falla el envio del correo"
 });
 
 
+test("Test 154 - No enviar correo de confirmacion con pago pendiente de Mercado Pago", async () => {
+
+    // ARRANGE
+    const compra = {
+        cliente: {
+            id: 1,
+            nombre: "Ana",
+            email: "ana@gmail.com"
+        },
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        tipoPase: ["REGULAR", "VIP"],
+        montoTotal: 30000
+    };
+
+    const compraRegistrada = {
+        ...compra,
+        id: 154,
+        estadoCompra: "pendiente",
+        estadoPago: "pending",
+        formaPago: "Mercado Pago"
+    };
+
+    CompraRepository.prototype.guardarCompra
+        .mockResolvedValue(compraRegistrada);
+
+    // ACT
+    const resultado = await confirmarCompra(compra, "Mercado Pago");
+
+    // ASSERT
+    expect(CompraRepository.prototype.guardarCompra)
+        .toHaveBeenCalledTimes(1);
+
+    expect(CompraRepository.prototype.guardarCompra)
+        .toHaveBeenCalledWith(
+            expect.objectContaining({
+                estadoCompra: "pendiente",
+                estadoPago: "pending",
+                formaPago: "Mercado Pago"
+            })
+        );
+
+    expect(enviarMailConfirmacion)
+        .not.toHaveBeenCalled();
+
+    expect(resultado).toEqual(compraRegistrada);
+
+});
+
+
 });
 
 describe("validarLimiteAcumulado", () => {
