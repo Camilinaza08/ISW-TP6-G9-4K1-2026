@@ -343,7 +343,7 @@ describe("generarContenidoMail", () => {
 
         // Identidad visual
         expect(resultado).toContain('alt="Logo EcoHarmony Park"');
-        expect(resultado).toContain('src="logo.png"');
+        expect(resultado).toContain('src="cid:logo-ecoharmony"');
 
         expect(resultado).toContain("#f6f4ea");
         expect(resultado).toContain("#386641");

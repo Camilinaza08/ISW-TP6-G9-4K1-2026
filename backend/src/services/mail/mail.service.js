@@ -69,11 +69,18 @@ async function enviarMailConfirmacion(compra) {
     const html = generarContenidoMail(compra);
 
     const respuesta = await transporter.sendMail({
-        from: process.env.SMTP_FROM,
-        to: compra.cliente.email,
-        subject: "Confirmación de compra - EcoHarmony Park",
-        html: html
-    });
+    from: process.env.SMTP_FROM,
+    to: compra.cliente.email,
+    subject: "Confirmación de compra - EcoHarmony Park",
+    html,
+    attachments: [
+        {
+            filename: "logo.png",
+            path: path.join(__dirname, "logo.png"),
+            cid: "logo-ecoharmony"
+        }
+    ]
+});
 
     return respuesta;
 }
