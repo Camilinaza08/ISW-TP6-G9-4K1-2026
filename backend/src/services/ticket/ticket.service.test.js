@@ -8,6 +8,11 @@ const { TIPOS_PASE } = require('./tiposPase.mock');
 const { REGLAS_CALENDARIO } = require('./calendario.mock');
 const { USUARIOS_MOCK } = require('./usuarios.mock');
 const CompraRepository = require('../repository/compraRepository');
+const { enviarMailConfirmacion } = require("../mail/mail.service");
+
+jest.mock("../mail/mail.service", () => ({
+    enviarMailConfirmacion: jest.fn()
+}));
 
 describe('validarUsuario', () => {
   test('Test 01 - Probar validar usuario con un usuario no registrado', () => {
@@ -907,26 +912,40 @@ test("Test 39 - Probar que una compra válida conserve la fecha de visita selecc
     }
   });
 
-  test("Test 125 - Rechazar una compra que supere el límite acumulado", async () => {
+  
+test("Test 125 - Rechazar una compra que supere el límite acumulado", async () => {
 
-    const usuario = USUARIOS_MOCK[0];
+    // ARRANGE
+    jest.useFakeTimers();
 
-    const datosCompra = {
-        fechaVisita: "2026-10-20",
-        cantidadEntradas: 4,
-        edadesVisitantes: [25, 30, 12, 40],
-        tipoPase: ["REGULAR", "REGULAR", "VIP", "VIP"]
-    };
+    try {
+        jest.setSystemTime(new Date(2026, 9, 16, 12));
 
-    CompraRepository.prototype.obtenerEntradasAcumuladas.mockResolvedValue(7);
+        const usuario = USUARIOS_MOCK[0];
 
-    await expect(
-        comprarEntradas(usuario, datosCompra)
-    ).rejects.toThrow(
-        "Se ha superado el límite de 10 entradas por usuario para la fecha seleccionada"
-    );
+        const datosCompra = {
+            fechaVisita: "2026-10-20",
+            cantidadEntradas: 4,
+            edadesVisitantes: [25, 30, 12, 40],
+            tipoPase: ["REGULAR", "REGULAR", "VIP", "VIP"]
+        };
+
+        CompraRepository.prototype.obtenerEntradasAcumuladas
+            .mockResolvedValue(7);
+
+        // ACT Y ASSERT
+        await expect(
+            comprarEntradas(usuario, datosCompra)
+        ).rejects.toThrow(
+            "Se ha superado el límite de 10 entradas por usuario para la fecha seleccionada"
+        );
+
+    } finally {
+        jest.useRealTimers();
+    }
 
 });
+
 
 test("Test 126 - Permitir una compra que alcance exactamente el límite acumulado", async () => {
 
@@ -1531,8 +1550,10 @@ describe('validarFormaPago', () => {
 
 });
 
-describe('confirmarCompra', () => {
-   beforeEach(() => {
+
+describe("confirmarCompra", () => {
+
+    beforeEach(() => {
         jest.spyOn(
             CompraRepository.prototype,
             "guardarCompra"
@@ -1541,235 +1562,302 @@ describe('confirmarCompra', () => {
 
     afterEach(() => {
         jest.restoreAllMocks();
+        enviarMailConfirmacion.mockReset();
     });
-  test("Test 107 - Confirmar una compra sin seleccionar una forma de pago", async () => {
-    // ARRANGE
-    jest.useFakeTimers();
 
-    try {
-        jest.setSystemTime(new Date(2026, 9, 16, 12));
+    test("Test 107 - Confirmar una compra sin seleccionar una forma de pago", async () => {
 
+        // ARRANGE
+        jest.useFakeTimers();
+
+        try {
+            jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+            const usuario = USUARIOS_MOCK[0];
+
+            const datosCompra = {
+                fechaVisita: "2026-10-20",
+                cantidadEntradas: 1,
+                edadesVisitantes: [25],
+                tipoPase: ["REGULAR"]
+            };
+
+            const compra = comprarEntradas(usuario, datosCompra);
+
+            // ACT Y ASSERT
+            await expect(
+                confirmarCompra(compra, null)
+            ).rejects.toThrow("Forma de pago faltante");
+
+        } finally {
+            jest.useRealTimers();
+        }
+    });
+
+    test("Test 108 - Confirmar una compra seleccionando una forma de pago inválida", async () => {
+
+        // ARRANGE
+        jest.useFakeTimers();
+
+        try {
+            jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+            const usuario = USUARIOS_MOCK[0];
+
+            const datosCompra = {
+                fechaVisita: "2026-10-20",
+                cantidadEntradas: 1,
+                edadesVisitantes: [25],
+                tipoPase: ["REGULAR"]
+            };
+
+            const compra = await comprarEntradas(usuario, datosCompra);
+
+            const compraOriginal = structuredClone(compra);
+
+            // ACT Y ASSERT
+            await expect(
+                confirmarCompra(compra, "Transferencia")
+            ).rejects.toThrow("Forma de pago inválida");
+
+            expect(compra).toEqual(compraOriginal);
+            expect(compra.estadoCompra).toBeUndefined();
+            expect(compra.estadoPago).toBeUndefined();
+
+        } finally {
+            jest.useRealTimers();
+        }
+    });
+
+    test("Test 109 - Confirmar una compra seleccionando Efectivo", async () => {
+
+        // ARRANGE
+        jest.useFakeTimers();
+
+        try {
+            jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+            const usuario = USUARIOS_MOCK[0];
+
+            const datosCompra = {
+                fechaVisita: "2026-10-20",
+                cantidadEntradas: 1,
+                edadesVisitantes: [25],
+                tipoPase: ["REGULAR"]
+            };
+
+            const compra = await comprarEntradas(usuario, datosCompra);
+
+            // ACT
+            const resultado = await confirmarCompra(compra, "Efectivo");
+
+            // ASSERT
+            expect(resultado).toEqual(
+                expect.objectContaining({
+                    formaPago: "Efectivo",
+                    estadoCompra: "pendiente",
+                    estadoPago: "pendiente"
+                })
+            );
+
+        } finally {
+            jest.useRealTimers();
+        }
+    });
+
+    test("Test 110 - Confirmar una compra seleccionando Mercado Pago", async () => {
+
+        // ARRANGE
+        jest.useFakeTimers();
+
+        try {
+            jest.setSystemTime(new Date(2026, 9, 16, 12));
+
+            const usuario = USUARIOS_MOCK[0];
+
+            const datosCompra = {
+                fechaVisita: "2026-10-20",
+                cantidadEntradas: 1,
+                edadesVisitantes: [25],
+                tipoPase: ["REGULAR"]
+            };
+
+            const compra = await comprarEntradas(usuario, datosCompra);
+
+            expect(compra.estadoCompra).toBeUndefined();
+            expect(compra.estadoPago).toBeUndefined();
+
+            // ACT
+            const resultado = await confirmarCompra(compra, "Mercado Pago");
+
+            // ASSERT
+            expect(resultado).toEqual(
+                expect.objectContaining({
+                    formaPago: "Mercado Pago",
+                    estadoCompra: "pendiente",
+                    estadoPago: "pending"
+                })
+            );
+
+        } finally {
+            jest.useRealTimers();
+        }
+    });
+
+    test("Test 128 - Registrar una compra válida mediante efectivo", async () => {
+
+        // ARRANGE
         const usuario = USUARIOS_MOCK[0];
 
-        const datosCompra = {
+        const compra = {
+            cliente: usuario,
             fechaVisita: "2026-10-20",
-            cantidadEntradas: 1,
-            edadesVisitantes: [25],
-            tipoPase: ["REGULAR"]
+            cantidadEntradas: 2,
+            edadesVisitantes: [25, 30],
+            tipoPase: ["REGULAR", "VIP"],
+            montoTotal: 30000
         };
 
-        const compra = comprarEntradas(usuario, datosCompra);
-
-        // ACT Y ASSERT
-        await expect(
-            confirmarCompra(compra, null)
-        ).rejects.toThrow("Forma de pago faltante");
-
-    } finally {
-        jest.useRealTimers();
-    }
-});
-
-  test("Test 108 - Confirmar una compra seleccionando una forma de pago inválida", async () => {
-    // ARRANGE
-    jest.useFakeTimers();
-
-    try {
-        jest.setSystemTime(new Date(2026, 9, 16, 12));
-
-        const usuario = USUARIOS_MOCK[0];
-
-        const datosCompra = {
-            fechaVisita: "2026-10-20",
-            cantidadEntradas: 1,
-            edadesVisitantes: [25],
-            tipoPase: ["REGULAR"]
-        };
-
-        const compra = await comprarEntradas(usuario, datosCompra);
-
-        const compraOriginal = structuredClone(compra);
-
-        // ACT Y ASSERT
-        await expect(
-            confirmarCompra(compra, "Transferencia")
-        ).rejects.toThrow("Forma de pago inválida");
-
-        expect(compra).toEqual(compraOriginal);
-        expect(compra.estadoCompra).toBeUndefined();
-        expect(compra.estadoPago).toBeUndefined();
-
-    } finally {
-        jest.useRealTimers();
-    }
-});
-
-test("Test 109 - Confirmar una compra seleccionando Efectivo", async () => {
-    // ARRANGE
-    jest.useFakeTimers();
-
-    try {
-        jest.setSystemTime(new Date(2026, 9, 16, 12));
-
-        const usuario = USUARIOS_MOCK[0];
-
-        const datosCompra = {
-            fechaVisita: "2026-10-20",
-            cantidadEntradas: 1,
-            edadesVisitantes: [25],
-            tipoPase: ["REGULAR"]
-        };
-
-        const compra = await comprarEntradas(usuario, datosCompra);
+        const guardarCompraMock = jest.spyOn(
+            CompraRepository.prototype,
+            "guardarCompra"
+        ).mockImplementation(async (compraRecibida) => ({
+            ...compraRecibida,
+            id: 1
+        }));
 
         // ACT
         const resultado = await confirmarCompra(compra, "Efectivo");
 
         // ASSERT
-        expect(resultado).toEqual(
+        expect(guardarCompraMock).toHaveBeenCalledTimes(1);
+
+        expect(guardarCompraMock).toHaveBeenCalledWith(
             expect.objectContaining({
+                cliente: usuario,
+                cantidadEntradas: 2,
                 formaPago: "Efectivo",
                 estadoCompra: "pendiente",
                 estadoPago: "pendiente"
             })
         );
 
-    } finally {
-        jest.useRealTimers();
-    }
-});
+        expect(resultado).toEqual({
+            ...compra,
+            id: 1
+        });
 
-test("Test 110 - Confirmar una compra seleccionando Mercado Pago", async () => {
-    // ARRANGE
-    jest.useFakeTimers();
+    });
 
-    try {
-        jest.setSystemTime(new Date(2026, 9, 16, 12));
+    test("Test 129 - Registrar una compra válida mediante Mercado Pago", async () => {
 
+        // ARRANGE
         const usuario = USUARIOS_MOCK[0];
 
-        const datosCompra = {
+        const compra = {
+            cliente: usuario,
             fechaVisita: "2026-10-20",
-            cantidadEntradas: 1,
-            edadesVisitantes: [25],
-            tipoPase: ["REGULAR"]
+            cantidadEntradas: 2,
+            edadesVisitantes: [25, 30],
+            tipoPase: ["REGULAR", "VIP"],
+            montoTotal: 30000
         };
 
-        const compra = await comprarEntradas(usuario, datosCompra);
+        const guardarCompraMock =
+            CompraRepository.prototype.guardarCompra;
 
-        expect(compra.estadoCompra).toBeUndefined();
-        expect(compra.estadoPago).toBeUndefined();
+        guardarCompraMock.mockImplementation(async (compraRecibida) => ({
+            ...compraRecibida,
+            id: 1
+        }));
 
         // ACT
-        const resultado = await confirmarCompra(compra, "Mercado Pago");
+        const resultado = await confirmarCompra(
+            compra,
+            "Mercado Pago"
+        );
 
         // ASSERT
-        expect(resultado).toEqual(
+        expect(guardarCompraMock).toHaveBeenCalledTimes(1);
+
+        expect(guardarCompraMock).toHaveBeenCalledWith(
             expect.objectContaining({
+                cliente: usuario,
+                fechaVisita: "2026-10-20",
+                cantidadEntradas: 2,
                 formaPago: "Mercado Pago",
                 estadoCompra: "pendiente",
                 estadoPago: "pending"
             })
         );
 
-    } finally {
-        jest.useRealTimers();
-    }
-});
+        expect(resultado).toEqual({
+            ...compra,
+            id: 1
+        });
 
-test("Test 128 - Registrar una compra válida mediante efectivo", async () => {
-
-    // ARRANGE
-    const usuario = USUARIOS_MOCK[0];
-
-    const compra = {
-        cliente: usuario,
-        fechaVisita: "2026-10-20",
-        cantidadEntradas: 2,
-        edadesVisitantes: [25, 30],
-        tipoPase: ["REGULAR", "VIP"],
-        montoTotal: 30000
-    };
-
-    const guardarCompraMock = jest.spyOn(
-        CompraRepository.prototype,
-        "guardarCompra"
-    ).mockImplementation(async (compraRecibida) => ({
-        ...compraRecibida,
-        id: 1
-    }));
-
-    // ACT
-    const resultado = await confirmarCompra(compra, "Efectivo");
-
-    // ASSERT
-    expect(guardarCompraMock).toHaveBeenCalledTimes(1);
-
-    expect(guardarCompraMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-            cliente: usuario,
-            cantidadEntradas: 2,
-            formaPago: "Efectivo",
-            estadoCompra: "pendiente",
-            estadoPago: "pendiente"
-        })
-    );
-
-    expect(resultado).toEqual({
-        ...compra,
-        id: 1
     });
 
-});
+    test("Test 151 - Enviar correo después de persistir una compra en efectivo", async () => {
 
-test("Test 129 - Registrar una compra válida mediante Mercado Pago", async () => {
-
-    // ARRANGE
-    const usuario = USUARIOS_MOCK[0];
-
-    const compra = {
-        cliente: usuario,
-        fechaVisita: "2026-10-20",
-        cantidadEntradas: 2,
-        edadesVisitantes: [25, 30],
-        tipoPase: ["REGULAR", "VIP"],
-        montoTotal: 30000
-    };
-
-    const guardarCompraMock =
-        CompraRepository.prototype.guardarCompra;
-
-    guardarCompraMock.mockImplementation(async (compraRecibida) => ({
-        ...compraRecibida,
-        id: 1
-    }));
-
-    // ACT
-    const resultado = await confirmarCompra(
-        compra,
-        "Mercado Pago"
-    );
-
-    // ASSERT
-    expect(guardarCompraMock).toHaveBeenCalledTimes(1);
-
-    expect(guardarCompraMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-            cliente: usuario,
+        // ARRANGE
+        const compra = {
+            cliente: {
+                id: 1,
+                nombre: "Ana",
+                email: "ana@gmail.com"
+            },
             fechaVisita: "2026-10-20",
             cantidadEntradas: 2,
-            formaPago: "Mercado Pago",
-            estadoCompra: "pendiente",
-            estadoPago: "pending"
-        })
-    );
+            tipoPase: ["REGULAR", "VIP"],
+            montoTotal: 30000
+        };
 
-    expect(resultado).toEqual({
-        ...compra,
-        id: 1
+        const compraRegistrada = {
+            ...compra,
+            id: 1,
+            estadoCompra: "pendiente",
+            estadoPago: "pendiente",
+            formaPago: "Efectivo"
+        };
+
+        const ordenOperaciones = [];
+
+        const guardarCompraMock =
+            CompraRepository.prototype.guardarCompra;
+
+        guardarCompraMock.mockImplementation(async () => {
+            ordenOperaciones.push("persistir");
+            return compraRegistrada;
+        });
+
+        enviarMailConfirmacion.mockImplementation(async () => {
+            ordenOperaciones.push("enviar");
+        });
+
+        // ACT
+        const resultado = await confirmarCompra(compra, "Efectivo");
+
+        // ASSERT
+        expect(guardarCompraMock).toHaveBeenCalledTimes(1);
+
+        expect(enviarMailConfirmacion).toHaveBeenCalledTimes(1);
+
+        expect(enviarMailConfirmacion).toHaveBeenCalledWith(
+            compraRegistrada
+        );
+
+        expect(ordenOperaciones).toEqual([
+            "persistir",
+            "enviar"
+        ]);
+
+        expect(resultado).toEqual(compraRegistrada);
+
     });
 
 });
+
 describe("validarLimiteAcumulado", () => {
 
     test.each([
@@ -1816,7 +1904,6 @@ describe("validarLimiteAcumulado", () => {
 
 });
 
-})
 
 
 
