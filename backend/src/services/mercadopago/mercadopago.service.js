@@ -38,9 +38,14 @@ function prepararPreferenciaPago(compra) {
     };
 }
 
+async function crearPreferenciaPago(preferencia, clienteMP) {
+
+}
+
 
 
 module.exports = {
     procesarResultadoMP,
-    prepararPreferenciaPago
+    prepararPreferenciaPago,
+    crearPreferenciaPago,
 };

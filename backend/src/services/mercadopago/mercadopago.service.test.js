@@ -1,4 +1,5 @@
 const CompraRepository = require("../repository/compraRepository");
+const { prepararPreferenciaPago, crearPreferenciaPago } = require('./mercadopago.service');
 
 const {
     procesarResultadoMP
@@ -192,9 +193,6 @@ test("Test 135 - Manejar una compra inexistente en Mercado Pago", async () => {
 
 });
 
-
-const { prepararPreferenciaPago } = require('./mercadopago.service');
-
 describe('Preparación de preferencias de Mercado Pago', () => {
   test('Test 157 - Generar los datos básicos de una preferencia', () => {
     const compra = {
@@ -214,10 +212,9 @@ describe('Preparación de preferencias de Mercado Pago', () => {
       }
     ]);
   });
-});
 
-
-test("Test 158 - Asociar la preferencia con la compra", () => {
+  
+    test("Test 158 - Asociar la preferencia con la compra", () => {
 
     // ARRANGE
     const compra = {
@@ -233,4 +230,50 @@ test("Test 158 - Asociar la preferencia con la compra", () => {
     expect(preferencia.external_reference).toBe("1");
 
 });
+});
+
+
+test("Test 159 - Crear una preferencia mediante un cliente simulado", async () => {
+
+    // ARRANGE
+    const preferencia = {
+        items: [
+            {
+                title: "Entradas EcoHarmony Park",
+                quantity: 1,
+                unit_price: 50000,
+                currency_id: "ARS"
+            }
+        ],
+        external_reference: "1"
+    };
+
+    const respuestaMP = {
+        id: "PREF-001",
+        init_point: "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PREF-001"
+    };
+
+    const clienteMP = {
+        create: jest.fn().mockResolvedValue(respuestaMP)
+    };
+
+    // ACT
+    const resultado = await crearPreferenciaPago(
+        preferencia,
+        clienteMP
+    );
+
+    // ASSERT
+    expect(clienteMP.create).toHaveBeenCalledTimes(1);
+
+    expect(clienteMP.create).toHaveBeenCalledWith({
+        body: preferencia
+    });
+
+    expect(resultado).toEqual(respuestaMP);
+
+});
+
+
+
 
