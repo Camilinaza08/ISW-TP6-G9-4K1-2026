@@ -22,9 +22,20 @@ async function procesarResultadoMP(idCompra, estadoPago) {
     return compra;
 }
 
-function prepararPreferenciaPago(compra) {
 
+function prepararPreferenciaPago(compra) {
+    return {
+        items: [
+            {
+                title: "Entradas EcoHarmony Park",
+                quantity: 1,
+                unit_price: compra.montoTotal,
+                currency_id: "ARS"
+            }
+        ]
+    };
 }
+
 
 module.exports = {
     procesarResultadoMP,
