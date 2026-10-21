@@ -1856,6 +1856,41 @@ describe("confirmarCompra", () => {
 
     });
 
+    
+test("Test 152 - No enviar correo cuando falla la persistencia de la compra", async () => {
+
+    // ARRANGE
+    const compra = {
+        cliente: {
+            id: 1,
+            nombre: "Ana",
+            email: "ana@gmail.com"
+        },
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        tipoPase: ["REGULAR", "VIP"],
+        montoTotal: 30000
+    };
+
+    const guardarCompraMock =
+        CompraRepository.prototype.guardarCompra;
+
+    guardarCompraMock.mockRejectedValue(
+        new Error("Error al persistir la compra")
+    );
+
+    // ACT Y ASSERT
+    await expect(
+        confirmarCompra(compra, "Efectivo")
+    ).rejects.toThrow("Error al persistir la compra");
+
+    expect(guardarCompraMock).toHaveBeenCalledTimes(1);
+
+    expect(enviarMailConfirmacion).not.toHaveBeenCalled();
+
+});
+
+
 });
 
 describe("validarLimiteAcumulado", () => {
