@@ -22,6 +22,11 @@ async function procesarResultadoMP(idCompra, estadoPago) {
     return compra;
 }
 
+function prepararPreferenciaPago(compra) {
+
+}
+
 module.exports = {
-    procesarResultadoMP
+    procesarResultadoMP,
+    prepararPreferenciaPago
 };

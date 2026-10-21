@@ -191,3 +191,27 @@ test("Test 135 - Manejar una compra inexistente en Mercado Pago", async () => {
 });
 
 });
+
+
+const { prepararPreferenciaPago } = require('./mercadopago.service');
+
+describe('Preparación de preferencias de Mercado Pago', () => {
+  test('Test 157 - Generar los datos básicos de una preferencia', () => {
+    const compra = {
+      id: 'COMPRA-001',
+      cantidadEntradas: 3,
+      montoTotal: 50000
+    };
+
+    const preferencia = prepararPreferenciaPago(compra);
+
+    expect(preferencia.items).toEqual([
+      {
+        title: 'Entradas EcoHarmony Park',
+        quantity: 1,
+        unit_price: 50000,
+        currency_id: 'ARS'
+      }
+    ]);
+  });
+});
