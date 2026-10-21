@@ -489,5 +489,39 @@ test("Test 149 - Verificar que el correo de confirmación contenga los datos cor
 });
 
 
+test("Test 150 - Impedir el envío del correo cuando el destinatario es inválido", async () => {
+
+    // ARRANGE
+    const sendMailMock = jest.fn().mockResolvedValue({
+        messageId: "mail-test-150"
+    });
+
+    nodemailer.createTransport.mockReturnValue({
+        sendMail: sendMailMock
+    });
+
+    const compra = {
+        id: 1,
+        cliente: {
+            id: 1,
+            nombre: "Ana",
+            email: "correo-invalido"
+        },
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        tiposPase: ["REGULAR", "VIP"],
+        montoTotal: 30000,
+        formaPago: "Mercado Pago"
+    };
+
+    // ACT Y ASSERT
+    await expect(enviarMailConfirmacion(compra))
+        .rejects.toThrow("Formato de correo electrónico inválido");
+
+    expect(sendMailMock).not.toHaveBeenCalled();
+
+});
+
+
 });
 
