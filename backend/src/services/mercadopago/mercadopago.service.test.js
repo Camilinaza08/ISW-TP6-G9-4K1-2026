@@ -215,3 +215,22 @@ describe('Preparación de preferencias de Mercado Pago', () => {
     ]);
   });
 });
+
+
+test("Test 158 - Asociar la preferencia con la compra", () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        cantidadEntradas: 3,
+        montoTotal: 50000
+    };
+
+    // ACT
+    const preferencia = prepararPreferenciaPago(compra);
+
+    // ASSERT
+    expect(preferencia.external_reference).toBe("1");
+
+});
+
