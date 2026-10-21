@@ -23,6 +23,7 @@ async function procesarResultadoMP(idCompra, estadoPago) {
 }
 
 
+
 function prepararPreferenciaPago(compra) {
     return {
         items: [
@@ -32,9 +33,11 @@ function prepararPreferenciaPago(compra) {
                 unit_price: compra.montoTotal,
                 currency_id: "ARS"
             }
-        ]
+        ],
+        external_reference: String(compra.id)
     };
 }
+
 
 
 module.exports = {
