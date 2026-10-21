@@ -1,3 +1,5 @@
+resultado.css
+
 
 /* ===== Fondo de la página ===== */
 .resultado {
@@ -12,7 +14,7 @@
   width: min(100%, 600px);
   margin: 0 auto;
   padding: 38px;
-  background: #fffdf7;
+  background: #A7C957;
   border: 1px solid #d6cab0;
   border-radius: 18px;
   box-shadow: 0 12px 30px rgba(56, 102, 65, 0.12);
@@ -27,13 +29,13 @@
   height: 76px;
   margin: 0 auto 18px;
   border-radius: 50%;
-  background: #e6efcf;
+  background: #F2E8CF;
   font-size: 36px;
 }
 
 .resultado__tarjeta h1 {
   margin-bottom: 12px;
-  color: #386641;
+  color: #BC4749;
   font-size: 1.8rem;
 }
 
@@ -71,7 +73,7 @@
 
 .resultado__detalle h2 {
   margin-bottom: 20px;
-  color: #386641;
+  color: #BC4749;
   font-size: 1.2rem;
 }
 
@@ -108,7 +110,7 @@
 
 .resultado__total dt,
 .resultado__total dd {
-  color: #386641;
+  color: #BC4749;
   font-size: 1.2rem;
 }
 
@@ -116,6 +118,23 @@
 .resultado__volver {
   display: inline-flex;
   margin-top: 30px;
+}
+
+/* ===== Botón Volver al inicio ===== */
+.resultado__volver,
+.resultado__volver:visited {
+  background-color: #F2E8CF;
+  border-color: #BC4749;
+  color: #BC4749;
+}
+
+/* El hover hace falta redefinirlo: .btn--primary:hover tiene más
+   especificidad */
+.resultado__volver:hover,
+.resultado__volver:focus-visible {
+  background-color: #BC4749;
+  border-color: #BC4749;
+  color: #F2E8CF;
 }
 
 /* ===== Responsive ===== */
