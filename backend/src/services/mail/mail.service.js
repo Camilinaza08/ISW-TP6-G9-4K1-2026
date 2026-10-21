@@ -1,3 +1,4 @@
+
 const fs = require("fs");
 const path = require("path");
 const Handlebars = require("handlebars");
@@ -42,7 +43,6 @@ function generarContenidoMail(compra) {
     });
 }
 
-
 function validarEmailDestinatario(email) {
     if (email === null || email === undefined) {
         throw new Error("No se ha indicado un correo electrónico");
@@ -53,28 +53,34 @@ function validarEmailDestinatario(email) {
     }
 }
 
-
-
-
 async function enviarMailConfirmacion(compra) {
     validarEmailDestinatario(compra.cliente.email);
 
-    const transporter = nodemailer.createTransport({});
+    const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT),
+        secure: Number(process.env.SMTP_PORT) === 465,
+        auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS
+        }
+    });
 
     const html = generarContenidoMail(compra);
 
-    await transporter.sendMail({
+    const respuesta = await transporter.sendMail({
+        from: process.env.SMTP_FROM,
         to: compra.cliente.email,
         subject: "Confirmación de compra - EcoHarmony Park",
         html: html
     });
+
+    return respuesta;
 }
-
-
-
 
 module.exports = {
     generarContenidoMail,
     validarEmailDestinatario,
     enviarMailConfirmacion
 };
+

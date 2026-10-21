@@ -1,23 +1,24 @@
 
-
+const fs = require("fs");
 const path = require("path");
-
-const {
-    enviarMailConfirmacion
-} = require("./mail.service");
+const { parseEnv } = require("util");
 
 // Cargar las variables de entorno desde backend/.env
 const rutaEnv = path.resolve(__dirname, "../../../.env");
 
-if (typeof process.loadEnvFile !== "function") {
-    throw new Error(
-        "La versión de Node.js no admite process.loadEnvFile()"
-    );
+if (fs.existsSync(rutaEnv)) {
+    const contenidoEnv = fs.readFileSync(rutaEnv, "utf8");
+    const variablesEnv = parseEnv(contenidoEnv);
+
+    Object.assign(process.env, variablesEnv);
 }
 
-process.loadEnvFile(rutaEnv);
+// Importar el servicio real de correo
+const {
+    enviarMailConfirmacion
+} = require("./mail.service");
 
-// Verificar la configuración SMTP
+// Verificar que estén configuradas las variables SMTP
 const variablesSMTP = [
     "SMTP_HOST",
     "SMTP_PORT",
@@ -28,11 +29,6 @@ const variablesSMTP = [
 
 const variablesFaltantes = variablesSMTP.filter(
     variable => !process.env[variable]
-);
-
-console.log(
-    "Variables SMTP faltantes:",
-    variablesFaltantes
 );
 
 const smtpConfigurado = variablesFaltantes.length === 0;
