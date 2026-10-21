@@ -70,29 +70,24 @@ app.post('/api/confirmacion', async (req, res) => {
         const { sesion, compra, formaPago } = req.body;
 
         const sesionNormalizada = sesion
-            ? {
-                ...sesion,
-                fechaHoraInicio: new Date(sesion.fechaHoraInicio)
-            }
+            ? { ...sesion, fechaHoraInicio: new Date(sesion.fechaHoraInicio) }
             : null;
 
         await validarSesion(sesionNormalizada);
 
-        const compraConfirmada = await confirmarCompra(
-          compra,
-        formaPago
-      );
+       const compraConfirmada = await confirmarCompra(compra, formaPago);
 
         let urlRedireccion = null;
 
-      if (formaPago === 'Efectivo') {
-          urlRedireccion = 'resultado.html';
-      }
+        if (formaPago === 'Efectivo') {
+            urlRedireccion = 'resultado.html';
+        }
 
-    return res.status(200).json({
-    ...compraConfirmada,
-    urlRedireccion
-}); 
+return res.status(200).json({
+  ...compraConfirmada,
+  urlRedireccion
+});
+
     } catch (error) {
         return res.status(error.statusCode || 400).json({
             error: error.message

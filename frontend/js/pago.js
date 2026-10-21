@@ -108,7 +108,7 @@ botones.forEach((boton) => {
       // La compra en curso ya fue registrada.
       sessionStorage.removeItem('compraEnCurso');
 
-      // La URL de destino es determinada por el backend.
+      // El backend determina la URL de destino.
       if (compraConfirmada.urlRedireccion) {
         window.location.href = compraConfirmada.urlRedireccion;
       } else {

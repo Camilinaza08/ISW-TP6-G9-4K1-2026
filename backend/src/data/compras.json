@@ -80,5 +80,325 @@
     "estadoPago": "pendiente",
     "formaPago": "Efectivo",
     "id": 4
+  },
+  {
+    "fechaVisita": "2026-10-22",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      25
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 20000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 5
+  },
+  {
+    "fechaVisita": "2026-10-22",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      25
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 20000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 6
+  },
+  {
+    "fechaVisita": "2026-10-23",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      12
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 7
+  },
+  {
+    "fechaVisita": "2026-10-23",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      12
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 8
+  },
+  {
+    "fechaVisita": "2026-10-23",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      12
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 9
+  },
+  {
+    "fechaVisita": "2026-10-22",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      11
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 5000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 10
+  },
+  {
+    "fechaVisita": "2026-10-22",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      25
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 20000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 11
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      10
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 5000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 12
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      10
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 5000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 13
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      10
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 5000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 14
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      1
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 0,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 15
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      1
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 0,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 16
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      1
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 0,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 17
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      2
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 0,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 18
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      5
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 5000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 19
+  },
+  {
+    "fechaVisita": "2026-10-21",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      5
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pendiente",
+    "formaPago": "Efectivo",
+    "id": 20
   }
 ]

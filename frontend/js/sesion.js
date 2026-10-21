@@ -7,9 +7,9 @@ function crearSesionMock() {
     fechaHoraInicio: inicio.toISOString(),
     fechaHoraFin: null,
     usuario: {
-      id: 2,
-      nombre: 'Brisa',
-      email: 'brisaabigaildiaz2000@gmail.com',
+      id: 3,
+      nombre: 'Camila',
+      email: 'camilinaza08@gmail.com',
     },
   };
 }

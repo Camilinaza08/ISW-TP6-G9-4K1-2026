@@ -82,18 +82,18 @@ async function confirmarCompra(compra, formaPago) {
 
     const compraRegistrada = await repository.guardarCompra(compra);
 
-    if (formaPago === "Efectivo") {
-        try {
-            await enviarMailConfirmacion(compraRegistrada);
-        } catch (error) {
-            console.error(
-                "Error al enviar el correo de confirmación:",
-                error
-            );
-        }
-    }
 
-    return compraRegistrada;
+if (formaPago === 'Efectivo') {
+  try {
+
+    await enviarMailConfirmacion(compraRegistrada);
+
+  } catch (error) {
+    console.error('Error al enviar el correo:', error);
+  }
+}
+
+return compraRegistrada;
 }
 
 
