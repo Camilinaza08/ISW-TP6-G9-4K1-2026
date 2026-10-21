@@ -442,5 +442,52 @@ describe("enviarMailConfirmacion", () => {
 
     });
 
+    
+test("Test 149 - Verificar que el correo de confirmación contenga los datos correspondientes", async () => {
+
+    // ARRANGE
+    const sendMailMock = jest.fn().mockResolvedValue({
+        messageId: "mail-test-149"
+    });
+
+    nodemailer.createTransport.mockReturnValue({
+        sendMail: sendMailMock
+    });
+
+    const compra = {
+        id: 1,
+        cliente: {
+            id: 1,
+            nombre: "Ana",
+            email: "ana@gmail.com"
+        },
+        fechaVisita: "2026-10-20",
+        cantidadEntradas: 2,
+        tiposPase: ["REGULAR", "VIP"],
+        montoTotal: 30000,
+        formaPago: "Mercado Pago"
+    };
+
+    // ACT
+    await enviarMailConfirmacion(compra);
+
+    // ASSERT
+    expect(sendMailMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+            to: "ana@gmail.com",
+            subject: "Confirmación de compra - EcoHarmony Park",
+            html: expect.any(String)
+        })
+    );
+
+    const mensajeEnviado = sendMailMock.mock.calls[0][0];
+
+    expect(mensajeEnviado.html).toContain("EcoHarmony Park");
+    expect(mensajeEnviado.html).toContain("Hola, Ana");
+    expect(mensajeEnviado.html).toContain("Compra N.º 1");
+
+});
+
+
 });
 
