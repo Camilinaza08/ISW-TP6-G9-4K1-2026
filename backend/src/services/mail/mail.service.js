@@ -54,11 +54,19 @@ function validarEmailDestinatario(email) {
 }
 
 
+
 async function enviarMailConfirmacion(compra) {
     const transporter = nodemailer.createTransport({});
 
-    await transporter.sendMail({});
+    const html = generarContenidoMail(compra);
+
+    await transporter.sendMail({
+        to: compra.cliente.email,
+        subject: "Confirmación de compra - EcoHarmony Park",
+        html: html
+    });
 }
+
 
 
 module.exports = {
