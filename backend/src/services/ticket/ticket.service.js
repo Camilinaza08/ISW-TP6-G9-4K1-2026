@@ -70,6 +70,7 @@ const ESTADOS_INICIALES_PAGO = {
 };
 
 
+
 async function confirmarCompra(compra, formaPago) {
     validarFormaPago(formaPago);
 
@@ -82,11 +83,19 @@ async function confirmarCompra(compra, formaPago) {
     const compraRegistrada = await repository.guardarCompra(compra);
 
     if (formaPago === "Efectivo") {
-        await enviarMailConfirmacion(compraRegistrada);
+        try {
+            await enviarMailConfirmacion(compraRegistrada);
+        } catch (error) {
+            console.error(
+                "Error al enviar el correo de confirmación:",
+                error
+            );
+        }
     }
 
     return compraRegistrada;
 }
+
 
 module.exports = {
   comprarEntradas,
