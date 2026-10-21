@@ -1,7 +1,7 @@
-
 const fs = require("fs");
 const path = require("path");
 const Handlebars = require("handlebars");
+const nodemailer = require("nodemailer");
 
 // Leer la plantilla HTML desde un archivo externo
 const rutaPlantilla = path.join(__dirname, "confirmacionCompra.hbs");
@@ -53,9 +53,13 @@ function validarEmailDestinatario(email) {
     }
 }
 
+
 async function enviarMailConfirmacion(compra) {
-    // Implementation for sending confirmation email
+    const transporter = nodemailer.createTransport({});
+
+    await transporter.sendMail({});
 }
+
 
 module.exports = {
     generarContenidoMail,
