@@ -55,7 +55,10 @@ function validarEmailDestinatario(email) {
 
 
 
+
 async function enviarMailConfirmacion(compra) {
+    validarEmailDestinatario(compra.cliente.email);
+
     const transporter = nodemailer.createTransport({});
 
     const html = generarContenidoMail(compra);
@@ -66,6 +69,7 @@ async function enviarMailConfirmacion(compra) {
         html: html
     });
 }
+
 
 
 
