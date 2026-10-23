@@ -54,9 +54,20 @@ function obtenerUrlCheckout(respuestaMP) {
     return respuestaMP.init_point;
 }
 
+
 async function buscarPagosPorReferencia(externalReference, clienteMP) {
 
+    const respuesta = await clienteMP.search({
+        options: {
+            criteria: "desc",
+            sort: "date_created",
+            external_reference: externalReference
+        }
+    });
+
+    return respuesta.results;
 }
+
 
 
 module.exports = {
