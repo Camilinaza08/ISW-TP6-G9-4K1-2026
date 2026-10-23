@@ -1,6 +1,6 @@
 const CompraRepository = require("../repository/compraRepository");
 const { prepararPreferenciaPago, crearPreferenciaPago, obtenerIdPreferencia, obtenerUrlCheckout, 
-    buscarPagosPorReferencia, iniciarPagoMercadoPago } = require('./mercadopago.service');
+    buscarPagosPorReferencia, iniciarPagoMercadoPago, seleccionarPagoAprobado } = require('./mercadopago.service');
 
 const {
     procesarResultadoMP
@@ -626,8 +626,54 @@ test("Test 168 - Propagar error al iniciar pago con Mercado Pago", async () => {
 
 });
 
+});
+
+
+describe("seleccionarPagoAprobado", () => {
+
+    test("Test 169 - Seleccionar un pago aprobado entre múltiples intentos", () => {
+
+        // ARRANGE
+        const pagos = [
+            {
+                id: 101,
+                status: "rejected",
+                transaction_amount: 50000,
+                currency_id: "ARS",
+                external_reference: "1"
+            },
+            {
+                id: 102,
+                status: "pending",
+                transaction_amount: 50000,
+                currency_id: "ARS",
+                external_reference: "1"
+            },
+            {
+                id: 103,
+                status: "approved",
+                transaction_amount: 50000,
+                currency_id: "ARS",
+                external_reference: "1"
+            }
+        ];
+
+        // ACT
+        const resultado = seleccionarPagoAprobado(pagos);
+
+        // ASSERT
+        expect(resultado).toEqual({
+            id: 103,
+            status: "approved",
+            transaction_amount: 50000,
+            currency_id: "ARS",
+            external_reference: "1"
+        });
+
+    });
 
 });
+
 
 
 

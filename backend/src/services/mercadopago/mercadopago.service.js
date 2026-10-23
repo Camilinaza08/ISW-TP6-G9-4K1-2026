@@ -89,6 +89,9 @@ async function iniciarPagoMercadoPago(compra, clienteMP) {
     };
 }
 
+function seleccionarPagoAprobado(pagos) {
+
+}
 
 
 module.exports = {
@@ -98,5 +101,6 @@ module.exports = {
     obtenerIdPreferencia,
     obtenerUrlCheckout,
     buscarPagosPorReferencia,
-    iniciarPagoMercadoPago
+    iniciarPagoMercadoPago,
+    seleccionarPagoAprobado
 };
