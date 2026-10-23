@@ -45,9 +45,11 @@ async function crearPreferenciaPago(preferencia, clienteMP) {
     });
 }
 
-function obtenerIdPreferencia(respuestaMP) {
 
+function obtenerIdPreferencia(respuestaMP) {
+    return respuestaMP.id;
 }
+
 
 
 
