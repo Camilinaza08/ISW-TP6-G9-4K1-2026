@@ -1,6 +1,6 @@
 const CompraRepository = require("../repository/compraRepository");
 const { prepararPreferenciaPago, crearPreferenciaPago, obtenerIdPreferencia, obtenerUrlCheckout, 
-    buscarPagosPorReferencia } = require('./mercadopago.service');
+    buscarPagosPorReferencia, iniciarPagoMercadoPago } = require('./mercadopago.service');
 
 const {
     procesarResultadoMP
@@ -519,9 +519,68 @@ test("Test 166 - Manejar errores durante la consulta de pagos", async () => {
 
 });
 
+});
 
+
+describe("iniciarPagoMercadoPago", () => {
+
+    test("Test 167 - Iniciar pago mediante Mercado Pago", async () => {
+
+        // ARRANGE
+        const compra = {
+            id: 1,
+            cantidadEntradas: 3,
+            montoTotal: 50000,
+            formaPago: "Mercado Pago",
+            estadoCompra: "pendiente",
+            estadoPago: "pending"
+        };
+
+        const respuestaMP = {
+            id: "PREF-001",
+            init_point: "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PREF-001"
+        };
+
+        const clienteMP = {
+            create: jest.fn().mockResolvedValue(respuestaMP)
+        };
+
+        // ACT
+        const resultado = await iniciarPagoMercadoPago(
+            compra,
+            clienteMP
+        );
+
+        // ASSERT
+        expect(clienteMP.create).toHaveBeenCalledTimes(1);
+
+        expect(clienteMP.create).toHaveBeenCalledWith({
+            body: {
+                items: [
+                    {
+                        title: "Entradas EcoHarmony Park",
+                        quantity: 1,
+                        unit_price: 50000,
+                        currency_id: "ARS"
+                    }
+                ],
+                external_reference: "1"
+            }
+        });
+
+        expect(resultado).toEqual({
+            idCompra: 1,
+            idPreferencia: "PREF-001",
+            urlRedireccion: respuestaMP.init_point
+        });
+
+        expect(compra.estadoCompra).toBe("pendiente");
+        expect(compra.estadoPago).toBe("pending");
+
+    });
 
 });
+
 
 
 

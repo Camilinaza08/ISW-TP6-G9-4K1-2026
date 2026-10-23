@@ -68,6 +68,9 @@ async function buscarPagosPorReferencia(externalReference, clienteMP) {
     return respuesta.results;
 }
 
+async function iniciarPagoMercadoPago(compra, clienteMP) {
+
+}
 
 
 module.exports = {
@@ -76,5 +79,6 @@ module.exports = {
     crearPreferenciaPago,
     obtenerIdPreferencia,
     obtenerUrlCheckout,
-    buscarPagosPorReferencia
+    buscarPagosPorReferencia,
+    iniciarPagoMercadoPago
 };
