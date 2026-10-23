@@ -45,6 +45,10 @@ async function crearPreferenciaPago(preferencia, clienteMP) {
     });
 }
 
+function obtenerIdPreferencia(respuestaMP) {
+
+}
+
 
 
 
@@ -52,4 +56,5 @@ module.exports = {
     procesarResultadoMP,
     prepararPreferenciaPago,
     crearPreferenciaPago,
+    obtenerIdPreferencia
 };

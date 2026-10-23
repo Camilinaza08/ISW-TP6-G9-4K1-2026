@@ -1,5 +1,5 @@
 const CompraRepository = require("../repository/compraRepository");
-const { prepararPreferenciaPago, crearPreferenciaPago } = require('./mercadopago.service');
+const { prepararPreferenciaPago, crearPreferenciaPago, obtenerIdPreferencia } = require('./mercadopago.service');
 
 const {
     procesarResultadoMP
@@ -161,6 +161,7 @@ test.each([
     }
 );
 
+
 test("Test 135 - Manejar una compra inexistente en Mercado Pago", async () => {
 
     // ARRANGE
@@ -193,7 +194,7 @@ test("Test 135 - Manejar una compra inexistente en Mercado Pago", async () => {
 
 });
 
-describe('Preparación de preferencias de Mercado Pago', () => {
+describe('prepararPreferenciaPago', () => {
   test('Test 157 - Generar los datos básicos de una preferencia', () => {
     const compra = {
       id: 'COMPRA-001',
@@ -232,7 +233,7 @@ describe('Preparación de preferencias de Mercado Pago', () => {
 });
 });
 
-
+describe("crearPreferenciaPago", () => {
 test("Test 159 - Crear una preferencia mediante un cliente simulado", async () => {
 
     // ARRANGE
@@ -271,6 +272,28 @@ test("Test 159 - Crear una preferencia mediante un cliente simulado", async () =
     });
 
     expect(resultado).toEqual(respuestaMP);
+
+});
+
+});
+
+describe("obtenerIdPreferencia", () => {
+
+    test("Test 160 - Recuperar el identificador de preferencia", () => {
+
+        // ARRANGE
+        const respuestaMP = {
+            id: "PREF-001",
+            init_point: "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PREF-001"
+        };
+
+        // ACT
+        const idPreferencia = obtenerIdPreferencia(respuestaMP);
+
+        // ASSERT
+        expect(idPreferencia).toBe("PREF-001");
+
+    });
 
 });
 
