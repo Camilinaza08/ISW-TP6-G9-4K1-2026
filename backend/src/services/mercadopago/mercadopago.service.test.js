@@ -275,6 +275,44 @@ test("Test 159 - Crear una preferencia mediante un cliente simulado", async () =
 
 });
 
+
+test("Test 162 - Manejar errores durante la creación de preferencias", async () => {
+
+    // ARRANGE
+    const preferencia = {
+        items: [
+            {
+                title: "Entradas EcoHarmony Park",
+                quantity: 1,
+                unit_price: 50000,
+                currency_id: "ARS"
+            }
+        ],
+        external_reference: "1"
+    };
+
+    const errorMP = new Error(
+        "Error al crear la preferencia"
+    );
+
+    const clienteMP = {
+        create: jest.fn().mockRejectedValue(errorMP)
+    };
+
+    // ACT Y ASSERT
+    await expect(
+        crearPreferenciaPago(preferencia, clienteMP)
+    ).rejects.toThrow("Error al crear la preferencia");
+
+    expect(clienteMP.create).toHaveBeenCalledTimes(1);
+
+    expect(clienteMP.create).toHaveBeenCalledWith({
+        body: preferencia
+    });
+
+});
+
+
 });
 
 describe("obtenerIdPreferencia", () => {
