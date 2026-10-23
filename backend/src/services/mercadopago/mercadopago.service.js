@@ -50,6 +50,9 @@ function obtenerIdPreferencia(respuestaMP) {
     return respuestaMP.id;
 }
 
+function obtenerUrlCheckout(respuestaMP) {
+
+}
 
 
 
@@ -58,5 +61,6 @@ module.exports = {
     procesarResultadoMP,
     prepararPreferenciaPago,
     crearPreferenciaPago,
-    obtenerIdPreferencia
+    obtenerIdPreferencia,
+    obtenerUrlCheckout
 };

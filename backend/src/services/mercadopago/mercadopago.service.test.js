@@ -1,5 +1,5 @@
 const CompraRepository = require("../repository/compraRepository");
-const { prepararPreferenciaPago, crearPreferenciaPago, obtenerIdPreferencia } = require('./mercadopago.service');
+const { prepararPreferenciaPago, crearPreferenciaPago, obtenerIdPreferencia, obtenerUrlCheckout } = require('./mercadopago.service');
 
 const {
     procesarResultadoMP
@@ -296,6 +296,30 @@ describe("obtenerIdPreferencia", () => {
     });
 
 });
+
+
+describe("obtenerUrlCheckout", () => {
+
+    test("Test 161 - Recuperar la URL de Checkout Pro", () => {
+
+        // ARRANGE
+        const respuestaMP = {
+            id: "PREF-001",
+            init_point: "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PREF-001"
+        };
+
+        // ACT
+        const urlCheckout = obtenerUrlCheckout(respuestaMP);
+
+        // ASSERT
+        expect(urlCheckout).toBe(
+            "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PREF-001"
+        );
+
+    });
+
+});
+
 
 
 
