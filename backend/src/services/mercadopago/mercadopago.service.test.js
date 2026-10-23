@@ -489,6 +489,37 @@ test("Test 165 - Consultar múltiples intentos de pago", async () => {
 });
 
 
+test("Test 166 - Manejar errores durante la consulta de pagos", async () => {
+
+    // ARRANGE
+    const externalReference = "1";
+
+    const errorMP = new Error(
+        "Error al consultar los pagos"
+    );
+
+    const clienteMP = {
+        search: jest.fn().mockRejectedValue(errorMP)
+    };
+
+    // ACT Y ASSERT
+    await expect(
+        buscarPagosPorReferencia(externalReference, clienteMP)
+    ).rejects.toThrow("Error al consultar los pagos");
+
+    expect(clienteMP.search).toHaveBeenCalledTimes(1);
+
+    expect(clienteMP.search).toHaveBeenCalledWith({
+        options: {
+            criteria: "desc",
+            sort: "date_created",
+            external_reference: externalReference
+        }
+    });
+
+});
+
+
 
 });
 
