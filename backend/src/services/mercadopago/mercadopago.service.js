@@ -50,9 +50,11 @@ function obtenerIdPreferencia(respuestaMP) {
     return respuestaMP.id;
 }
 
+   
 function obtenerUrlCheckout(respuestaMP) {
-
+    return respuestaMP.init_point;
 }
+
 
 
 
