@@ -438,6 +438,58 @@ test("Test 164 - Consultar una compra sin pagos registrados", async () => {
 });
 
 
+test("Test 165 - Consultar múltiples intentos de pago", async () => {
+
+    // ARRANGE
+    const externalReference = "1";
+
+    const pagosMP = [
+        {
+            id: 1001,
+            external_reference: "1",
+            status: "rejected"
+        },
+        {
+            id: 1002,
+            external_reference: "1",
+            status: "pending"
+        },
+        {
+            id: 1003,
+            external_reference: "1",
+            status: "approved"
+        }
+    ];
+
+    const clienteMP = {
+        search: jest.fn().mockResolvedValue({
+            results: pagosMP
+        })
+    };
+
+    // ACT
+    const resultado = await buscarPagosPorReferencia(
+        externalReference,
+        clienteMP
+    );
+
+    // ASSERT
+    expect(clienteMP.search).toHaveBeenCalledTimes(1);
+
+    expect(clienteMP.search).toHaveBeenCalledWith({
+        options: {
+            criteria: "desc",
+            sort: "date_created",
+            external_reference: externalReference
+        }
+    });
+
+    expect(resultado).toEqual(pagosMP);
+
+});
+
+
+
 });
 
 
