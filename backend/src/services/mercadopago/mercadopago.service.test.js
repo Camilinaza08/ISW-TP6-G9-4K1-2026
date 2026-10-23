@@ -404,6 +404,40 @@ describe("buscarPagosPorReferencia", () => {
 
     });
 
+    
+test("Test 164 - Consultar una compra sin pagos registrados", async () => {
+
+    // ARRANGE
+    const externalReference = "1";
+
+    const clienteMP = {
+        search: jest.fn().mockResolvedValue({
+            results: []
+        })
+    };
+
+    // ACT
+    const resultado = await buscarPagosPorReferencia(
+        externalReference,
+        clienteMP
+    );
+
+    // ASSERT
+    expect(clienteMP.search).toHaveBeenCalledTimes(1);
+
+    expect(clienteMP.search).toHaveBeenCalledWith({
+        options: {
+            criteria: "desc",
+            sort: "date_created",
+            external_reference: externalReference
+        }
+    });
+
+    expect(resultado).toEqual([]);
+
+});
+
+
 });
 
 
