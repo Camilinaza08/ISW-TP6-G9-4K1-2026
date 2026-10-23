@@ -49,14 +49,14 @@ async function crearPreferenciaPago(preferencia, clienteMP) {
 function obtenerIdPreferencia(respuestaMP) {
     return respuestaMP.id;
 }
-
    
 function obtenerUrlCheckout(respuestaMP) {
     return respuestaMP.init_point;
 }
 
+async function buscarPagosPorReferencia(externalReference, clienteMP) {
 
-
+}
 
 
 module.exports = {
@@ -64,5 +64,6 @@ module.exports = {
     prepararPreferenciaPago,
     crearPreferenciaPago,
     obtenerIdPreferencia,
-    obtenerUrlCheckout
+    obtenerUrlCheckout,
+    buscarPagosPorReferencia
 };

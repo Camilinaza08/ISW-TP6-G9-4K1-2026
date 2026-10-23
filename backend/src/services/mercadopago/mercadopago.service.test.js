@@ -1,5 +1,6 @@
 const CompraRepository = require("../repository/compraRepository");
-const { prepararPreferenciaPago, crearPreferenciaPago, obtenerIdPreferencia, obtenerUrlCheckout } = require('./mercadopago.service');
+const { prepararPreferenciaPago, crearPreferenciaPago, obtenerIdPreferencia, obtenerUrlCheckout, 
+    buscarPagosPorReferencia } = require('./mercadopago.service');
 
 const {
     procesarResultadoMP
@@ -353,6 +354,53 @@ describe("obtenerUrlCheckout", () => {
         expect(urlCheckout).toBe(
             "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=PREF-001"
         );
+
+    });
+
+});
+
+
+describe("buscarPagosPorReferencia", () => {
+
+    test("Test 163 - Buscar pagos mediante referencia externa", async () => {
+
+        // ARRANGE
+        const externalReference = "1";
+
+        const pagosMP = [
+            {
+                id: 1001,
+                external_reference: "1",
+                status: "approved",
+                transaction_amount: 50000,
+                currency_id: "ARS"
+            }
+        ];
+
+        const clienteMP = {
+            search: jest.fn().mockResolvedValue({
+                results: pagosMP
+            })
+        };
+
+        // ACT
+        const resultado = await buscarPagosPorReferencia(
+            externalReference,
+            clienteMP
+        );
+
+        // ASSERT
+        expect(clienteMP.search).toHaveBeenCalledTimes(1);
+
+        expect(clienteMP.search).toHaveBeenCalledWith({
+            options: {
+                criteria: "desc",
+                sort: "date_created",
+                external_reference: externalReference
+            }
+        });
+
+        expect(resultado).toEqual(pagosMP);
 
     });
 
