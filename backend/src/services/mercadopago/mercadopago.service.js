@@ -68,9 +68,27 @@ async function buscarPagosPorReferencia(externalReference, clienteMP) {
     return respuesta.results;
 }
 
+
 async function iniciarPagoMercadoPago(compra, clienteMP) {
 
+    const preferencia = prepararPreferenciaPago(compra);
+
+    const respuestaMP = await crearPreferenciaPago(
+        preferencia,
+        clienteMP
+    );
+
+    const idPreferencia = obtenerIdPreferencia(respuestaMP);
+
+    const urlRedireccion = obtenerUrlCheckout(respuestaMP);
+
+    return {
+        idCompra: compra.id,
+        idPreferencia,
+        urlRedireccion
+    };
 }
+
 
 
 module.exports = {
