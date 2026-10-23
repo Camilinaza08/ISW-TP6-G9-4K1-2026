@@ -579,6 +579,54 @@ describe("iniciarPagoMercadoPago", () => {
 
     });
 
+    
+test("Test 168 - Propagar error al iniciar pago con Mercado Pago", async () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        cantidadEntradas: 3,
+        montoTotal: 50000,
+        formaPago: "Mercado Pago",
+        estadoCompra: "pendiente",
+        estadoPago: "pending"
+    };
+
+    const errorMP = new Error(
+        "Error al crear preferencia de pago"
+    );
+
+    const clienteMP = {
+        create: jest.fn().mockRejectedValue(errorMP)
+    };
+
+    // ACT Y ASSERT
+    await expect(
+        iniciarPagoMercadoPago(compra, clienteMP)
+    ).rejects.toThrow("Error al crear preferencia de pago");
+
+    expect(clienteMP.create).toHaveBeenCalledTimes(1);
+
+    expect(clienteMP.create).toHaveBeenCalledWith({
+        body: {
+            items: [
+                {
+                    title: "Entradas EcoHarmony Park",
+                    quantity: 1,
+                    unit_price: 50000,
+                    currency_id: "ARS"
+                }
+            ],
+            external_reference: "1"
+        }
+    });
+
+    expect(compra.estadoCompra).toBe("pendiente");
+    expect(compra.estadoPago).toBe("pending");
+
+});
+
+
 });
 
 
