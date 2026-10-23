@@ -38,9 +38,13 @@ function prepararPreferenciaPago(compra) {
     };
 }
 
-async function crearPreferenciaPago(preferencia, clienteMP) {
 
+async function crearPreferenciaPago(preferencia, clienteMP) {
+    return await clienteMP.create({
+        body: preferencia
+    });
 }
+
 
 
 
