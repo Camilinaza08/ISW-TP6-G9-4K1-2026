@@ -1046,6 +1046,59 @@ test("Test 178 - No confirmar nuevamente una compra ya confirmada", async () => 
 });
 
 
+test("Test 179 - Mantener compra pendiente cuando no existen pagos", async () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        montoTotal: 50000,
+        formaPago: "Mercado Pago",
+        estadoCompra: "pendiente",
+        estadoPago: "pending"
+    };
+
+    const clienteMP = {
+        search: jest.fn().mockResolvedValue({
+            results: []
+        })
+    };
+
+    const repository = {
+        actualizarEstadosCompra: jest.fn()
+    };
+
+    // ACT
+    const resultado = await confirmarPagoMercadoPago(
+        compra,
+        clienteMP,
+        repository
+    );
+
+    // ASSERT
+    expect(clienteMP.search).toHaveBeenCalledTimes(1);
+
+    expect(clienteMP.search).toHaveBeenCalledWith({
+        options: {
+            criteria: "desc",
+            sort: "date_created",
+            external_reference: "1"
+        }
+    });
+
+    expect(resultado).toEqual(compra);
+
+    expect(resultado.estadoCompra).toBe("pendiente");
+    expect(resultado.estadoPago).toBe("pending");
+
+    expect(repository.actualizarEstadosCompra)
+        .not.toHaveBeenCalled();
+
+    expect(enviarMailConfirmacion)
+        .not.toHaveBeenCalled();
+
+});
+
+
 });
 
 
