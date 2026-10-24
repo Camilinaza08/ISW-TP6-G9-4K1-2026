@@ -94,9 +94,11 @@ function seleccionarPagoAprobado(pagos) {
     return pagos.find(pago => pago.status === "approved");
 }
 
-function validarReferenciaPago(pago, compra) {
 
+function validarReferenciaPago(pago, compra) {
+    return pago.external_reference === String(compra.id);
 }
+
 
 
 module.exports = {
