@@ -997,6 +997,55 @@ describe("confirmarPagoMercadoPago", () => {
 
     });
 
+    
+test("Test 178 - No confirmar nuevamente una compra ya confirmada", async () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        montoTotal: 50000,
+        formaPago: "Mercado Pago",
+        estadoCompra: "confirmada",
+        estadoPago: "approved"
+    };
+
+    const pagoAprobado = {
+        id: 103,
+        status: "approved",
+        external_reference: "1",
+        transaction_amount: 50000,
+        currency_id: "ARS"
+    };
+
+    const clienteMP = {
+        search: jest.fn().mockResolvedValue({
+            results: [pagoAprobado]
+        })
+    };
+
+    const repository = {
+        actualizarEstadosCompra: jest.fn()
+    };
+
+    // ACT
+    const resultado = await confirmarPagoMercadoPago(
+        compra,
+        clienteMP,
+        repository
+    );
+
+    // ASSERT
+    expect(resultado).toEqual(compra);
+
+    expect(repository.actualizarEstadosCompra)
+        .not.toHaveBeenCalled();
+
+    expect(enviarMailConfirmacion)
+        .not.toHaveBeenCalled();
+
+});
+
+
 });
 
 
