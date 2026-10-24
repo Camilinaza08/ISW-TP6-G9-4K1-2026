@@ -89,9 +89,11 @@ async function iniciarPagoMercadoPago(compra, clienteMP) {
     };
 }
 
-function seleccionarPagoAprobado(pagos) {
 
+function seleccionarPagoAprobado(pagos) {
+    return pagos.find(pago => pago.status === "approved");
 }
+
 
 
 module.exports = {
