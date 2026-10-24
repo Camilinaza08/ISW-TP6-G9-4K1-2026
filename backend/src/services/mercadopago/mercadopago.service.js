@@ -109,9 +109,45 @@ function validarMonedaPago(pago) {
     return pago.currency_id === "ARS";
 }
 
+
 async function confirmarPagoMercadoPago(compra, clienteMP, repository) {
 
+    const pagos = await buscarPagosPorReferencia(
+        String(compra.id),
+        clienteMP
+    );
+
+    const pagoAprobado = seleccionarPagoAprobado(pagos);
+
+    if (!pagoAprobado) {
+        return compra;
+    }
+
+    const referenciaValida = validarReferenciaPago(
+        pagoAprobado,
+        compra
+    );
+
+    const montoValido = validarMontoPago(
+        pagoAprobado,
+        compra
+    );
+
+    const monedaValida = validarMonedaPago(
+        pagoAprobado
+    );
+
+    if (!referenciaValida || !montoValido || !monedaValida) {
+        return compra;
+    }
+
+    return await repository.actualizarEstadosCompra(
+        compra.id,
+        "confirmada",
+        "approved"
+    );
 }
+
 
 
 module.exports = {
