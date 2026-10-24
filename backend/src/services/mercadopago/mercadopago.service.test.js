@@ -903,6 +903,88 @@ describe("confirmarPagoMercadoPago", () => {
 
     });
 
+    
+test("Test 177 - Enviar correo después de persistir el pago aprobado", async () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        montoTotal: 50000,
+        formaPago: "Mercado Pago",
+        estadoCompra: "pendiente",
+        estadoPago: "pending"
+    };
+
+    const pagoAprobado = {
+        id: 103,
+        status: "approved",
+        external_reference: "1",
+        transaction_amount: 50000,
+        currency_id: "ARS"
+    };
+
+    const compraConfirmada = {
+        ...compra,
+        estadoCompra: "confirmada",
+        estadoPago: "approved"
+    };
+
+    const clienteMP = {
+        search: jest.fn().mockResolvedValue({
+            results: [pagoAprobado]
+        })
+    };
+
+    const ordenOperaciones = [];
+
+    const repository = {
+        actualizarEstadosCompra: jest.fn()
+            .mockImplementation(async () => {
+                ordenOperaciones.push("persistencia");
+                return compraConfirmada;
+            })
+    };
+
+    const enviarMailConfirmacion = jest.fn()
+        .mockImplementation(async () => {
+            ordenOperaciones.push("correo");
+        });
+
+    // ACT
+    const resultado = await confirmarPagoMercadoPago(
+        compra,
+        clienteMP,
+        repository,
+        enviarMailConfirmacion
+    );
+
+    // ASSERT
+    expect(repository.actualizarEstadosCompra)
+        .toHaveBeenCalledTimes(1);
+
+    expect(repository.actualizarEstadosCompra)
+        .toHaveBeenCalledWith(
+            1,
+            "confirmada",
+            "approved"
+        );
+
+    expect(enviarMailConfirmacion)
+        .toHaveBeenCalledTimes(1);
+
+    expect(enviarMailConfirmacion)
+        .toHaveBeenCalledWith(compraConfirmada);
+
+    expect(ordenOperaciones).toEqual([
+        "persistencia",
+        "correo"
+    ]);
+
+    expect(resultado).toEqual(compraConfirmada);
+
+});
+
+
 });
 
 
