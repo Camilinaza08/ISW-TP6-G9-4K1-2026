@@ -1099,6 +1099,67 @@ test("Test 179 - Mantener compra pendiente cuando no existen pagos", async () =>
 });
 
 
+test("Test 180 - Mantener compra pendiente cuando el pago está pending", async () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        montoTotal: 50000,
+        formaPago: "Mercado Pago",
+        estadoCompra: "pendiente",
+        estadoPago: "pending"
+    };
+
+    const pagoPendiente = {
+        id: 103,
+        status: "pending",
+        external_reference: "1",
+        transaction_amount: 50000,
+        currency_id: "ARS"
+    };
+
+    const clienteMP = {
+        search: jest.fn().mockResolvedValue({
+            results: [pagoPendiente]
+        })
+    };
+
+    const repository = {
+        actualizarEstadosCompra: jest.fn()
+    };
+
+    // ACT
+    const resultado = await confirmarPagoMercadoPago(
+        compra,
+        clienteMP,
+        repository
+    );
+
+    // ASSERT
+    expect(clienteMP.search).toHaveBeenCalledTimes(1);
+
+    expect(clienteMP.search).toHaveBeenCalledWith({
+        options: {
+            criteria: "desc",
+            sort: "date_created",
+            external_reference: "1"
+        }
+    });
+
+    expect(resultado).toEqual(compra);
+
+    expect(resultado.estadoCompra).toBe("pendiente");
+    expect(resultado.estadoPago).toBe("pending");
+
+    expect(repository.actualizarEstadosCompra)
+        .not.toHaveBeenCalled();
+
+    expect(enviarMailConfirmacion)
+        .not.toHaveBeenCalled();
+
+});
+
+
 });
 
 
