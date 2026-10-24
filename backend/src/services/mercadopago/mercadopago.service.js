@@ -99,9 +99,11 @@ function validarReferenciaPago(pago, compra) {
     return pago.external_reference === String(compra.id);
 }
 
-function validarMontoPago(pago, compra) {
 
+function validarMontoPago(pago, compra) {
+    return pago.transaction_amount === compra.montoTotal;
 }
+
 
 
 module.exports = {
