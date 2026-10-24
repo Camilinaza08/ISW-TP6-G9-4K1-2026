@@ -114,6 +114,13 @@ function validarMonedaPago(pago) {
 
 async function confirmarPagoMercadoPago(compra, clienteMP, repository) {
 
+    if (
+        compra.estadoCompra === "confirmada" &&
+        compra.estadoPago === "approved"
+    ) {
+        return compra;
+    }
+
     const pagos = await buscarPagosPorReferencia(
         String(compra.id),
         clienteMP
@@ -155,6 +162,7 @@ async function confirmarPagoMercadoPago(compra, clienteMP, repository) {
 
     return compraConfirmada;
 }
+
 
 
 
