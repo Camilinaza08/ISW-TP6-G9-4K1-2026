@@ -1,6 +1,6 @@
 const CompraRepository = require("../repository/compraRepository");
 const { prepararPreferenciaPago, crearPreferenciaPago, obtenerIdPreferencia, obtenerUrlCheckout, 
-    buscarPagosPorReferencia, iniciarPagoMercadoPago, seleccionarPagoAprobado } = require('./mercadopago.service');
+    buscarPagosPorReferencia, iniciarPagoMercadoPago, seleccionarPagoAprobado, validarReferenciaPago } = require('./mercadopago.service');
 
 const {
     procesarResultadoMP
@@ -673,6 +673,36 @@ describe("seleccionarPagoAprobado", () => {
     });
 
 });
+
+
+describe("validarReferenciaPago", () => {
+
+    test("Test 170 - Validar referencia externa coincidente", () => {
+
+        // ARRANGE
+        const compra = {
+            id: 1,
+            montoTotal: 50000
+        };
+
+        const pago = {
+            id: 103,
+            status: "approved",
+            external_reference: "1",
+            transaction_amount: 50000,
+            currency_id: "ARS"
+        };
+
+        // ACT
+        const resultado = validarReferenciaPago(pago, compra);
+
+        // ASSERT
+        expect(resultado).toBe(true);
+
+    });
+
+});
+
 
 
 

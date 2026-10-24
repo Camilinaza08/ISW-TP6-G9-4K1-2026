@@ -94,6 +94,9 @@ function seleccionarPagoAprobado(pagos) {
     return pagos.find(pago => pago.status === "approved");
 }
 
+function validarReferenciaPago(pago, compra) {
+
+}
 
 
 module.exports = {
@@ -104,5 +107,6 @@ module.exports = {
     obtenerUrlCheckout,
     buscarPagosPorReferencia,
     iniciarPagoMercadoPago,
-    seleccionarPagoAprobado
+    seleccionarPagoAprobado,
+    validarReferenciaPago
 };
