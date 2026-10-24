@@ -1221,6 +1221,99 @@ test("Test 181 - Mantener compra pendiente cuando el pago está rejected", async
 });
 
 
+test("Test 182 - Confirmar compra con múltiples intentos y un pago aprobado", async () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        montoTotal: 50000,
+        formaPago: "Mercado Pago",
+        estadoCompra: "pendiente",
+        estadoPago: "pending"
+    };
+
+    const pagos = [
+        {
+            id: 101,
+            status: "rejected",
+            external_reference: "1",
+            transaction_amount: 50000,
+            currency_id: "ARS"
+        },
+        {
+            id: 102,
+            status: "pending",
+            external_reference: "1",
+            transaction_amount: 50000,
+            currency_id: "ARS"
+        },
+        {
+            id: 103,
+            status: "approved",
+            external_reference: "1",
+            transaction_amount: 50000,
+            currency_id: "ARS"
+        }
+    ];
+
+    const clienteMP = {
+        search: jest.fn().mockResolvedValue({
+            results: pagos
+        })
+    };
+
+    const compraConfirmada = {
+        ...compra,
+        estadoCompra: "confirmada",
+        estadoPago: "approved"
+    };
+
+    const repository = {
+        actualizarEstadosCompra: jest.fn()
+            .mockResolvedValue(compraConfirmada)
+    };
+
+    enviarMailConfirmacion.mockResolvedValue(undefined);
+
+    // ACT
+    const resultado = await confirmarPagoMercadoPago(
+        compra,
+        clienteMP,
+        repository
+    );
+
+    // ASSERT
+    expect(clienteMP.search).toHaveBeenCalledTimes(1);
+
+    expect(clienteMP.search).toHaveBeenCalledWith({
+        options: {
+            criteria: "desc",
+            sort: "date_created",
+            external_reference: "1"
+        }
+    });
+
+    expect(repository.actualizarEstadosCompra)
+        .toHaveBeenCalledTimes(1);
+
+    expect(repository.actualizarEstadosCompra)
+        .toHaveBeenCalledWith(
+            1,
+            "confirmada",
+            "approved"
+        );
+
+    expect(enviarMailConfirmacion)
+        .toHaveBeenCalledTimes(1);
+
+    expect(enviarMailConfirmacion)
+        .toHaveBeenCalledWith(compraConfirmada);
+
+    expect(resultado).toEqual(compraConfirmada);
+
+});
+
+
 });
 
 
