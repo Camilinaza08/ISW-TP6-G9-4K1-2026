@@ -701,6 +701,32 @@ describe("validarReferenciaPago", () => {
 
     });
 
+    
+test("Test 171 - Rechazar referencia externa diferente", () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        montoTotal: 50000
+    };
+
+    const pago = {
+        id: 103,
+        status: "approved",
+        external_reference: "2",
+        transaction_amount: 50000,
+        currency_id: "ARS"
+    };
+
+    // ACT
+    const resultado = validarReferenciaPago(pago, compra);
+
+    // ASSERT
+    expect(resultado).toBe(false);
+
+});
+
+
 });
 
 
