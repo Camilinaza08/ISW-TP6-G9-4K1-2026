@@ -1,7 +1,7 @@
 const CompraRepository = require("../repository/compraRepository");
 const { prepararPreferenciaPago, crearPreferenciaPago, obtenerIdPreferencia, obtenerUrlCheckout, 
     buscarPagosPorReferencia, iniciarPagoMercadoPago, seleccionarPagoAprobado, validarReferenciaPago,
-    validarMontoPago} = require('./mercadopago.service');
+    validarMontoPago, validarMonedaPago} = require('./mercadopago.service');
 
 const {
     procesarResultadoMP
@@ -784,6 +784,31 @@ test("Test 173 - Rechazar monto de pago diferente", () => {
 
 
 });
+
+
+describe("validarMonedaPago", () => {
+
+    test("Test 174 - Validar moneda ARS", () => {
+
+        // ARRANGE
+        const pago = {
+            id: 103,
+            status: "approved",
+            external_reference: "1",
+            transaction_amount: 50000,
+            currency_id: "ARS"
+        };
+
+        // ACT
+        const resultado = validarMonedaPago(pago);
+
+        // ASSERT
+        expect(resultado).toBe(true);
+
+    });
+
+});
+
 
 
 

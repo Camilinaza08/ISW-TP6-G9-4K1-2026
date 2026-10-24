@@ -104,6 +104,9 @@ function validarMontoPago(pago, compra) {
     return pago.transaction_amount === compra.montoTotal;
 }
 
+function validarMonedaPago(pago) {
+
+}
 
 
 module.exports = {
@@ -116,5 +119,6 @@ module.exports = {
     iniciarPagoMercadoPago,
     seleccionarPagoAprobado,
     validarReferenciaPago, 
-    validarMontoPago
+    validarMontoPago, 
+    validarMonedaPago
 };
