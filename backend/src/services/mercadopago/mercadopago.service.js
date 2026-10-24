@@ -99,6 +99,9 @@ function validarReferenciaPago(pago, compra) {
     return pago.external_reference === String(compra.id);
 }
 
+function validarMontoPago(pago, compra) {
+
+}
 
 
 module.exports = {
@@ -110,5 +113,6 @@ module.exports = {
     buscarPagosPorReferencia,
     iniciarPagoMercadoPago,
     seleccionarPagoAprobado,
-    validarReferenciaPago
+    validarReferenciaPago, 
+    validarMontoPago
 };
