@@ -104,9 +104,11 @@ function validarMontoPago(pago, compra) {
     return pago.transaction_amount === compra.montoTotal;
 }
 
-function validarMonedaPago(pago) {
 
+function validarMonedaPago(pago) {
+    return pago.currency_id === "ARS";
 }
+
 
 
 module.exports = {
