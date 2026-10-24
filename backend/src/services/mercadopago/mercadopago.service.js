@@ -109,6 +109,9 @@ function validarMonedaPago(pago) {
     return pago.currency_id === "ARS";
 }
 
+async function confirmarPagoMercadoPago(compra, clienteMP, repository) {
+
+}
 
 
 module.exports = {
@@ -122,5 +125,6 @@ module.exports = {
     seleccionarPagoAprobado,
     validarReferenciaPago, 
     validarMontoPago, 
-    validarMonedaPago
+    validarMonedaPago,
+    confirmarPagoMercadoPago
 };

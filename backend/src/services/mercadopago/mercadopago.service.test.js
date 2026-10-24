@@ -1,7 +1,7 @@
 const CompraRepository = require("../repository/compraRepository");
 const { prepararPreferenciaPago, crearPreferenciaPago, obtenerIdPreferencia, obtenerUrlCheckout, 
     buscarPagosPorReferencia, iniciarPagoMercadoPago, seleccionarPagoAprobado, validarReferenciaPago,
-    validarMontoPago, validarMonedaPago} = require('./mercadopago.service');
+    validarMontoPago, validarMonedaPago, confirmarPagoMercadoPago} = require('./mercadopago.service');
 
 const {
     procesarResultadoMP
@@ -829,6 +829,82 @@ test("Test 175 - Rechazar pago en moneda diferente de ARS", () => {
 
 
 });
+
+
+describe("confirmarPagoMercadoPago", () => {
+
+    test("Test 176 - Confirmar compra con pago aprobado y válido", async () => {
+
+        // ARRANGE
+        const compra = {
+            id: 1,
+            montoTotal: 50000,
+            formaPago: "Mercado Pago",
+            estadoCompra: "pendiente",
+            estadoPago: "pending"
+        };
+
+        const pagoAprobado = {
+            id: 103,
+            status: "approved",
+            external_reference: "1",
+            transaction_amount: 50000,
+            currency_id: "ARS"
+        };
+
+        const clienteMP = {
+            search: jest.fn().mockResolvedValue({
+                results: [pagoAprobado]
+            })
+        };
+
+        const repository = {
+            actualizarEstadosCompra: jest.fn()
+                .mockResolvedValue({
+                    ...compra,
+                    estadoCompra: "confirmada",
+                    estadoPago: "approved"
+                })
+        };
+
+        // ACT
+        const resultado = await confirmarPagoMercadoPago(
+            compra,
+            clienteMP,
+            repository
+        );
+
+        // ASSERT
+        expect(clienteMP.search).toHaveBeenCalledTimes(1);
+
+        expect(clienteMP.search).toHaveBeenCalledWith({
+            options: {
+                criteria: "desc",
+                sort: "date_created",
+                external_reference: "1"
+            }
+        });
+
+        expect(repository.actualizarEstadosCompra)
+            .toHaveBeenCalledTimes(1);
+
+        expect(repository.actualizarEstadosCompra)
+            .toHaveBeenCalledWith(
+                1,
+                "confirmada",
+                "approved"
+            );
+
+        expect(resultado).toEqual({
+            ...compra,
+            estadoCompra: "confirmada",
+            estadoPago: "approved"
+        });
+
+    });
+
+});
+
 
 
 
