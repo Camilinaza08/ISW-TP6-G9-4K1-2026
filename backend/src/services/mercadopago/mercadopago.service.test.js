@@ -757,6 +757,32 @@ describe("validarMontoPago", () => {
 
     });
 
+    
+test("Test 173 - Rechazar monto de pago diferente", () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        montoTotal: 50000
+    };
+
+    const pago = {
+        id: 103,
+        status: "approved",
+        external_reference: "1",
+        transaction_amount: 40000,
+        currency_id: "ARS"
+    };
+
+    // ACT
+    const resultado = validarMontoPago(pago, compra);
+
+    // ASSERT
+    expect(resultado).toBe(false);
+
+});
+
+
 });
 
 
