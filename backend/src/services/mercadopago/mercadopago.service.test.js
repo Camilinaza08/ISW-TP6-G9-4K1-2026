@@ -807,6 +807,27 @@ describe("validarMonedaPago", () => {
 
     });
 
+    
+test("Test 175 - Rechazar pago en moneda diferente de ARS", () => {
+
+    // ARRANGE
+    const pago = {
+        id: 103,
+        status: "approved",
+        external_reference: "1",
+        transaction_amount: 50000,
+        currency_id: "USD"
+    };
+
+    // ACT
+    const resultado = validarMonedaPago(pago);
+
+    // ASSERT
+    expect(resultado).toBe(false);
+
+});
+
+
 });
 
 
