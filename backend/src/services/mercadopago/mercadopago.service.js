@@ -1,5 +1,6 @@
 const path = require("node:path");
 const CompraRepository = require("../repository/compraRepository");
+const {enviarMailConfirmacion} = require("../mail/mail.service");
 
 const repository = new CompraRepository(
     path.join(__dirname, "../../data/compras.json")
@@ -110,6 +111,7 @@ function validarMonedaPago(pago) {
 }
 
 
+
 async function confirmarPagoMercadoPago(compra, clienteMP, repository) {
 
     const pagos = await buscarPagosPorReferencia(
@@ -133,20 +135,27 @@ async function confirmarPagoMercadoPago(compra, clienteMP, repository) {
         compra
     );
 
-    const monedaValida = validarMonedaPago(
-        pagoAprobado
-    );
+    const monedaValida = validarMonedaPago(pagoAprobado);
 
     if (!referenciaValida || !montoValido || !monedaValida) {
         return compra;
     }
 
-    return await repository.actualizarEstadosCompra(
+    const compraConfirmada = await repository.actualizarEstadosCompra(
         compra.id,
         "confirmada",
         "approved"
     );
+
+    try {
+        await enviarMailConfirmacion(compraConfirmada);
+    } catch (error) {
+        console.error("Error al enviar el correo:", error);
+    }
+
+    return compraConfirmada;
 }
+
 
 
 
