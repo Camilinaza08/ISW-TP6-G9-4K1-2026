@@ -460,5 +460,45 @@
     "estadoPago": "approved",
     "formaPago": "Mercado Pago",
     "id": 23
+  },
+  {
+    "fechaVisita": "2026-10-29",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      15
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "confirmada",
+    "estadoPago": "approved",
+    "formaPago": "Mercado Pago",
+    "id": 24
+  },
+  {
+    "fechaVisita": "2026-10-27",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      55
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "confirmada",
+    "estadoPago": "approved",
+    "formaPago": "Mercado Pago",
+    "id": 25
   }
 ]
