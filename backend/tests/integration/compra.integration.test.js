@@ -307,5 +307,67 @@ test("Test 196 - Manejar error al iniciar Checkout Pro", async () => {
 
 });
 
+test("Test 197 - Manejar ausencia de Access Token desde Express", async () => {
+
+    // ARRANGE
+
+    const sesion = {
+        usuario: "usuario@test.com",
+        fechaHoraInicio: new Date().toISOString()
+    };
+
+    const compra = {
+        id: 126,
+        montoTotal: 50000,
+        formaPago: "Mercado Pago"
+    };
+
+    const compraRegistrada = {
+        ...compra,
+        estadoCompra: "pendiente",
+        estadoPago: "pending"
+    };
+
+    validarSesion.mockReturnValue(undefined);
+
+    confirmarCompra.mockResolvedValue(compraRegistrada);
+
+    crearClientesMercadoPago.mockImplementation(() => {
+        throw new Error(
+            "Access Token de Mercado Pago no configurado"
+        );
+    });
+
+    // ACT
+
+    const respuesta = await request(app)
+        .post("/api/confirmacion")
+        .send({
+            sesion,
+            compra,
+            formaPago: "Mercado Pago"
+        });
+
+    // ASSERT
+
+    expect(respuesta.status).toBe(400);
+
+    expect(confirmarCompra).toHaveBeenCalledWith(
+        compra,
+        "Mercado Pago"
+    );
+
+    expect(crearClientesMercadoPago).toHaveBeenCalledWith(
+        process.env.MP_ACCESS_TOKEN
+    );
+
+    expect(iniciarPagoMercadoPago).not.toHaveBeenCalled();
+
+    expect(respuesta.body).toEqual({
+        error: "Access Token de Mercado Pago no configurado"
+    });
+
+});
+
 
 });
