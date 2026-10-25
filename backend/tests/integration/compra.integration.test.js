@@ -235,5 +235,77 @@ test("Test 195 - Mantener el comportamiento de Efectivo", async () => {
 
 });
 
+test("Test 196 - Manejar error al iniciar Checkout Pro", async () => {
+
+    // ARRANGE
+
+    const sesion = {
+        usuario: "usuario@test.com",
+        fechaHoraInicio: new Date().toISOString()
+    };
+
+    const compra = {
+        id: 125,
+        montoTotal: 50000,
+        formaPago: "Mercado Pago"
+    };
+
+    const compraRegistrada = {
+        ...compra,
+        estadoCompra: "pendiente",
+        estadoPago: "pending"
+    };
+
+    const clientePreferencias = {
+        create: jest.fn()
+    };
+
+    validarSesion.mockReturnValue(undefined);
+
+    confirmarCompra.mockResolvedValue(compraRegistrada);
+
+    crearClientesMercadoPago.mockReturnValue({
+        preferencias: clientePreferencias,
+        pagos: {}
+    });
+
+    iniciarPagoMercadoPago.mockRejectedValue(
+        new Error("Error al crear preferencia de Mercado Pago")
+    );
+
+    // ACT
+
+    const respuesta = await request(app)
+        .post("/api/confirmacion")
+        .send({
+            sesion,
+            compra,
+            formaPago: "Mercado Pago"
+        });
+
+    // ASSERT
+
+    expect(respuesta.status).toBe(400);
+
+    expect(confirmarCompra).toHaveBeenCalledWith(
+        compra,
+        "Mercado Pago"
+    );
+
+    expect(iniciarPagoMercadoPago).toHaveBeenCalledWith(
+        compraRegistrada,
+        clientePreferencias
+    );
+
+    expect(respuesta.body).toEqual({
+        error: "Error al crear preferencia de Mercado Pago"
+    });
+
+    expect(respuesta.body).not.toHaveProperty(
+        "urlRedireccion"
+    );
+
+});
+
 
 });
