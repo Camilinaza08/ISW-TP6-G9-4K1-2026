@@ -26,15 +26,6 @@ if (!compra) {
   window.location.replace('compra.html');
 }
 
-// Mercado Pago permanecerá deshabilitado hasta
-// implementar la integración con Checkout Pro.
-botones.forEach((boton) => {
-  if (boton.dataset.forma === 'Mercado Pago') {
-    boton.disabled = true;
-    boton.title = 'Mercado Pago estará disponible próximamente';
-  }
-});
-
 // Confirma la compra mediante el backend.
 async function procesarConfirmacion(compra, formaPago) {
   const sesion = obtenerSesion();
@@ -71,6 +62,7 @@ async function procesarConfirmacion(compra, formaPago) {
 // Manejo de la selección de la forma de pago.
 botones.forEach((boton) => {
   boton.addEventListener('click', async () => {
+
     if (!compra) {
       return mostrarMensaje(
         'No se encontró una compra pendiente de confirmación.'
@@ -79,20 +71,23 @@ botones.forEach((boton) => {
 
     const formaPago = boton.dataset.forma;
 
-    // Protección adicional mientras Mercado Pago no esté integrado.
-    if (formaPago !== 'Efectivo') {
+    // Solo se permiten las formas de pago implementadas.
+    if (!['Efectivo', 'Mercado Pago'].includes(formaPago)) {
       return mostrarMensaje(
-        'Esta forma de pago todavía no está disponible.'
+        'La forma de pago seleccionada no está disponible.'
       );
     }
 
     elMensaje.hidden = true;
 
+    // Evitar confirmaciones duplicadas mientras
+    // se procesa la solicitud.
     botones.forEach((b) => {
       b.disabled = true;
     });
 
     try {
+
       const compraConfirmada = await procesarConfirmacion(
         compra,
         formaPago
@@ -118,6 +113,7 @@ botones.forEach((boton) => {
       }
 
     } catch (err) {
+
       mostrarMensaje(
         err.message === 'Failed to fetch'
           ? 'No se pudo conectar con el servidor. Intentá nuevamente.'
@@ -125,9 +121,14 @@ botones.forEach((boton) => {
       );
 
     } finally {
+
+      // Restaurar los botones si el usuario
+      // permanece en la página.
       botones.forEach((b) => {
-        b.disabled = b.dataset.forma === 'Mercado Pago';
+        b.disabled = false;
       });
+
     }
   });
 });
+

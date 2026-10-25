@@ -400,5 +400,65 @@
     "estadoPago": "pendiente",
     "formaPago": "Efectivo",
     "id": 20
+  },
+  {
+    "fechaVisita": "2026-10-25",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      5
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pending",
+    "formaPago": "Mercado Pago",
+    "id": 21
+  },
+  {
+    "fechaVisita": "2026-10-25",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      5
+    ],
+    "tipoPase": [
+      "VIP"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 10000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pending",
+    "formaPago": "Mercado Pago",
+    "id": 22
+  },
+  {
+    "fechaVisita": "2026-10-25",
+    "cantidadEntradas": 1,
+    "edadesVisitantes": [
+      10
+    ],
+    "tipoPase": [
+      "REGULAR"
+    ],
+    "cliente": {
+      "id": 3,
+      "nombre": "Camila",
+      "email": "camilinaza08@gmail.com"
+    },
+    "montoTotal": 5000,
+    "estadoCompra": "pendiente",
+    "estadoPago": "pending",
+    "formaPago": "Mercado Pago",
+    "id": 23
   }
 ]
