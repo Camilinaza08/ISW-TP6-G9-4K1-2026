@@ -408,6 +408,41 @@ test("Test 189 - Validar ausencia de configuración de URL pública", () => {
 
 });
 
+
+test.each([
+    ["localhost:3000"],
+    ["http://ejemplo.com"],
+    ["https://"]
+])("Test 190 - Rechazar PUBLIC_URL inválida: %s", (urlInvalida) => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        montoTotal: 50000
+    };
+
+    const publicUrlAnterior = process.env.PUBLIC_URL;
+
+    process.env.PUBLIC_URL = urlInvalida;
+
+    try {
+        // ACT Y ASSERT
+        expect(() => {
+            prepararPreferenciaPago(compra);
+        }).toThrow("PUBLIC_URL debe ser una URL HTTPS válida");
+
+    } finally {
+        // Restaurar la configuración original
+        if (publicUrlAnterior === undefined) {
+            delete process.env.PUBLIC_URL;
+        } else {
+            process.env.PUBLIC_URL = publicUrlAnterior;
+        }
+    }
+
+});
+
+
       
 
 
