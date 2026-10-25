@@ -320,6 +320,43 @@ test("Test 162 - Manejar errores durante la creación de preferencias", async ()
 });
 
 
+test("Test 188 - Configurar una única URL de retorno para Checkout Pro", () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        montoTotal: 50000
+    };
+
+    const publicUrlAnterior = process.env.PUBLIC_URL;
+    process.env.PUBLIC_URL = "https://ecoharmony.example.com";
+
+    try {
+        // ACT
+        const preferencia = prepararPreferenciaPago(compra);
+
+        // ASSERT
+        const urlResultado =
+            "https://ecoharmony.example.com/resultado.html?id=1";
+
+        expect(preferencia.back_urls).toEqual({
+            success: urlResultado,
+            failure: urlResultado,
+            pending: urlResultado
+        });
+
+    } finally {
+        if (publicUrlAnterior === undefined) {
+            delete process.env.PUBLIC_URL;
+        } else {
+            process.env.PUBLIC_URL = publicUrlAnterior;
+        }
+    }
+
+});
+      
+
+
 });
 
 describe("obtenerIdPreferencia", () => {
