@@ -27,14 +27,42 @@ async function procesarResultadoMP(idCompra, estadoPago) {
 
 
 
+
 function prepararPreferenciaPago(compra) {
 
+    // Validar que exista la configuración pública
     if (!process.env.PUBLIC_URL) {
         throw new Error("PUBLIC_URL no está configurada");
     }
 
-    const urlResultado =
-        `${process.env.PUBLIC_URL}/resultado.html?id=${compra.id}`;
+    // Validar que sea una URL HTTPS válida
+    let urlPublica;
+
+    try {
+        urlPublica = new URL(process.env.PUBLIC_URL);
+
+        if (
+            urlPublica.protocol !== "https:" ||
+            !urlPublica.hostname
+        ) {
+            throw new Error("URL inválida");
+        }
+
+    } catch {
+        throw new Error(
+            "PUBLIC_URL debe ser una URL HTTPS válida"
+        );
+    }
+
+    // Construir la URL de retorno
+    const urlResultado = new URL(
+        "resultado.html",
+        urlPublica.href.endsWith("/")
+            ? urlPublica.href
+            : `${urlPublica.href}/`
+    );
+
+    urlResultado.searchParams.set("id", String(compra.id));
 
     return {
         items: [
@@ -47,12 +75,13 @@ function prepararPreferenciaPago(compra) {
         ],
         external_reference: String(compra.id),
         back_urls: {
-            success: urlResultado,
-            failure: urlResultado,
-            pending: urlResultado
+            success: urlResultado.href,
+            failure: urlResultado.href,
+            pending: urlResultado.href
         }
     };
 }
+
 
 
 
