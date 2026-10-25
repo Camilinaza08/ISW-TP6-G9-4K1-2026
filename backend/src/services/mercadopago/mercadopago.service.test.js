@@ -201,43 +201,66 @@ test("Test 135 - Manejar una compra inexistente en Mercado Pago", async () => {
 
 });
 
+
 describe('prepararPreferenciaPago', () => {
-  test('Test 157 - Generar los datos básicos de una preferencia', () => {
-    const compra = {
-      id: 'COMPRA-001',
-      cantidadEntradas: 3,
-      montoTotal: 50000
-    };
 
-    const preferencia = prepararPreferenciaPago(compra);
+    const PUBLIC_URL_PRUEBA = "https://ecoharmony.example.com";
+    let publicUrlAnterior;
 
-    expect(preferencia.items).toEqual([
-      {
-        title: 'Entradas EcoHarmony Park',
-        quantity: 1,
-        unit_price: 50000,
-        currency_id: 'ARS'
-      }
-    ]);
-  });
+    beforeEach(() => {
+        publicUrlAnterior = process.env.PUBLIC_URL;
+        process.env.PUBLIC_URL = PUBLIC_URL_PRUEBA;
+    });
 
-  
+    afterEach(() => {
+        if (publicUrlAnterior === undefined) {
+            delete process.env.PUBLIC_URL;
+        } else {
+            process.env.PUBLIC_URL = publicUrlAnterior;
+        }
+    });
+
+    test('Test 157 - Generar los datos básicos de una preferencia', () => {
+
+        // ARRANGE
+        const compra = {
+            id: 'COMPRA-001',
+            cantidadEntradas: 3,
+            montoTotal: 50000
+        };
+
+        // ACT
+        const preferencia = prepararPreferenciaPago(compra);
+
+        // ASSERT
+        expect(preferencia.items).toEqual([
+            {
+                title: 'Entradas EcoHarmony Park',
+                quantity: 1,
+                unit_price: 50000,
+                currency_id: 'ARS'
+            }
+        ]);
+
+    });
+
     test("Test 158 - Asociar la preferencia con la compra", () => {
 
-    // ARRANGE
-    const compra = {
-        id: 1,
-        cantidadEntradas: 3,
-        montoTotal: 50000
-    };
+        // ARRANGE
+        const compra = {
+            id: 1,
+            cantidadEntradas: 3,
+            montoTotal: 50000
+        };
 
-    // ACT
-    const preferencia = prepararPreferenciaPago(compra);
+        // ACT
+        const preferencia = prepararPreferenciaPago(compra);
 
-    // ASSERT
-    expect(preferencia.external_reference).toBe("1");
+        // ASSERT
+        expect(preferencia.external_reference).toBe("1");
 
-});
+    });
+
 });
 
 describe("crearPreferenciaPago", () => {

@@ -26,7 +26,13 @@ async function procesarResultadoMP(idCompra, estadoPago) {
 
 
 
+
 function prepararPreferenciaPago(compra) {
+
+    if (!process.env.PUBLIC_URL) {
+        throw new Error("PUBLIC_URL no está configurada");
+    }
+
     const urlResultado =
         `${process.env.PUBLIC_URL}/resultado.html?id=${compra.id}`;
 
@@ -47,6 +53,7 @@ function prepararPreferenciaPago(compra) {
         }
     };
 }
+
 
 
 async function crearPreferenciaPago(preferencia, clienteMP) {
