@@ -54,7 +54,6 @@ describe("iniciarCheckoutMercadoPago", () => {
     });
 
 });
-
 describe("Consulta de pagos mediante Mercado Pago", () => {
   test("Test 198 - Consulta real de pagos mediante el SDK", async () => {
     // Arrange
@@ -70,26 +69,21 @@ describe("Consulta de pagos mediante Mercado Pago", () => {
       pagos
     );
 
-    // Diagnóstico temporal: inspeccionar la respuesta real del SDK
-    console.log(
-      "Respuesta de Mercado Pago:",
-      JSON.stringify(resultado, null, 2)
-    );
-
     // Assert
-    expect(Array.isArray(resultado.results)).toBe(true);
+    expect(Array.isArray(resultado)).toBe(true);
+    expect(resultado.length).toBeGreaterThan(0);
 
-    const pago = resultado.results.find(
+    const pago = resultado.find(
       (pago) =>
         String(pago.external_reference) === referenciaExterna
     );
 
     expect(pago).toBeDefined();
-    expect(pago).toHaveProperty("status");
     expect(pago).toHaveProperty(
       "external_reference",
       referenciaExterna
     );
+    expect(pago).toHaveProperty("status");
     expect(pago).toHaveProperty("transaction_amount");
     expect(pago).toHaveProperty("currency_id");
   });
