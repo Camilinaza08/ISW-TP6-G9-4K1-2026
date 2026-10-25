@@ -24,11 +24,7 @@ async function procesarResultadoMP(idCompra, estadoPago) {
 }
 
 
-
-
-
-
-function prepararPreferenciaPago(compra) {
+function construirUrlRetorno(compra) {
 
     // Validar que exista la configuración pública
     if (!process.env.PUBLIC_URL) {
@@ -62,7 +58,23 @@ function prepararPreferenciaPago(compra) {
             : `${urlPublica.href}/`
     );
 
-    urlResultado.searchParams.set("id", String(compra.id));
+    urlResultado.searchParams.set(
+        "id",
+        String(compra.id)
+    );
+
+    return urlResultado.href;
+}
+
+
+
+
+
+
+function prepararPreferenciaPago(compra) {
+
+    // Obtener la URL de retorno validada
+    const urlResultado = construirUrlRetorno(compra);
 
     return {
         items: [
@@ -75,12 +87,13 @@ function prepararPreferenciaPago(compra) {
         ],
         external_reference: String(compra.id),
         back_urls: {
-            success: urlResultado.href,
-            failure: urlResultado.href,
-            pending: urlResultado.href
+            success: urlResultado,
+            failure: urlResultado,
+            pending: urlResultado
         }
     };
 }
+
 
 
 
