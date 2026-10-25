@@ -7,10 +7,10 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "start": "node src/index.js"
-  },
+  "test": "jest",
+  "test:watch": "jest --watch",
+  "start": "node --env-file=.env.gmail src/index.js"
+},
   "jest": {
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
