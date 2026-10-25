@@ -30,4 +30,20 @@ describe("crearClientesMercadoPago", () => {
 
     });
 
+    
+test("Test 192 - Validar ausencia de Access Token de Mercado Pago", () => {
+
+    // ARRANGE
+    const accessToken = undefined;
+
+    // ACT Y ASSERT
+    expect(() => {
+        crearClientesMercadoPago(accessToken);
+    }).toThrow(
+        "Access Token de Mercado Pago no configurado"
+    );
+
+});
+
+
 });
