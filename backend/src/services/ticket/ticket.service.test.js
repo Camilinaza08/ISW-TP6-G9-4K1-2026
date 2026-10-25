@@ -68,7 +68,7 @@ describe('validarCompra', () => {
   test('Test 05 - Comprar entradas con usuario registrado', async () => {
     usuario = { id: 2, nombre: 'Brisa', email: 'brisaabigaildiaz2000@gmail.com', };
     datosCompra = {
-      fechaVisita: '2026-10-24',
+      fechaVisita: '2026-11-03',
       cantidadEntradas: 2,
       edadesVisitantes: [25, 23],
       tipoPase: ['REGULAR', 'REGULAR'],
@@ -84,7 +84,7 @@ describe('validarCompra', () => {
 
   test('Test 06 - Conservar datos del usuario en la compra', async () => {
     datosCompra = {
-      fechaVisita: '2026-10-24',
+      fechaVisita: '2026-11-03',
       cantidadEntradas: 2,
       edadesVisitantes: [25, 23],
       tipoPase: ['REGULAR', 'REGULAR'],
