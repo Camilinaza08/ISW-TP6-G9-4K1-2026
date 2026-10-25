@@ -3,6 +3,11 @@ const {
     iniciarCheckoutMercadoPago
 } = require("./mercadopago.integration");
 
+const { crearClientesMercadoPago } =
+  require("./mercadopago.client");
+
+  const { buscarPagosPorReferencia } =
+  require("./mercadopago.service");
 describe("iniciarCheckoutMercadoPago", () => {
 
     test("Test 193 - Iniciar Checkout Pro desde el backend", async () => {
@@ -48,4 +53,44 @@ describe("iniciarCheckoutMercadoPago", () => {
 
     });
 
+});
+
+describe("Consulta de pagos mediante Mercado Pago", () => {
+  test("Test 198 - Consulta real de pagos mediante el SDK", async () => {
+    // Arrange
+    const referenciaExterna = "23";
+
+    const { pagos } = crearClientesMercadoPago(
+      process.env.MP_ACCESS_TOKEN
+    );
+
+    // Act
+    const resultado = await buscarPagosPorReferencia(
+      referenciaExterna,
+      pagos
+    );
+
+    // Diagnóstico temporal: inspeccionar la respuesta real del SDK
+    console.log(
+      "Respuesta de Mercado Pago:",
+      JSON.stringify(resultado, null, 2)
+    );
+
+    // Assert
+    expect(Array.isArray(resultado.results)).toBe(true);
+
+    const pago = resultado.results.find(
+      (pago) =>
+        String(pago.external_reference) === referenciaExterna
+    );
+
+    expect(pago).toBeDefined();
+    expect(pago).toHaveProperty("status");
+    expect(pago).toHaveProperty(
+      "external_reference",
+      referenciaExterna
+    );
+    expect(pago).toHaveProperty("transaction_amount");
+    expect(pago).toHaveProperty("currency_id");
+  });
 });
