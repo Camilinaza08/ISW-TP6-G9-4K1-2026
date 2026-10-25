@@ -1,5 +1,6 @@
-
 /* ================= Resultado de compra ================= */
+
+const API_URL = 'http://localhost:3000';
 
 function leerCompraConfirmada() {
   try {
@@ -10,8 +11,6 @@ function leerCompraConfirmada() {
     return null;
   }
 }
-
-const compra = leerCompraConfirmada();
 
 const tarjeta = document.querySelector('.resultado__tarjeta');
 const icono = document.getElementById('resultado-icono');
@@ -32,8 +31,6 @@ function formatoFecha(fechaISO) {
   return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
-// Traduce los estados para mostrarlos al usuario.
-// No modifica los valores originales del backend.
 function formatearEstado(estado) {
   const estados = {
     pendiente: 'Pendiente',
@@ -63,6 +60,8 @@ function configurarEstado(estado, simbolo, encabezado, mensaje) {
 
 function mostrarResultado(compra) {
   if (!compra) {
+    detalle.hidden = true;
+
     configurarEstado(
       'rechazado',
       '!',
@@ -75,7 +74,6 @@ function mostrarResultado(compra) {
   const formaPago = compra.formaPago;
   const estadoPago = compra.estadoPago;
 
-  // ===== Pago en Efectivo =====
   if (formaPago === 'Efectivo') {
     configurarEstado(
       'pendiente',
@@ -84,7 +82,6 @@ function mostrarResultado(compra) {
       'Tu compra fue registrada correctamente. El pago se encuentra pendiente y deberá realizarse en la boletería del parque.'
     );
 
-  // ===== Mercado Pago: Aprobado =====
   } else if (
     formaPago === 'Mercado Pago' &&
     estadoPago === 'approved'
@@ -96,7 +93,6 @@ function mostrarResultado(compra) {
       'Tu pago fue aprobado correctamente.'
     );
 
-  // ===== Mercado Pago: Pendiente =====
   } else if (
     formaPago === 'Mercado Pago' &&
     estadoPago === 'pending'
@@ -108,7 +104,6 @@ function mostrarResultado(compra) {
       'Estamos esperando la confirmación del pago.'
     );
 
-  // ===== Mercado Pago: Rechazado =====
   } else if (
     formaPago === 'Mercado Pago' &&
     estadoPago === 'rejected'
@@ -120,7 +115,6 @@ function mostrarResultado(compra) {
       'El pago no pudo completarse.'
     );
 
-  // ===== Estado desconocido =====
   } else {
     configurarEstado(
       'pendiente',
@@ -130,7 +124,6 @@ function mostrarResultado(compra) {
     );
   }
 
-  // ===== Detalle de la compra =====
   document.getElementById('resultado-id').textContent =
     compra.id ?? '-';
 
@@ -158,4 +151,74 @@ function mostrarResultado(compra) {
   detalle.hidden = false;
 }
 
-mostrarResultado(compra);
+function obtenerIdCompra() {
+  const parametros = new URLSearchParams(window.location.search);
+
+  const id = parametros.get('id') ||
+             parametros.get('external_reference');
+
+  if (id && /^[1-9]\d*$/.test(id)) {
+    return Number(id);
+  }
+
+  const compraGuardada = leerCompraConfirmada();
+
+  return compraGuardada?.id ?? null;
+}
+
+async function consultarEstadoCompra(idCompra) {
+  const respuesta = await fetch(
+    `${API_URL}/api/pagos/${idCompra}/estado`
+  );
+
+  const resultado = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(
+      resultado.error || 'No se pudo consultar el estado de la compra.'
+    );
+  }
+
+  return resultado.compra;
+}
+
+async function inicializarResultado() {
+  const idCompra = obtenerIdCompra();
+
+  if (!idCompra) {
+    mostrarResultado(null);
+    return;
+  }
+
+  configurarEstado(
+    'pendiente',
+    '⏳',
+    'Consultando compra',
+    'Estamos verificando el estado de tu compra.'
+  );
+
+  detalle.hidden = true;
+
+  try {
+    const compra = await consultarEstadoCompra(idCompra);
+
+    sessionStorage.setItem(
+      'compraConfirmada',
+      JSON.stringify(compra)
+    );
+
+    mostrarResultado(compra);
+
+  } catch (error) {
+    configurarEstado(
+      'pendiente',
+      '!',
+      'No se pudo verificar la compra',
+      error.message
+    );
+
+    detalle.hidden = true;
+  }
+}
+
+inicializarResultado();

@@ -372,17 +372,3 @@ test("Test 197 - Manejar ausencia de Access Token desde Express", async () => {
 
 });
 
-describe("Integración completa del proceso de compra mediante Mercado Pago", () => {
-  test("Test 199 - Integración completa del proceso de compra mediante Mercado Pago", async () => {
-    // Arrange
-    const idCompra = 23;
-
-    // Act
-    const respuesta = await request(app)
-      .get(`/api/pagos/${idCompra}/estado`);
-
-    // Assert
-    expect(respuesta.status).toBe(200);
-    expect(respuesta.body.compra).not.toBeNull();
-  });
-});

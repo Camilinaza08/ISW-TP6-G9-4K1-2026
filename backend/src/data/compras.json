@@ -436,8 +436,8 @@
       "email": "camilinaza08@gmail.com"
     },
     "montoTotal": 10000,
-    "estadoCompra": "pendiente",
-    "estadoPago": "pending",
+    "estadoCompra": "confirmada",
+    "estadoPago": "approved",
     "formaPago": "Mercado Pago",
     "id": 22
   },
@@ -456,8 +456,8 @@
       "email": "camilinaza08@gmail.com"
     },
     "montoTotal": 5000,
-    "estadoCompra": "pendiente",
-    "estadoPago": "pending",
+    "estadoCompra": "confirmada",
+    "estadoPago": "approved",
     "formaPago": "Mercado Pago",
     "id": 23
   }

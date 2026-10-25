@@ -221,6 +221,23 @@ async function confirmarPagoMercadoPago(compra, clienteMP, repository) {
     return compraConfirmada;
 }
 
+async function consultarEstadoCompraMP(idCompra, clienteMP) {
+    const compra = await repository.obtenerCompraPorId(idCompra);
+
+    if (!compra) {
+        throw new Error("Compra no encontrada");
+    }
+
+    if (compra.formaPago !== "Mercado Pago") {
+        return compra;
+    }
+
+    return await confirmarPagoMercadoPago(
+        compra,
+        clienteMP,
+        repository
+    );
+}
 
 
 
@@ -237,5 +254,6 @@ module.exports = {
     validarReferenciaPago, 
     validarMontoPago, 
     validarMonedaPago,
-    confirmarPagoMercadoPago
+    confirmarPagoMercadoPago,
+    consultarEstadoCompraMP
 };

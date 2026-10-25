@@ -18,7 +18,8 @@ const {
 } = require("./services/mercadopago/mercadopago.client");
 
 const {
-    iniciarPagoMercadoPago
+    iniciarPagoMercadoPago,
+    consultarEstadoCompraMP
 } = require("./services/mercadopago/mercadopago.service");
 
 
@@ -131,27 +132,34 @@ app.post('/api/confirmacion', async (req, res) => {
 });
 
 app.get('/api/pagos/:id/estado', async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const idCompra = Number(req.params.id);
 
-    // TODO: recuperar la compra persistida mediante el Repository
-    const compra = null;
+        if (!Number.isSafeInteger(idCompra) || idCompra <= 0) {
+            return res.status(400).json({
+                error: "Identificador de compra inválido"
+            });
+        }
 
-    // TODO: verificar la forma de pago
-    // Efectivo -> devolver los datos y la URL interna
-    // Mercado Pago -> consultar el estado del pago,
-    // actualizar la persistencia cuando corresponda
+        const { pagos } = crearClientesMercadoPago(
+            process.env.MP_ACCESS_TOKEN
+        );
 
-    return res.status(200).json({
-      compra,
-      urlRedireccion: null,
-    });
+        const compra = await consultarEstadoCompraMP(
+            idCompra,
+            pagos
+        );
 
-  } catch (error) {
-    return res.status(error.statusCode || 400).json({
-      error: error.message,
-    });
-  }
+        return res.status(200).json({
+            compra,
+            urlRedireccion: null
+        });
+
+    } catch (error) {
+        return res.status(error.statusCode || 400).json({
+            error: error.message
+        });
+    }
 });
 
 module.exports = app;
