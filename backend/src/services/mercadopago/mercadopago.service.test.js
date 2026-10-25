@@ -354,6 +354,37 @@ test("Test 188 - Configurar una única URL de retorno para Checkout Pro", () => 
     }
 
 });
+
+
+test("Test 189 - Validar ausencia de configuración de URL pública", () => {
+
+    // ARRANGE
+    const compra = {
+        id: 1,
+        montoTotal: 50000
+    };
+
+    const publicUrlAnterior = process.env.PUBLIC_URL;
+
+    delete process.env.PUBLIC_URL;
+
+    try {
+        // ACT Y ASSERT
+        expect(() => {
+            prepararPreferenciaPago(compra);
+        }).toThrow("PUBLIC_URL no está configurada");
+
+    } finally {
+        // Restaurar la configuración original
+        if (publicUrlAnterior === undefined) {
+            delete process.env.PUBLIC_URL;
+        } else {
+            process.env.PUBLIC_URL = publicUrlAnterior;
+        }
+    }
+
+});
+
       
 
 
