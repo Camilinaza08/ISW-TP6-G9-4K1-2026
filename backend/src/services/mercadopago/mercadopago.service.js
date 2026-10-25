@@ -25,7 +25,11 @@ async function procesarResultadoMP(idCompra, estadoPago) {
 
 
 
+
 function prepararPreferenciaPago(compra) {
+    const urlResultado =
+        `${process.env.PUBLIC_URL}/resultado.html?id=${compra.id}`;
+
     return {
         items: [
             {
@@ -35,7 +39,12 @@ function prepararPreferenciaPago(compra) {
                 currency_id: "ARS"
             }
         ],
-        external_reference: String(compra.id)
+        external_reference: String(compra.id),
+        back_urls: {
+            success: urlResultado,
+            failure: urlResultado,
+            pending: urlResultado
+        }
     };
 }
 
