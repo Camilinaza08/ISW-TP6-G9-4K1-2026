@@ -12,6 +12,16 @@ const {
   validarSesion,
 } = require('./services/sesion/sesion.service');
 
+
+const {
+    crearClientesMercadoPago
+} = require("./services/mercadopago/mercadopago.client");
+
+const {
+    iniciarPagoMercadoPago
+} = require("./services/mercadopago/mercadopago.service");
+
+
 const app = express();
 
 app.use(cors({
@@ -65,28 +75,53 @@ app.post('/api/compra', async (req, res) => {
     }
 });
 
+
 app.post('/api/confirmacion', async (req, res) => {
     try {
         const { sesion, compra, formaPago } = req.body;
 
         const sesionNormalizada = sesion
-            ? { ...sesion, fechaHoraInicio: new Date(sesion.fechaHoraInicio) }
+            ? {
+                ...sesion,
+                fechaHoraInicio: new Date(sesion.fechaHoraInicio)
+            }
             : null;
 
         await validarSesion(sesionNormalizada);
 
-       const compraConfirmada = await confirmarCompra(compra, formaPago);
+        const compraConfirmada = await confirmarCompra(
+            compra,
+            formaPago
+        );
 
         let urlRedireccion = null;
+        let idPreferencia = null;
 
         if (formaPago === 'Efectivo') {
             urlRedireccion = 'resultado.html';
         }
 
-return res.status(200).json({
-  ...compraConfirmada,
-  urlRedireccion
-});
+        if (formaPago === 'Mercado Pago') {
+            const { preferencias } = crearClientesMercadoPago(
+                process.env.MP_ACCESS_TOKEN
+            );
+
+            const resultadoPago = await iniciarPagoMercadoPago(
+                compraConfirmada,
+                preferencias
+            );
+
+            idPreferencia = resultadoPago.idPreferencia;
+            urlRedireccion = resultadoPago.urlRedireccion;
+        }
+
+        return res.status(200).json({
+            ...compraConfirmada,
+            ...(formaPago === 'Mercado Pago'
+                ? { idPreferencia }
+                : {}),
+            urlRedireccion
+        });
 
     } catch (error) {
         return res.status(error.statusCode || 400).json({

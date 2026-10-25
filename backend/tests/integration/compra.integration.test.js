@@ -1,7 +1,11 @@
 
 const request = require("supertest");
 
-// Simular el servicio de confirmación de compras
+// ========================================
+// MOCKS
+// ========================================
+
+// Servicio de compras
 jest.mock("../../src/services/ticket/ticket.service", () => {
     const servicioReal = jest.requireActual(
         "../../src/services/ticket/ticket.service"
@@ -13,7 +17,7 @@ jest.mock("../../src/services/ticket/ticket.service", () => {
     };
 });
 
-// Simular la validación de sesión
+// Servicio de sesiones
 jest.mock("../../src/services/sesion/sesion.service", () => {
     const servicioReal = jest.requireActual(
         "../../src/services/sesion/sesion.service"
@@ -25,7 +29,7 @@ jest.mock("../../src/services/sesion/sesion.service", () => {
     };
 });
 
-// Simular el inicio del pago con Mercado Pago
+// Servicio de Mercado Pago
 jest.mock("../../src/services/mercadopago/mercadopago.service", () => {
     const servicioReal = jest.requireActual(
         "../../src/services/mercadopago/mercadopago.service"
@@ -36,6 +40,15 @@ jest.mock("../../src/services/mercadopago/mercadopago.service", () => {
         iniciarPagoMercadoPago: jest.fn()
     };
 });
+
+// Clientes oficiales de Mercado Pago
+jest.mock("../../src/services/mercadopago/mercadopago.client", () => ({
+    crearClientesMercadoPago: jest.fn()
+}));
+
+// ========================================
+// IMPORTACIONES
+// ========================================
 
 const app = require("../../src/server");
 
@@ -51,6 +64,13 @@ const {
     iniciarPagoMercadoPago
 } = require("../../src/services/mercadopago/mercadopago.service");
 
+const {
+    crearClientesMercadoPago
+} = require("../../src/services/mercadopago/mercadopago.client");
+
+// ========================================
+// TESTS DE INTEGRACIÓN
+// ========================================
 
 describe("Integración de Mercado Pago - Checkout Pro", () => {
 
@@ -61,6 +81,7 @@ describe("Integración de Mercado Pago - Checkout Pro", () => {
     test("Test 194 - Iniciar Checkout Pro desde el endpoint de confirmación", async () => {
 
         // ARRANGE
+
         const sesion = {
             usuario: "usuario@test.com",
             fechaHoraInicio: new Date().toISOString()
@@ -85,15 +106,25 @@ describe("Integración de Mercado Pago - Checkout Pro", () => {
                 "https://www.mercadopago.com/checkout/v1/redirect"
         };
 
+        const clientePreferencias = {
+            create: jest.fn()
+        };
+
         validarSesion.mockReturnValue(undefined);
 
         confirmarCompra.mockResolvedValue(compraRegistrada);
+
+        crearClientesMercadoPago.mockReturnValue({
+            preferencias: clientePreferencias,
+            pagos: {}
+        });
 
         iniciarPagoMercadoPago.mockResolvedValue(
             respuestaMercadoPago
         );
 
         // ACT
+
         const respuesta = await request(app)
             .post("/api/confirmacion")
             .send({
@@ -103,23 +134,41 @@ describe("Integración de Mercado Pago - Checkout Pro", () => {
             });
 
         // ASSERT
+
+        // Verificar respuesta HTTP
         expect(respuesta.status).toBe(200);
 
-        expect(validarSesion).toHaveBeenCalled();
+        // Verificar validación de sesión
+        expect(validarSesion).toHaveBeenCalledWith(
+            expect.objectContaining({
+                usuario: sesion.usuario,
+                fechaHoraInicio: expect.any(Date)
+            })
+        );
 
+        // Verificar confirmación de compra
         expect(confirmarCompra).toHaveBeenCalledWith(
             compra,
             "Mercado Pago"
         );
 
-        expect(iniciarPagoMercadoPago).toHaveBeenCalledWith(
-            compraRegistrada,
-            expect.anything()
+        // Verificar inicialización del SDK
+        expect(crearClientesMercadoPago).toHaveBeenCalledWith(
+            process.env.MP_ACCESS_TOKEN
         );
 
+        // Verificar inicio del pago
+        expect(iniciarPagoMercadoPago).toHaveBeenCalledWith(
+            compraRegistrada,
+            clientePreferencias
+        );
+
+        // Verificar datos devueltos al frontend
         expect(respuesta.body).toEqual(
             expect.objectContaining({
                 id: 123,
+                montoTotal: 50000,
+                formaPago: "Mercado Pago",
                 estadoCompra: "pendiente",
                 estadoPago: "pending",
                 idPreferencia: "PREF-123",
