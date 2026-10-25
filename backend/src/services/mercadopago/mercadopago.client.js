@@ -7,6 +7,13 @@ const {
 
 function crearClientesMercadoPago(accessToken) {
 
+    // Validar que exista el Access Token
+    if (!accessToken) {
+        throw new Error(
+            "Access Token de Mercado Pago no configurado"
+        );
+    }
+
     // Configurar el SDK oficial
     const configuracion = new MercadoPagoConfig({
         accessToken: accessToken
