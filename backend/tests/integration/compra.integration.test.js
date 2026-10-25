@@ -179,4 +179,61 @@ describe("Integración de Mercado Pago - Checkout Pro", () => {
 
     });
 
+    
+test("Test 195 - Mantener el comportamiento de Efectivo", async () => {
+
+    // ARRANGE
+
+    const sesion = {
+        usuario: "usuario@test.com",
+        fechaHoraInicio: new Date().toISOString()
+    };
+
+    const compra = {
+        id: 124,
+        montoTotal: 30000,
+        formaPago: "Efectivo"
+    };
+
+    const compraRegistrada = {
+        ...compra,
+        estadoCompra: "pendiente",
+        estadoPago: "pendiente"
+    };
+
+    validarSesion.mockReturnValue(undefined);
+
+    confirmarCompra.mockResolvedValue(compraRegistrada);
+
+    // ACT
+
+    const respuesta = await request(app)
+        .post("/api/confirmacion")
+        .send({
+            sesion,
+            compra,
+            formaPago: "Efectivo"
+        });
+
+    // ASSERT
+
+    expect(respuesta.status).toBe(200);
+
+    expect(confirmarCompra).toHaveBeenCalledWith(
+        compra,
+        "Efectivo"
+    );
+
+    expect(respuesta.body).toEqual({
+        ...compraRegistrada,
+        urlRedireccion: "resultado.html"
+    });
+
+    expect(crearClientesMercadoPago).not.toHaveBeenCalled();
+
+    expect(iniciarPagoMercadoPago).not.toHaveBeenCalled();
+
+});
+
+
 });
